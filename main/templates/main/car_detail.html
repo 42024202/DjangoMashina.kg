@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ car.mark }} {{ car.model }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #e6f0ff, #ffffff);
+            min-height: 100vh;
+        }
+
+        .info-text {
+            color: #555;
+            font-size: 15px;
+            margin-bottom: 0.8rem;
+        }
+
+        .price-text {
+            color: #000;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-img-top {
+            max-height: 400px;
+            width: 100%;
+            object-fit: contain;
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(180deg, #a3d8f4 0%, #d9eefc 100%);
+            padding: 2rem;
+            border-bottom-left-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
+            box-shadow: 0 4px 10px rgba(163, 216, 244, 0.5);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #0366a6;
+            font-weight: 700;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 2.5rem;
+            text-shadow: 0 1px 3px rgba(3, 102, 166, 0.3);
+        }
+
+        .back-btn {
+            margin-top: 20px;
+        }
+
+        /* Новые стили для левой колонки */
+        .specs {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+
+        .description {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+            font-size: 1rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1><a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">Mashina.kg</a></h1>
+    </div>
+
+    <div class="container mb-5">
+        <div class="row gx-4">
+            <!-- Левая колонка: характеристики -->
+            <div class="col-md-4 mb-4">
+                <div class="specs">
+                    <h4>{{ car.mark }} {{ car.model }}</h4>
+                    <p class="price-text">Цена: {{ car.price }} $</p>
+                    <p class="info-text"><strong>Цвет:</strong> {{ car.color }}</p>
+                    <p class="info-text"><strong>Тип двигателя:</strong> {{ car.engine }}</p>
+                    <p class="info-text"><strong>Состояние:</strong> {{ car.engine }}</p>
+                    <p class="info-text"><strong>Доступность:</strong>Доступно</p>
+                    <p class="info-text"><strong>Год выпуска:</strong> {{ car.year }}</p>
+                    <p class="info-text"><strong>Дата публикации:</strong> {{ car.created_at }}</p>
+                    <p class="info-text"><strong>Регион:</strong> {{ car.region }}</p>
+                    <p class="info-text"><strong>Тип кузова:</strong> {{ car.body }}</p>
+                    <p class="info-text"><strong>Коробка передач:</strong> {{ car.transmission }}</p>
+                    
+                    
+                    
+                </div>
+            </div>
+
+            <!-- Правая колонка: фото -->
+            <div class="col-md-8">
+                <div class="card">
+                    <img src="{{ car.images.url }}" class="card-img-top" alt="Car Image">
+                </div>
+
+                <!-- Описание под фото -->
+                <div class="description">
+                    <h5>Описание</h5>
+                    <p>{{ car.description }}</p>
+                </div>
+
+                <div class="text-center back-btn">
+                    <a href="{% url 'index' %}" class="btn btn-outline-primary rounded-pill px-4 mt-4">← На главную страницу</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
