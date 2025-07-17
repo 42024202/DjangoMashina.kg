@@ -3,26 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <title>Mashina.kg</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    .btn-light:hover {
+    background-color: #e0e7ff !important;
+    color: #1d4ed8 !important;
+}
+    
+body {
+        background: linear-gradient(to bottom right, #e6f0ff, #ffffff);
+        min-height: 100vh;
+    }
 
+    .card {
+        height: 100%;
+        max-height: 450px;
+        overflow: hidden;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        background-color: #ffffff;
+    }
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" integrity="sha384-7qAoOXltbVP82dhxHAUje59V5r2YsVfBafyUDxEdApLPmcdhBPg1DKg1ERo0BZlK" crossorigin="anonymous"></script>
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 0.95rem;
+        color: #555;
+    }
+            </style>
 </head>
 <body>
-<div class="row row-cols-1 row-cols-md-3 g-4">
-{% for car in cars %}
-  <div class="col">
-    <div class="card h-100">
-        <img src="{{ car.image.url }}" class="card-img-top">
-      <div class="card-body">
-          <h5 class="card-title">{{ car.title }}</h5>
-        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-      </div>
+    <div class="position-sticky top-0 z-3 text-center py-4"
+     style="
+       background: linear-gradient(180deg, #a3d8f4 0%, #d9eefc 100%);
+       border-bottom-left-radius: 1.5rem;
+       border-bottom-right-radius: 1.5rem;
+       box-shadow: 0 4px 10px rgba(163, 216, 244, 0.5);
+       padding: 1.5rem 1rem;
+       border-bottom: none;
+     ">
+    <h1 style="
+        color: #0366a6;
+        font-weight: 700;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 0 1px 3px rgba(3, 102, 166, 0.3);
+    ">
+        Mashina.kg
+    </h1>
+    <div class="d-flex justify-content-center gap-4 flex-wrap">
+        <a href="#" class="btn btn-light btn-lg rounded-pill px-4 fw-semibold"
+           style="transition: background-color 0.3s ease, color 0.3s ease;">
+            Все
+        </a>
+        <a href="#" class="btn btn-light btn-lg rounded-pill px-4 fw-semibold"
+           style="transition: background-color 0.3s ease, color 0.3s ease;">
+            Категории
+        </a>
+        <a href="#" class="btn btn-light btn-lg rounded-pill px-4 fw-semibold"
+           style="transition: background-color 0.3s ease, color 0.3s ease;">
+            По годам
+        </a>
+        <a href="#" class="btn btn-light btn-lg rounded-pill px-4 fw-semibold"
+           style="transition: background-color 0.3s ease, color 0.3s ease;">
+            По цене
+        </a>
     </div>
-  </div>
-  {% endfor %}
- </div>
+</div>
+      <div class="container py-4" style="margin-top: 15px;">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for car in cars %}
+        <div class="col">
+            <div class="card h-100">
+                <img src="{{ car.image.url }}" class="card-img-top" alt="Car Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ car.title }} {{car.model}}</h5>
+                    <p class="card-text">
+                    Год выпуска: {{ car.year }}
+                    </p>
+                    <p class="card-text">
+                    {{ car.price }} $
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 </body>
 </html>
+
