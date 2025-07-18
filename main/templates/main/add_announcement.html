@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Добавить объявление</title>
+</head>
+<body>
+    <h1>Добавить объявление</h1>
+
+    {% if error %}
+        <p style="color: red;">Ошибка: {{ error }}</p>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label>Категория</label>
+        <select name="category" required>
+            <option value="">-- Выберите категорию --</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}">{{ cat.name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Марка</label>
+        <select name="mark" required>
+            <option value="">-- Выберите марку --</option>
+            {% for mark in marks %}
+                <option value="{{ mark.id }}">{{ mark.mark_name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Модель</label>
+        <select name="model" required>
+            <option value="">-- Выберите модель --</option>
+            {% for model in models %}
+                <option value="{{ model.id }}">{{ model.model_name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Год выпуска</label>
+        <select name="year" required>
+            <option value="">-- Выберите год --</option>
+            {% for year in years %}
+                <option value="{{ year.id }}">{{ year.year }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Цена ($)</label>
+        <input type="number" name="price" step="0.01" required><br><br>
+
+        <label>Двигатель</label>
+        <select name="engine" required>
+            <option value="">-- Выберите двигатель --</option>
+            {% for engine in engines %}
+                <option value="{{ engine.id }}">{{ engine.engine }}</option>
+            {% endfor %}
+        </select><br><br>
+
+       <label>Описание</label><br>
+        <textarea name="description" rows="5" cols="50" required></textarea><br><br>
+
+        <label>Фотографии (можно несколько)</label><br>
+        <input type="file" name="images" multiple><br><br>
+
+        <button type="submit">Опубликовать</button>
+    </form>
+</body>
+</html>
+
