@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Category(models.Model):
-    """Категория машин."""
     name = models.CharField(max_length=100, blank=True, null=True, verbose_name="Название")
 
     class Meta:
@@ -140,6 +139,7 @@ class Car(models.Model):
     transmission = models.ForeignKey(Transmission, on_delete=models.PROTECT, null=True, verbose_name="Тип коробки", related_query_name="cars_by_transmissions", blank=True)
     description = models.TextField(verbose_name="Описание")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    is_available = models.ForeignKey(Availability, on_delete=models.PROTECT, null=True, verbose_name="Доступность", related_name="cars_by_availability")
     images = models.ImageField(upload_to='media/cars_image', verbose_name="Фотография")
 
     class Meta:

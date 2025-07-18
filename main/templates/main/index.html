@@ -100,10 +100,10 @@
 
 <div class="container py-3" style="margin-top: 0px;">
   <div class="d-flex justify-content-center gap-3 py-3">
-      <a href="{% url 'passenger_cars' %}" class="btn category-btn">Легковые</a>
-      <a href="{% url 'commercial_cars' %}" class="btn category-btn">Коммерческие</a>
-      <a href="{% url 'index' %}" class="btn category-btn">Спецтехника</a>
-    <a href="{% url 'moto_cars' %}" class="btn category-btn">Мото</a>
+      <a href="{% url 'category' 'Легковые' %}" class="btn category-btn">Легковые</a>
+      <a href="{% url 'category' 'Коммерческие'%}" class="btn category-btn">Коммерческие</a>
+      <a href="{% url 'category' 'Спецтехника'%}" class="btn category-btn">Спецтехника</a>
+    <a href="{% url 'category' 'Мото' %}" class="btn category-btn">Мото</a>
   </div>
 
   <div class="row row-cols-1 row-cols-md-3 g-4">

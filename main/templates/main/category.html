@@ -43,7 +43,6 @@
             color: #555;
             font-size: 14px;
         }
-        /* Шапка */
         .header {
             position: sticky;
             top: 0;
@@ -68,7 +67,6 @@
             text-decoration: none;
             color: inherit;
         }
-        /* Категория */
         .category-label {
             text-align: center;
             font-size: 0.9rem;
@@ -85,7 +83,7 @@
 </div>
 
 <div class="category-label">
-    Категория: Коммерческие
+    Категория: {{ category.name }}
 </div>
 
 <div class="container py-3" style="margin-top: 0;">
@@ -104,6 +102,10 @@
                 <input type="text" name="engine_type" class="form-control" value="{{ request.GET.engine_type }}">
             </div>
             <div class="col-md-2">
+                <label class="form-label">Кузов</label>
+                <input type="text" name="body_type" class="form-control" value="{{ request.GET.body_type }}">
+            </div>
+            <div class="col-md-2">
                 <label class="form-label">Регион</label>
                 <input type="text" name="region" class="form-control" value="{{ request.GET.region }}">
             </div>
@@ -117,7 +119,7 @@
             </div>
             <div class="col-md-2">
                 <label class="form-label">Год выпуска</label>
-                <input type="text" name="engine_type" class="form-control" value="{{ request.GET.engine_type }}">
+                <input type="text" name="year" class="form-control" value="{{ request.GET.year }}">
             </div>
             <div class="col-md-2">
                 <label class="form-label">Цена от</label>
@@ -149,11 +151,12 @@
                 </div>
             </a>
         </div>
+        {% empty %}
+        <p>Нет машин, подходящих под фильтр.</p>
         {% endfor %}
     </div>
 </div>
 
 </body>
 </html>
-
 

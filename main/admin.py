@@ -12,5 +12,7 @@ admin.site.register(Region)
 admin.site.register(BodyType)
 admin.site.register(Color)
 admin.site.register(Transmission)
-admin.site.register(Car)
 admin.site.register(Availability)
+admin.site.register(Car)
+
+
