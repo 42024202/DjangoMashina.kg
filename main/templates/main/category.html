@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,40 +9,6 @@
         body {
             background: linear-gradient(to bottom right, #e6f0ff, #ffffff);
             min-height: 100vh;
-        }
-        .card {
-            height: 100%;
-            max-height: 450px;
-            overflow: hidden;
-            border-radius: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            background-color: #ffffff;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-            border-top-left-radius: 1rem;
-            border-top-right-radius: 1rem;
-        }
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        .card-text {
-            font-size: 0.95rem;
-            color: #555;
-        }
-        .price-text {
-            color: #000;
-            font-weight: bold;
-        }
-        .info-text {
-            color: #555;
-            font-size: 14px;
         }
         .header {
             position: sticky;
@@ -67,12 +34,137 @@
             text-decoration: none;
             color: inherit;
         }
-        .category-label {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #555;
+
+        .container {
+            max-width: 1200px; /* чтобы ограничить ширину, под 4 карточки по 250px + отступы */
+            margin: auto;
+        }
+
+        /* Фильтры */
+        form {
+            margin-bottom: 0.75rem;
+        }
+        form .row > div {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        form .form-label {
+            font-size: 0.8rem;
+        }
+        form input.form-control {
+            font-size: 0.85rem;
+            padding: 0.25rem 0.5rem;
+            height: 30px;
+        }
+
+        /* Контейнер для фильтр-кнопок и кнопок справа */
+        .controls-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
             margin-bottom: 1rem;
-            font-weight: 500;
+            flex-wrap: nowrap;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Кнопки */
+        .btn-filter {
+            background-color: #a3d8f4;
+            color: #0366a6;
+            font-weight: 600;
+            border-radius: 2rem;
+            padding: 0.35rem 1.2rem;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+        .btn-filter:hover {
+            background-color: #d0ebfa;
+            color: #014d7a;
+        }
+
+        .btn-action {
+            background-color: #d0ebfa;
+            color: #014d7a;
+            font-weight: 600;
+            border-radius: 2rem;
+            padding: 0.35rem 1.2rem;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-action:hover {
+            background-color: #b5dbf0;
+            color: #012b45;
+        }
+
+        /* Карточки */
+        .row.row-cols-1.row-cols-md-4.g-4 {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .card {
+            max-width: 270px; /* чуть меньше, чтобы помещались 4 карточки + отступы */
+            height: 100%;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            background-color: #ffffff;
+            margin: auto;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-img-top {
+            height: 160px;
+            object-fit: cover;
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+        }
+        .card-title {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .price-text {
+            color: #000;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .info-text {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        /* Миниатюры под картинкой */
+        .carousel-thumbnails {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap;
+            gap: 0.3rem;
+            padding: 0.4rem;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .carousel-thumbnails img {
+            width: 50px;
+            height: 35px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            border-radius: 0.4rem;
+            transition: border 0.2s;
+        }
+        .carousel-thumbnails img:hover {
+            border-color: #1d4ed8;
         }
     </style>
 </head>
@@ -82,12 +174,9 @@
     <h1><a href="{% url 'index' %}">Mashina.kg</a></h1>
 </div>
 
-<div class="category-label">
-    Категория: {{ category.name }}
-</div>
+<div class="container">
 
-<div class="container py-3" style="margin-top: 0;">
-    <form method="get" class="mb-4">
+    <form method="get" class="mb-2">
         <div class="row g-2 align-items-end">
             <div class="col-md-2">
                 <label class="form-label">Марка</label>
@@ -129,18 +218,28 @@
                 <label class="form-label">Цена до</label>
                 <input type="number" name="price_to" class="form-control" value="{{ request.GET.price_to }}">
             </div>
-            <div class="col-md-2 align-self-end">
-                <button type="submit" class="btn btn-primary btn-sm w-100">Фильтр</button>
-            </div>
         </div>
     </form>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="controls-row">
+        <button type="submit" form="filterForm" class="btn btn-filter">Фильтр</button>
+        <a href="{% url 'index' %}" class="btn btn-action">Войти</a>
+        <a href="{% url 'add_announcement' %}" class="btn btn-action">+ Добавить объявление</a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4">
         {% for car in cars %}
         <div class="col">
             <a href="{% url 'car_detail' car.id %}" class="text-decoration-none text-dark">
                 <div class="card h-100">
-                    <img src="{{ car.images.url }}" class="card-img-top" alt="Car Image">
+                    <img src="{{ car.images.all.0.image.url }}" class="card-img-top" alt="Car Image">
+                    {% if car.images.all %}
+                    <div class="carousel-thumbnails">
+                        {% for image in car.images.all|slice:":4" %}
+                        <img src="{{ image.image.url }}" alt="thumbnail">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ car.mark }} {{ car.model }}</h5>
                         <p class="price-text">Цена: {{ car.price }} $</p>
@@ -157,6 +256,7 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 

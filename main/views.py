@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Category, Car, CarImage 
-from .forms import CarForm
+from .models import Car, CarImage, Category, MarkOfCar, ModelOfCar, YearOfProduction, EngineType, CarCondition, Region, City, BodyType, Color, Transmission, Drive, WheelType, Exchange, Registration, CustomClearence, Availability, Quickly
 
 
 def index(request):
@@ -14,9 +13,6 @@ def car_detail(request, car_id):
     car = Car.objects.get(id=car_id)
     return render(request, 'main/car_detail.html', {'car': car})
 
-
-from django.shortcuts import render, redirect
-from .models import Car, CarImage, Category, MarkOfCar, ModelOfCar, YearOfProduction, EngineType, CarCondition, Region, City, BodyType, Color, Transmission, Drive, WheelType, Exchange, Registration, CustomClearence, Availability, Quickly
 
 def add_car(request):
     if request.method == 'POST':
