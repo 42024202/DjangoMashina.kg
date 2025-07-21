@@ -6,10 +6,6 @@ from .car_condition import YearOfProduction, ColorOfCar, CarMeleage, CarConditio
 from .other_characters import Availability, Exchange, CustomClearence
 
 
-class Price(models.Model):
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена")
-
-
 class Car_announcement(models.Model):
     """Anouncement on web-site."""
     category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, verbose_name="Категория", related_name="cars_by_categories")
@@ -20,7 +16,7 @@ class Car_announcement(models.Model):
 
     year = models.ForeignKey(YearOfProduction, on_delete=models.PROTECT, null=True, verbose_name="Год выпуска", related_name="cars_by_years") 
     
-    price = models.ForeignKey(Price, on_delete=models.PROTECT, null=True, verbose_name="Цена", related_name="cars_by_prices")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена")
 
     engine = models.ForeignKey(EngineType, on_delete=models.PROTECT, null=True, verbose_name="Двигатель", related_name="cars_by_engines")
 
@@ -58,8 +54,15 @@ class Car_announcement(models.Model):
 
     is_available = models.ForeignKey(Availability, on_delete=models.PROTECT, null=True, verbose_name="Доступность", related_name="cars_by_availability")
 
-    urgency_of_announcement = models.BooleanField()
+    urgency_of_announcement = models.BooleanField(verbose_name="Срочно")
+    
+
+    class Meta:
+        verbose_name = "Объявление"
+        verbose_name_plural = "Объявления"
+
 
 class CarImage(models.Model):
-    announcement = models.ForeignKey(Car_announcement, on_delete=models.PROTECT, verbose_name="Фотографии")
-    images = models.ImageField(upload_to='cars_images/', verbose_name="Изображение")
+    announcement = models.ForeignKey(Car_announcement, on_delete=models.PROTECT, verbose_name="Фотографии", related_name="images")
+    image = models.ImageField(upload_to='car_images/', verbose_name="Изображение")
+    

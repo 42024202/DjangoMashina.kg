@@ -3,7 +3,7 @@ from django.db import models
 
 class Category(models.Model):
     """Category of car with hierarchy"""
-    cateory_name = models.CharField(max_length=50, verbose_name="Категория")
+    name = models.CharField(max_length=50, verbose_name="Категория")
     parent = models.ForeignKey(
         "self",
         on_delete=models.PROTECT, 
@@ -16,7 +16,7 @@ class Category(models.Model):
         verbose_name_plural = "Категории"
     
     def __str__(self):
-        return self.cateory_name
+        return self.name
 
 
 class MarkOfCar(models.Model):

@@ -1,70 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Добавить объявление</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #f7f7f7;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+    </style>
 </head>
 <body>
-    <h1>Добавить объявление</h1>
+    <div class="container">
+        <div class="form-container">
+            <h2 class="mb-4 text-center">Добавить объявление</h2>
 
-    {% if error %}
-        <p style="color: red;">Ошибка: {{ error }}</p>
-    {% endif %}
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
 
-        <label>Категория</label>
-        <select name="category" required>
-            <option value="">-- Выберите категорию --</option>
-            {% for cat in categories %}
-                <option value="{{ cat.id }}">{{ cat.name }}</option>
-            {% endfor %}
-        </select><br><br>
+                <!-- Марка -->
+                <div class="mb-3">
+                    <label class="form-label">Марка</label>
+                    <select id="mark-select" name="mark" class="form-control" required>
+                        <option value="">Выберите марку</option>
+                        {% for mark in marks %}
+                            <option value="{{ mark.id }}">{{ mark.mark_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-        <label>Марка</label>
-        <select name="mark" required>
-            <option value="">-- Выберите марку --</option>
-            {% for mark in marks %}
-                <option value="{{ mark.id }}">{{ mark.mark_name }}</option>
-            {% endfor %}
-        </select><br><br>
+                <!-- Модель -->
+                <div class="mb-3">
+                    <label class="form-label">Модель</label>
+                    <select id="model-select" name="model" class="form-control" required>
+                        <option value="">Сначала выберите марку</option>
+                    </select>
+                </div>
 
-        <label>Модель</label>
-        <select name="model" required>
-            <option value="">-- Выберите модель --</option>
-            {% for model in models %}
-                <option value="{{ model.id }}">{{ model.model_name }}</option>
-            {% endfor %}
-        </select><br><br>
+                <!-- Остальные поля формы -->
+                {% for field in form %}
+                    {% if field.name != 'mark' and field.name != 'model' %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
 
-        <label>Год выпуска</label>
-        <select name="year" required>
-            <option value="">-- Выберите год --</option>
-            {% for year in years %}
-                <option value="{{ year.id }}">{{ year.year }}</option>
-            {% endfor %}
-        </select><br><br>
+                <!-- Фото -->
+                <div class="mb-3">
+                    <label class="form-label">Фотографии (можно несколько)</label>
+                    <input class="form-control" type="file" name="images" multiple>
+                </div>
 
-        <label>Цена ($)</label>
-        <input type="number" name="price" step="0.01" required><br><br>
+                <button type="submit" class="btn btn-primary w-100">Опубликовать</button>
+            </form>
+        </div>
+    </div>
 
-        <label>Двигатель</label>
-        <select name="engine" required>
-            <option value="">-- Выберите двигатель --</option>
-            {% for engine in engines %}
-                <option value="{{ engine.id }}">{{ engine.engine }}</option>
-            {% endfor %}
-        </select><br><br>
+    <!-- JS -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const markSelect = document.getElementById('mark-select');
+        const modelSelect = document.getElementById('model-select');
 
-       <label>Описание</label><br>
-        <textarea name="description" rows="5" cols="50" required></textarea><br><br>
+        markSelect.addEventListener('change', function () {
+            const markId = this.value;
 
-        <label>Фотографии (можно несколько)</label><br>
-        <input type="file" name="images" multiple><br><br>
+            modelSelect.innerHTML = '<option>Загрузка...</option>';
 
-        <button type="submit">Опубликовать</button>
-    </form>
+            fetch(`/get-models/?mark_id=${markId}`)
+                .then(response => response.json())
+                .then(data => {
+                    modelSelect.innerHTML = '<option value="">Выберите модель</option>';
+                    data.forEach(model => {
+                        const option = document.createElement('option');
+                        option.value = model.id;
+                        option.textContent = model.model_name;
+                        modelSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    modelSelect.innerHTML = '<option>Ошибка загрузки моделей</option>';
+                });
+        });
+    });
+    </script>
 </body>
 </html>
 

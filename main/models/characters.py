@@ -24,7 +24,7 @@ class EngineCapacity(models.Model):
         verbose_name_plural = "Объем двигателя"
 
     def __str__(self):
-        return self.engine_capacity
+        return str(self.engine_capacity)
 
 
 class EnginePower(models.Model):
@@ -36,7 +36,7 @@ class EnginePower(models.Model):
         verbose_name_plural = "Мощность двигателя"
 
     def __str__(self):
-        return self.engine_power
+        return str(self.engine_power)
 
 
 class BodyType(models.Model):

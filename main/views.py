@@ -1,5 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
+from django.http import JsonResponse
 from .models import Car_announcement, CarImage, Category, MarkOfCar, ModelOfCar, YearOfProduction, EngineType, EngineCapacity, EnginePower, CarCondition, Region, City, BodyType, ColorOfCar, Transmission, Drive, WheelType, Exchange, Registration, CustomClearence, Availability, CarMeleage
+from .forms import CarAnnouncementForm
 
 
 def index(request):
@@ -13,64 +15,17 @@ def car_detail(request, car_id):
     car = Car_announcement.objects.get(id=car_id)
     return render(request, 'main/car_detail.html', {'car': car})
 
+def add_announcement(request):
+    marks = MarkOfCar.objects.all()
+    form = CarAnnouncementForm(request.POST or None, request.FILES or None)
 
-def add_car(request):
-    if request.method == 'POST':
-        try:
-            car = Car_announcement.objects.create(
-                category_id=request.POST.get('category'),
-                mark_id=request.POST.get('mark'),
-                model_id=request.POST.get('model'),
-                year_id=request.POST.get('year'),
-                price=request.POST.get('price'),
-                engine_id=request.POST.get('engine'),
-                car_condition_id=request.POST.get('car_condition'),
-                region_id=request.POST.get('region'),
-                city_id=request.POST.get('city'),
-                body_id=request.POST.get('body'),
-                color_id=request.POST.get('color'),
-                transmission_id=request.POST.get('transmission'),
-                drive_id=request.POST.get('drive'),
-                wheel_type_id=request.POST.get('wheel_type'),
-                exchange_id=request.POST.get('exchange'),
-                registration_id=request.POST.get('registration'),
-                custom_clearence_id=request.POST.get('custom_clearence'),
-                description=request.POST.get('description'),
-                is_available_id=request.POST.get('is_available'),
-                is_quickly_id=request.POST.get('is_quickly'),
-            )
+    if request.method == 'POST' and form.is_valid():
+        announcement = form.save()
+        for image in request.FILES.getlist('images'):
+            CarImage.objects.create(announcement=announcement, image=image)
+        return redirect('index')
 
-            for img in request.FILES.getlist('images'):
-                CarImage.objects.create(car=car, image=img)
-
-            return redirect('index')
-        except Exception as e:
-            print("Ошибка при сохранении:", e)
-            context = {'error': str(e)}
-
-    else:
-        context = {}
-
-    context.update({
-        'categories': Category.objects.all(),
-        'marks': MarkOfCar.objects.all(),
-        'models': ModelOfCar.objects.all(),
-        'years': YearOfProduction.objects.all(),
-        'engines': EngineType.objects.all(),
-        'car_conditions': CarCondition.objects.all(),
-        'regions': Region.objects.all(),
-        'cities': City.objects.all(),
-        'bodies': BodyType.objects.all(),
-        'colors': ColorOfCar.objects.all(),
-        'transmissions': Transmission.objects.all(),
-        'drives': Drive.objects.all(),
-        'wheel_types': WheelType.objects.all(),
-        'exchanges': Exchange.objects.all(),
-        'registrations': Registration.objects.all(),
-        'custom_clearences': CustomClearence.objects.all(),
-        'availabilities': Availability.objects.all(),
-    })
-    return render(request, 'main/add_announcement.html', context)
+    return render(request, 'main/add_announcement.html', {'form': form, 'marks': marks})
 
 
 def category(request, category_name):
@@ -135,5 +90,14 @@ def category(request, category_name):
     return render(request, 'main/category.html', context=context)
 
 
-def add_announcement(request):
-    return render(request, 'main/add_announcement.html')
+def delete_announcement(request, car_id):
+    if request.method == 'POST':
+        car = get_object_or_404(Car_announcement, id=car_id)
+        CarImage.objects.filter(announcement=car).delete()
+        car.delete()
+        return redirect('index')
+
+def get_models(request):
+    mark_id = request.GET.get('mark_id')
+    models = ModelOfCar.objects.filter(mark_id=mark_id).values('id', 'model_name')
+    return JsonResponse(list(models), safe=False)

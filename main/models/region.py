@@ -21,6 +21,11 @@ class City(models.Model):
     def __str__(self):
         return self.city
 
+    
+    class Meta:
+        verbose_name = "Город"
+        verbose_name_plural = "Городa"
+
 
 class Registration(models.Model):
     """Registration of car"""
@@ -28,3 +33,8 @@ class Registration(models.Model):
 
     def __str__(self):
         return self.registration
+
+
+    class Meta:
+        verbose_name = "Учет"
+        verbose_name_plural = "Учет"

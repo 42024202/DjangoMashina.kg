@@ -119,28 +119,42 @@
 <body>
 
     <div class="header">
-        <h1><a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">Mashina.kg</a></h1>
+        <h1><a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">mashina.kg</a></h1>
     </div>
 
     <div class="container mb-5">
         <div class="row gx-4">
             <!-- Левая колонка: характеристики -->
-            <div class="col-md-4 mb-4">
-                <div class="specs">
-                    <h4>{{ car.mark }} {{ car.model }}</h4>
-                    <p class="price-text">Цена: {{ car.price }} $</p>
-                    <p class="info-text"><strong>Цвет:</strong> {{ car.color }}</p>
-                    <p class="info-text"><strong>Тип двигателя:</strong> {{ car.engine }}</p>
-                    <p class="info-text"><strong>Состояние:</strong> {{ car.car_condition }}</p>
-                    <p class="info-text"><strong>Доступность:</strong> {{ car.is_available }}</p>
-                    <p class="info-text"><strong>Год выпуска:</strong> {{ car.year }}</p>
-                    <p class="info-text"><strong>Дата публикации:</strong> {{ car.created_at }}</p>
-                    <p class="info-text"><strong>Регион:</strong> {{ car.region }}</p>
-                    <p class="info-text"><strong>Тип кузова:</strong> {{ car.body }}</p>
-                    <p class="info-text"><strong>Коробка передач:</strong> {{ car.transmission }}</p>
-                </div>
-            </div>
+<!-- Левая колонка: характеристики -->
+    <div class="col-md-4 mb-4">
+        <div class="specs">
+            <h4>{{ car.mark }} {{ car.model }}</h4>
+            <p class="price-text">Цена: {{ car.price }} $</p>
+            <p class="info-text"><strong>Цвет:</strong> {{ car.color }}</p>
+            <p class="info-text"><strong>Тип двигателя:</strong> {{ car.engine }}</p>
+            <p class="info-text"><strong>Объем двигателя:</strong> {{ car.engine_capacity }} л.</p>
+            <p class="info-text"><strong>Мощность двигателя:</strong> {{ car.engine_power }} л.с</p>
+            <p class="info-text"><strong>Пробег:</strong> {{ car.car_meleage }} км.</p>
+            <p class="info-text"><strong>Коробка передач:</strong> {{ car.transmission }}</p>
+            <p class="info-text"><strong>Привод:</strong> {{ car.drive }}</p>
+            <p class="info-text"><strong>Руль:</strong> {{ car.wheel_type }}</p>
+            <p class="info-text"><strong>Состояние:</strong> {{ car.car_condition }}</p>
+            <p class="info-text"><strong>Год выпуска:</strong> {{ car.year }}</p>
+            <p class="info-text"><strong>Дата публикации:</strong> {{ car.created_at }}</p>
+            <p class="info-text"><strong>Регион:</strong> {{ car.region }}</p>
+            <p class="info-text"><strong>Учет:</strong> {{ car.registration }}</p>
+            <p class="info-text"><strong>Тип кузова:</strong> {{ car.body }}</p>
+            <p class="info-text"><strong>Растаможка:</strong> {{ car.custom_clearence }}</p>
+            <p class="info-text"><strong>Доступность:</strong> {{ car.is_available }}</p>
+            <p class="info-text"><strong>Вариант обмена:</strong> {{ car.exchange }}</p>
 
+        <form method="POST" action="{% url 'delete_announcement' car.id %}" onsubmit="return confirm('Вы уверены, что хотите удалить объявление?');" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger w-100">Удалить объявление</button>
+        </form>
+        </div>
+    </div>
+          
             <!-- Правая колонка: фото -->
             <div class="col-md-8">
                 <div class="card">

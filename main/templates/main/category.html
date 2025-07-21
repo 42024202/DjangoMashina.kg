@@ -171,7 +171,7 @@
 <body>
 
 <div class="header">
-    <h1><a href="{% url 'index' %}">Mashina.kg</a></h1>
+    <h1><a href="{% url 'index' %}">mashina.kg</a></h1>
 </div>
 
 <div class="container">
@@ -190,6 +190,30 @@
                 <label class="form-label">Тип двигателя</label>
                 <input type="text" name="engine_type" class="form-control" value="{{ request.GET.engine_type }}">
             </div>
+
+
+            <div class="col-md-2">
+                <label class="form-label">Объем двигателя</label>
+                <input type="decimal" name="engine_capacity" class="form-control" value="{{ request.GET.engine_capacity }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Мощность двигателя от</label>
+                <input type="decimal" name="power_from" class="form-control" value="{{ request.GET.power_from }}">
+            </div>
+           <div class="col-md-2">
+                <label class="form-label">Мощность двигателя до</label>
+                <input type="decimal" name="power_to" class="form-control" value="{{ request.GET.power_to }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Пробег от</label>
+                <input type="decimal" name="meleage_from" class="form-control" value="{{ request.GET.meleage_from }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Пробег до</label>
+                <input type="decimal" name="meleage_to" class="form-control" value="{{ request.GET.meleage_to }}">
+            </div>
+
+
             <div class="col-md-2">
                 <label class="form-label">Кузов</label>
                 <input type="text" name="body" class="form-control" value="{{ request.GET.body }}">
@@ -202,8 +226,6 @@
                 <label class="form-label">Цвет</label>
                 <input type="text" name="color" class="form-control" value="{{ request.GET.color }}">
             </div>
-
-
             <div class="col-md-2">
                 <label class="form-label">Город</label>
                 <input type="text" name="city" class="form-control" value="{{ request.GET.city }}">
@@ -228,8 +250,6 @@
                 <label class="form-label">Доступность</label>
                 <input type="text" name="is_available" class="form-control" value="{{ request.GET.is_available }}">
             </div> 
-            
-
             <div class="col-md-2">
                 <label class="form-label">Год выпуска</label>
                 <input type="text" name="year" class="form-control" value="{{ request.GET.year }}">
@@ -245,6 +265,14 @@
             <div class="col-md-2">
                 <label class="form-label">Состояние</label>
                 <input type="text" name="car_condition" class="form-control" value="{{ request.GET.car_condition }}">
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-check mt-4">
+                    <input type="checkbox" class="form-check-input" id="urgency-check" name="urgency" value="true"
+                    {% if request.GET.body %}checked{% endif %}>
+                <label class="form-check-label" for="urgency-check">Срочно</label>
+                </div>
             </div>
             
 
