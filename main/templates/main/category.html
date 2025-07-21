@@ -36,28 +36,28 @@
         }
 
         .container {
-            max-width: 1200px; /* чтобы ограничить ширину, под 4 карточки по 250px + отступы */
+            max-width: 1200px;
             margin: auto;
         }
 
         /* Фильтры */
-        form {
+        form#filterForm {
             margin-bottom: 0.75rem;
         }
-        form .row > div {
+        form#filterForm .row > div {
             padding-top: 0;
             padding-bottom: 0;
         }
-        form .form-label {
+        form#filterForm .form-label {
             font-size: 0.8rem;
         }
-        form input.form-control {
+        form#filterForm input.form-control {
             font-size: 0.85rem;
             padding: 0.25rem 0.5rem;
             height: 30px;
         }
 
-        /* Контейнер для фильтр-кнопок и кнопок справа */
+        /* Контейнер кнопок */
         .controls-row {
             display: flex;
             justify-content: flex-end;
@@ -111,7 +111,7 @@
         }
 
         .card {
-            max-width: 270px; /* чуть меньше, чтобы помещались 4 карточки + отступы */
+            max-width: 270px;
             height: 100%;
             overflow: hidden;
             border-radius: 1rem;
@@ -143,7 +143,7 @@
             color: #666;
         }
 
-        /* Миниатюры под картинкой */
+        /* Миниатюры */
         .carousel-thumbnails {
             display: flex;
             justify-content: center;
@@ -176,7 +176,7 @@
 
 <div class="container">
 
-    <form method="get" class="mb-2">
+    <form id="filterForm" method="get" class="mb-2">
         <div class="row g-2 align-items-end">
             <div class="col-md-2">
                 <label class="form-label">Марка</label>
@@ -192,7 +192,7 @@
             </div>
             <div class="col-md-2">
                 <label class="form-label">Кузов</label>
-                <input type="text" name="body_type" class="form-control" value="{{ request.GET.body_type }}">
+                <input type="text" name="body" class="form-control" value="{{ request.GET.body }}">
             </div>
             <div class="col-md-2">
                 <label class="form-label">Регион</label>
@@ -202,10 +202,34 @@
                 <label class="form-label">Цвет</label>
                 <input type="text" name="color" class="form-control" value="{{ request.GET.color }}">
             </div>
+
+
             <div class="col-md-2">
-                <label class="form-label">Состояние</label>
-                <input type="text" name="car_condition" class="form-control" value="{{ request.GET.car_condition }}">
+                <label class="form-label">Город</label>
+                <input type="text" name="city" class="form-control" value="{{ request.GET.city }}">
             </div>
+            <div class="col-md-2">
+                <label class="form-label">Привод</label>
+                <input type="text" name="drive" class="form-control" value="{{ request.GET.drive }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Руль</label>
+                <input type="text" name="wheel_type" class="form-control" value="{{ request.GET.wheel_type }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Обмен</label>
+                <input type="text" name="exchange" class="form-control" value="{{ request.GET.exchange }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Учет</label>
+                <input type="text" name="registration" class="form-control" value="{{ request.GET.registration }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Доступность</label>
+                <input type="text" name="is_available" class="form-control" value="{{ request.GET.is_available }}">
+            </div> 
+            
+
             <div class="col-md-2">
                 <label class="form-label">Год выпуска</label>
                 <input type="text" name="year" class="form-control" value="{{ request.GET.year }}">
@@ -218,6 +242,12 @@
                 <label class="form-label">Цена до</label>
                 <input type="number" name="price_to" class="form-control" value="{{ request.GET.price_to }}">
             </div>
+            <div class="col-md-2">
+                <label class="form-label">Состояние</label>
+                <input type="text" name="car_condition" class="form-control" value="{{ request.GET.car_condition }}">
+            </div>
+            
+
         </div>
     </form>
 
@@ -232,13 +262,15 @@
         <div class="col">
             <a href="{% url 'car_detail' car.id %}" class="text-decoration-none text-dark">
                 <div class="card h-100">
-                    <img src="{{ car.images.all.0.image.url }}" class="card-img-top" alt="Car Image">
                     {% if car.images.all %}
+                    <img src="{{ car.images.all.0.image.url }}" class="card-img-top" alt="Car Image">
                     <div class="carousel-thumbnails">
                         {% for image in car.images.all|slice:":4" %}
                         <img src="{{ image.image.url }}" alt="thumbnail">
                         {% endfor %}
                     </div>
+                    {% else %}
+                    <img src="{% static 'icons/no-image.png' %}" class="card-img-top" alt="No Image">
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ car.mark }} {{ car.model }}</h5>
