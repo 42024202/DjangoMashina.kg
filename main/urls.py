@@ -9,4 +9,7 @@ urlpatterns = [
     path("add_announcement", views.add_announcement, name="add_announcement"),
     path("delete_announcement/<int:car_id>", views.delete_announcement, name="delete_announcement"),
     path('get-models/', views.get_models, name='get_models'),
+    path('register', views.register_view, name='register'),
+    path('login', views.login_view, name='login'),
+    path('logout', views.logout_view, name='logout'),
     ]

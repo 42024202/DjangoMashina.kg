@@ -1,7 +1,8 @@
 from django import forms
-from .models import Car_announcement
+from .models import CarAnnouncement
 
 class CarAnnouncementForm(forms.ModelForm):
     class Meta:
-        model = Car_announcement
+        model = CarAnnouncement
+        exclude = ['profile']
         fields = '__all__'

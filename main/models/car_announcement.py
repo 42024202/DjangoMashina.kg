@@ -4,10 +4,12 @@ from .characters import EngineType, EngineCapacity, EnginePower, BodyType, Drive
 from .region import Region, City, Registration
 from .car_condition import YearOfProduction, ColorOfCar, CarMeleage, CarCondition
 from .other_characters import Availability, Exchange, CustomClearence
+from .user import Profile
 
 
-class Car_announcement(models.Model):
+class CarAnnouncement(models.Model):
     """Anouncement on web-site."""
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name="Профиль")
     category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, verbose_name="Категория", related_name="cars_by_categories")
 
     mark = models.ForeignKey(MarkOfCar, on_delete=models.PROTECT, null=True, verbose_name="Марка", related_name="cars_by_marks")
@@ -24,7 +26,7 @@ class Car_announcement(models.Model):
 
     engine_power = models.ForeignKey(EnginePower, on_delete=models.PROTECT, verbose_name="Мощность двигателя", related_name="cars_by_engine_powers")
 
-    car_meleage = models.ForeignKey(CarMeleage, on_delete=models.PROTECT, verbose_name="Пробег", related_name="cars_by_meleages")
+    car_meleage = models.PositiveBigIntegerField(verbose_name="Пробег")
 
     car_condition = models.ForeignKey(CarCondition, on_delete=models.PROTECT, null=True, verbose_name="Состояние", related_query_name="cars_by_conditions", blank=True)
 
@@ -63,6 +65,6 @@ class Car_announcement(models.Model):
 
 
 class CarImage(models.Model):
-    announcement = models.ForeignKey(Car_announcement, on_delete=models.PROTECT, verbose_name="Фотографии", related_name="images")
+    announcement = models.ForeignKey(CarAnnouncement, on_delete=models.PROTECT, verbose_name="Фотографии", related_name="images")
     image = models.ImageField(upload_to='car_images/', verbose_name="Изображение")
     

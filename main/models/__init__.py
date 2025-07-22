@@ -3,5 +3,5 @@ from .characters import EngineType, BodyType, Drive, WheelType, Transmission, En
 from .region import Region, City, Registration
 from .car_condition import YearOfProduction, ColorOfCar, CarCondition, CarMeleage
 from .other_characters import Availability, Exchange, CustomClearence
-from .car_announcement import Car_announcement, CarImage
+from .car_announcement import CarAnnouncement, CarImage
 from .user import Profile

@@ -42,3 +42,16 @@ class ModelOfCar(models.Model):
 
     def __str__(self):
         return self.model_name
+
+
+class MachineGenetaion(models.Model):
+    """Machine genetaion."""
+    model = models.ForeignKey(ModelOfCar, on_delete=models.PROTECT, verbose_name="Модель")
+    machine_genetaion = models.CharField(max_length=50, verbose_name="Поколение")
+
+    class Meta:
+        verbose_name = "Поколение"
+        verbose_name_plural = "Поколение"
+
+    def __str__(self):
+        return self.machine_genetaion

@@ -14,7 +14,7 @@
             color: #555;
             font-size: 15px;
             margin-bottom: 0.8rem;
-        }
+        }'user_profile': request.user.profile if request.user.is_authenticated else None
 
         .price-text {
             color: #000;
@@ -130,6 +130,7 @@
         <div class="specs">
             <h4>{{ car.mark }} {{ car.model }}</h4>
             <p class="price-text">Цена: {{ car.price }} $</p>
+            <p class="info-text"><strong>Владелец:</strong> {{ car.profile.user.username }}</p>
             <p class="info-text"><strong>Цвет:</strong> {{ car.color }}</p>
             <p class="info-text"><strong>Тип двигателя:</strong> {{ car.engine }}</p>
             <p class="info-text"><strong>Объем двигателя:</strong> {{ car.engine_capacity }} л.</p>
