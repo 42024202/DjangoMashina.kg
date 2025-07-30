@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load form_filters %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 500px;">
+    <h2 class="text-center mb-4" style="font-weight: 600; color: #2587f4;">Вход в аккаунт</h2>
+
+    <form method="post" action="{% url 'accounts:login' %}" class="p-4 shadow rounded" style="background-color: #ffffff;">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label" style="font-weight: 500;">Имя пользователя</label>
+            <input type="text" name="username" class="form-control" placeholder="Имя пользователя">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" style="font-weight: 500;">Пароль</label>
+            <input type="password" name="password" class="form-control" placeholder="Пароль">
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn action-btn">Войти</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

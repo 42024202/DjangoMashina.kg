@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 500px;">
+    <h2 class="text-center mb-4" style="font-weight: 600; color: #2587f4;">Подтверждение почты</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="p-4 shadow rounded" style="background-color: #ffffff;">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label" style="font-weight: 500;">Введите код из письма</label>
+            <input type="text" name="code" class="form-control" placeholder="Код">
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn action-btn">Подтвердить</button>
+        </div>
+    </form>
+
+    <div class="mt-3 text-center">
+        <p class="text-muted">Код действует 3 минуты</p>
+        <p>Не получили письмо? <a href="{% url 'accounts:resend_otp' %}">Отправить снова</a></p>
+    </div>
+</div>
+{% endblock %}
+

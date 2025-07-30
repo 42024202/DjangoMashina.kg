@@ -1,224 +1,8 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Mashina.kg</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(to bottom right, #e6f0ff, #ffffff);
-            min-height: 100vh;
-        }
 
-       .messages {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    z-index: 1000;
-}
 
-.messages li {
-    background: #2587f4; /* цвет в стиле header */
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 2px 8px rgba(37,135,244,0.7);
-}
-
-.messages li.success {
-    background: #28a745; /* зеленый для успеха */
-}
-.messages li.error {
-    background: #dc3545; /* красный для ошибок */
-} 
-
-        .card {
-            max-width: 250px;
-            height: 100%;
-            overflow: hidden;
-            border-radius: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            background-color: #ffffff;
-            margin: auto;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .carousel-inner img {
-            height: 140px;
-            object-fit: cover;
-            border-top-left-radius: 1rem;
-            border-top-right-radius: 1rem;
-        }
-
-        .carousel-thumbnails {
-            display: flex;
-            justify-content: center;
-            flex-wrap: nowrap;
-            gap: 0.3rem;
-            padding: 0.4rem;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            background-color: #f9f9f9;
-        }
-
-        .carousel-thumbnails img {
-            width: 50px;
-            height: 35px;
-            object-fit: cover;
-            cursor: pointer;
-            border: 2px solid #ccc;
-            border-radius: 0.4rem;
-            transition: border 0.2s;
-        }
-
-        .carousel-thumbnails img:hover {
-            border-color: #1d4ed8;
-        }
-
-        .card-title {
-    font-size: 1rem;
-    font-weight: 500; /* чуть меньше жирности */
-    font-style: italic; /* курсив */
-    border-radius: 0.6rem; /* чуть более закруглённые углы */
-    padding: 0.1rem 0.3rem;
-    background-color: #f0f4ff; /* мягкий светлый фон */
-    display: inline-block; /* чтобы границы работали по размеру текста */
-    transform: skew(-12deg); /* сильный визуальный наклон */
-    user-select: none;
-        }
-
-        .card-text {
-            font-size: 0.85rem;
-            color: #555;
-        }
-
-        /* Категории */
-        .category-btn {
-            background-color: #2587f4; /* ярко-синий */
-            color: #ffffff;
-            font-weight: 600;
-            border-radius: 2rem;
-            padding: 0.25rem 0.9rem;
-            font-size: 0.75rem; /* чуть меньше */
-            border: none;
-            white-space: nowrap;
-            transition: background-color 0.2s ease;
-        }
-
-        .category-btn:hover {
-            background-color: #1a5cc8;
-            color: #d0e4ff;
-        }
-
-        /* Кнопки действий */
-        .action-btn {
-            background-color: #1a5cc8; /* ярче синий */
-            color: #ffffff;
-            font-weight: 600;
-            border-radius: 2rem;
-            padding: 0.3rem 1rem;
-            font-size: 0.75rem; /* чуть меньше */
-            border: none;
-            transition: background-color 0.2s ease;
-        }
-
-        .action-btn:hover {
-            background-color: #154a9c;
-            color: #cddcff;
-        }
-
-        .price-text {
-            color: #000;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .info-text {
-            font-size: 0.75rem;
-            color: #666;
-        }
-
-        /* Шапка */
-        .top-header {
-            background: linear-gradient(180deg, #2587f4 0%, #4ba1ff 100%);
-            border-bottom-left-radius: 1rem;
-            border-bottom-right-radius: 1rem;
-            box-shadow: 0 3px 8px rgba(37, 135, 244, 0.7);
-            padding: 0.75rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 1030;
-            display: flex;
-            justify-content: center; /* Центрируем заголовок */
-            align-items: center;
-        }
-
-        .header-title {
-            color: #ffffff;
-            font-weight: 700;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 1.9rem;
-            margin: 0 auto;
-            user-select: none;
-        }
-
-        /* Контейнер категорий и кнопок под шапкой */
-       
-.categories-container {
-    max-width: 1140px;
-    margin: 1rem auto 1.5rem;
-    padding: 0 1rem;
-    display: flex;
-    /* Меняем на flex-start, чтобы кнопки подвинуть левее */
-    justify-content: flex-start;
-    align-items: center;
-    gap: 2rem;
-}
-
-/* Кнопки категорий */
-.categories-list {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: nowrap;
-    flex-grow: 1; /* чтобы занимали максимально доступное пространство */
-}
-
-/* Контейнер кнопок */
-.side-action-buttons {
-    display: flex;
-    gap: 0.5rem;
-    /* убираем flex-shrink, пусть не сжимается */
-    flex-shrink: 0;
-    /* фиксируем ширину для удобного выравнивания */
-    width: 300px;
-    /* сдвинем влево от контейнера */
-    margin-left: auto; /* чтобы сдвинуть правее */
-}
-
-/* Используем стиль кнопок категорий для всех кнопок в side-action-buttons */
-.side-action-buttons a.category-btn {
-    padding: 0.3rem 1rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-/* Наведение оставляем такое же */
-.side-action-buttons a.category-btn:hover {
-    background-color: #1a5cc8;
-    color: #d0e4ff;
-}
-</style>
-</head>
-<body>
+{% block content %}
     {% if messages %}
   <ul class="messages">
     {% for message in messages %}
@@ -226,11 +10,6 @@
     {% endfor %}
   </ul>
 {% endif %}
-
-<header class="top-header">
-    <h1 class="header-title">mashina.kg</h1>
-</header>
-
 
 <div class="categories-container">
     <div class="categories-list">
@@ -245,17 +24,19 @@
 
 <div class="side-action-buttons">
     {% if user.is_authenticated %}
-        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        <form method="post" action="{% url 'accounts:register' %}" style="display:inline;">
             {% csrf_token %}
             <button type="submit" class="category-btn">Выйти</button>
         </form>
         <a href="{% url 'add_announcement' %}" class="category-btn">+ Добавить объявление</a>
+        <a href="{% url 'add_announcement' %}" class="category-btn">Профиль</a>
+
     {% else %}  
-        <form method="post" action="{% url 'login' %}" style="display:inline;">
+        <form method="post" action="{% url 'accounts:login' %}" style="display:inline;">
             {% csrf_token %}
             <button type="submit" class="category-btn">Войти</button>
         </form>
-        <a href="{% url 'register' %}" class="category-btn">Регистрация</a>
+        <a href="{% url 'accounts:register' %}" class="category-btn">Регистрация</a>
     {% endif %}
 </div>
 </div>
@@ -304,18 +85,4 @@
         {% endfor %}
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() {
-      document.querySelectorAll('.messages li').forEach(function(el) {
-        el.style.opacity = '0';  // плавно скрываем
-        setTimeout(function() { el.remove(); }, 500);  // удаляем после анимации
-      });
-    }, 10000);
-  });
-</script>
-</body>
-</html>
-
+{% endblock %}

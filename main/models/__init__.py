@@ -1,7 +1,3 @@
-from .category import Category, MarkOfCar, ModelOfCar
-from .characters import EngineType, BodyType, Drive, WheelType, Transmission, EngineCapacity, EnginePower
-from .region import Region, City, Registration
-from .car_condition import YearOfProduction, ColorOfCar, CarCondition, CarMeleage
-from .other_characters import Availability, Exchange, CustomClearence
-from .car_announcement import CarAnnouncement, CarImage
-from .user import Profile
+from .car_config import Body, EngineType, EngineCapacity, Transmission, Drive, CarConfig
+from .car_announcenment import CarAnnouncement, CarImage, Promotion, Tariff
+from .characters import Category, WheelType, Exchange, YearOfProduction, Color, Registration, CustomClearence

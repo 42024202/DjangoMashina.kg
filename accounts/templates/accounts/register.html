@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load form_filters %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 500px;">
+    <h2 class="text-center mb-4" style="font-weight: 600; color: #2587f4;">Регистрация</h2>
+
+    <form method="post" novalidate class="p-4 shadow rounded" style="background-color: #ffffff;">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" style="font-weight: 500;">{{ field.label }}</label>
+                {{ field|add_class:"form-control" }}
+            </div>
+        {% endfor %}
+
+        <div class="d-grid">
+            <button type="submit" class="btn action-btn">Зарегистрироваться</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

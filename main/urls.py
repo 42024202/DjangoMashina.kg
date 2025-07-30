@@ -5,11 +5,8 @@ from . import views
 urlpatterns = [
     path("", views.index, name="index"),
     path("car_detail/<int:car_id>", views.car_detail, name="car_detail"),
-    path("category/<str:category_name>", views.category, name="category"),
-    path("add_announcement", views.add_announcement, name="add_announcement"),
-    path("delete_announcement/<int:car_id>", views.delete_announcement, name="delete_announcement"),
-    path('get-models/', views.get_models, name='get_models'),
-    path('register', views.register_view, name='register'),
-    path('login', views.login_view, name='login'),
-    path('logout', views.logout_view, name='logout'),
+    path("category/<str:category_name>", views.category_view, name="category"),
+    path("add_announcement", views.index, name="add_announcement"),
+    path("delete_announcement/<int:car_id>", views.index, name="delete_announcement"),
+    path('get-models/', views.index, name='get_models'),
     ]
