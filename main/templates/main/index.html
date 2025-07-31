@@ -24,13 +24,22 @@
 
 <div class="side-action-buttons">
     {% if user.is_authenticated %}
-        <form method="post" action="{% url 'accounts:register' %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="category-btn">Выйти</button>
-        </form>
-        <a href="{% url 'add_announcement' %}" class="category-btn">+ Добавить объявление</a>
-        <a href="{% url 'add_announcement' %}" class="category-btn">Профиль</a>
-
+        <a href="{% url 'add_announcement' %}" class="category-btn">Добавить объявление</a>
+        <div class="profile-dropdown">
+            <a href="#" class="category-btn">Профиль</a>
+            <div class="dropdown-content">
+                <a href="{% url 'index' %}">Мои объявления</a>
+                <div>Баланс: сом</div>
+                <a href="{% url 'index' %}">Избранное</a>
+                <a href="{% url 'index' %}">Сообщения</a>
+                <a href="{% url 'index' %}">Личный кабинет</a>
+                <a href="{% url 'index' %}">Настройки</a>
+                <form method="post" action="{% url 'accounts:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-logout">Выйти</button>
+                </form>
+            </div>
+        </div>
     {% else %}  
         <form method="post" action="{% url 'accounts:login' %}" style="display:inline;">
             {% csrf_token %}

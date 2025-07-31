@@ -115,11 +115,13 @@
             border: none;
             white-space: nowrap;
             transition: background-color 0.2s ease;
+            text-decoration: none;
         }
 
         .category-btn:hover {
             background-color: #1a5cc8;
             color: #d0e4ff;
+            text-decoration: none;
         }
 
         /* Кнопки действий */
@@ -233,6 +235,55 @@
     border-color: #007bff;
 }
 
+    .profile-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-dropdown .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        padding: 10px 14px;
+        z-index: 100;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .profile-dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .profile-dropdown .dropdown-content a,
+    .profile-dropdown .dropdown-content div {
+        display: block;
+        padding: 6px 10px;
+        color: #333;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .profile-dropdown .dropdown-content a:hover {
+        background-color: #f0f0f0;
+        border-radius: 4px;
+    }
+
+    .dropdown-logout {
+        background: none;
+        border: none;
+        color: red;
+        cursor: pointer;
+        padding: 6px 10px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .dropdown-logout:hover {
+        background-color: #fceaea;
+        border-radius: 4px;
+    }
     </style>
 </head>
 <header class="top-header">
