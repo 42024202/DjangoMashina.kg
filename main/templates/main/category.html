@@ -1,178 +1,79 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load form_filters %}
 
 {% block content %}
 <div class="container mt-4">
-    <!-- Форма фильтра -->
-    <form id="filterForm" method="get" class="border p-3 bg-light rounded mb-4">
-        <div class="row g-2">
 
-            <!-- Первая строка -->
-            <div class="col-md-2">
-                <select id="mark-select" name="mark" class="form-select">
-                    <option value="">Марка: любая</option>
-                    {% for mark in marks %}
-                        <option value="{{ mark.id }}" {% if request.GET.mark == mark.id|stringformat:"s" %}selected{% endif %}>{{ mark.mark_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+    <h4 class="mb-3">Категория: {{ category_name }}</h4>
 
-            <div class="col-md-2">
-                <select id="model-select" name="model" class="form-select" {% if not request.GET.mark %}disabled{% endif %}>
-                    <option value="">Модель: любая</option>
-                    {% for model in models %}
-                        <option value="{{ model.id }}" {% if request.GET.model == model.id|stringformat:"s" %}selected{% endif %}>{{ model.model_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="col-md-2">
-                <input type="number" name="price_from" class="form-control" value="{{ request.GET.price_from }}" placeholder="Цена от">
-            </div>
-
-            <div class="col-md-2">
-                <input type="number" name="price_to" class="form-control" value="{{ request.GET.price_to }}" placeholder="Цена до">
-            </div>
-
-            <div class="col-md-2">
-                <select name="region" class="form-select">
-                    <option value="">Регион</option>
-                    {% for r in regions %}
-                        <option value="{{ r }}" {% if request.GET.region == r %}selected{% endif %}>{{ r }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="col-md-2">
-                <select name="body" class="form-select">
-                    <option value="">Кузов: любой</option>
-                    {% for b in bodies %}
-                        <option value="{{ b }}" {% if request.GET.body == b %}selected{% endif %}>{{ b }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <!-- Вторая строка -->
-            <div class="col-md-2">
-                <select name="drive" class="form-select">
-                    <option value="">Привод: любой</option>
-                    {% for d in drives %}
-                        <option value="{{ d }}" {% if request.GET.drive == d %}selected{% endif %}>{{ d }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="col-md-2">
-                <input type="text" name="engine_type" class="form-control" value="{{ request.GET.engine_type }}" placeholder="Тип двигателя">
-            </div>
-
-            <div class="col-md-2">
-                <input type="number" step="0.1" name="engine_capacity" class="form-control" value="{{ request.GET.engine_capacity }}" placeholder="Объем двигателя">
-            </div>
-
-            <div class="col-md-2">
-                <input type="number" name="power_from" class="form-control" value="{{ request.GET.power_from }}" placeholder="Мощность от">
-            </div>
-
-            <div class="col-md-2">
-                <input type="number" name="power_to" class="form-control" value="{{ request.GET.power_to }}" placeholder="Мощность до">
-            </div>
-
-            <div class="col-md-2">
-                <select name="exchange" class="form-select">
-                    <option value="">Обмен</option>
-                    <option value="true" {% if request.GET.exchange == 'true' %}selected{% endif %}>Да</option>
-                    <option value="false" {% if request.GET.exchange == 'false' %}selected{% endif %}>Нет</option>
-                </select>
-            </div>
-
-            <!-- Третья строка -->
-            <div class="col-md-2">
-                <input type="number" name="meleage_from" class="form-control" value="{{ request.GET.meleage_from }}" placeholder="Пробег от">
-            </div>
-
-            <div class="col-md-2">
-                <input type="number" name="meleage_to" class="form-control" value="{{ request.GET.meleage_to }}" placeholder="Пробег до">
-            </div>
-
-            <div class="col-md-2">
-                <input type="text" name="year" class="form-control" value="{{ request.GET.year }}" placeholder="Год выпуска">
-            </div>
-
-            <div class="col-md-2">
-                <select name="urgency" class="form-select">
-                    <option value="">Срочность</option>
-                    <option value="true" {% if request.GET.urgency == 'true' %}selected{% endif %}>Срочно</option>
-                </select>
-            </div>
-
-            <div class="col-md-4 text-end">
-                <button type="submit" class="btn btn-primary w-100">Показать объявления</button>
+    <form method="get" class="border p-3 bg-light rounded mb-4">
+        <div class="row g-3">
+            {% for field in filter.form.visible_fields %}
+                <div class="col-md-3">
+                    {{ field|add_class:"form-control" }}
+                    {% if not field.field.widget.attrs.placeholder %}
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const input = document.getElementsByName("{{ field.name }}")[0];
+                                if (input && !input.placeholder) {
+                                    input.placeholder = "{{ field.label }}";
+                                }
+                            });
+                        </script>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="col-md-12 text-end mt-3">
+                <button type="submit" class="btn btn-primary w-100">Применить фильтр</button>
             </div>
         </div>
     </form>
 
-  <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
-    {% for car in cars %}
-    <div class="col">
-        <a href="{% url 'car_detail' car.id %}" class="text-decoration-none text-dark">
-            <div class="card h-100">
-                <div id="carousel{{ car.id }}" class="carousel slide">
-                    <div class="carousel-inner">
-                        {% for image in car.images.all %}
-                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                            <img src="{{ image.image.url }}" class="d-block w-100" alt="Car Image">
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
+        {% for car in cars %}
+        <div class="col">
+            <a href="{% url 'car_detail' car.id %}" class="text-decoration-none text-dark">
+                <div class="card h-100">
+                    <div id="carousel{{ car.id }}" class="carousel slide">
+                        <div class="carousel-inner">
+                            {% for image in car.images.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ image.image.url }}" class="d-block w-100" alt="Car Image">
+                            </div>
+                            {% endfor %}
                         </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ car.id }}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ car.id }}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    </div>
+
+                    {% if car.images.all %}
+                    <div class="carousel-thumbnails">
+                        {% for image in car.images.all|slice:":4" %}
+                        <img src="{{ image.image.url }}" data-bs-target="#carousel{{ car.id }}" data-bs-slide-to="{{ forloop.counter0 }}">
                         {% endfor %}
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ car.id }}" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ car.id }}" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
-                </div>
+                    {% endif %}
 
-                {% if car.images.all %}
-                <div class="carousel-thumbnails">
-                    {% for image in car.images.all|slice:":4" %}
-                    <img src="{{ image.image.url }}" data-bs-target="#carousel{{ car.id }}" data-bs-slide-to="{{ forloop.counter0 }}">
-                    {% endfor %}
+                    <div class="card-body py-2">
+                        <h5 class="card-title">{{ car.mark }} {{ car.model }}</h5>
+                        <p class="price-text">Цена: {{ car.price }} $</p>
+                        <p class="info-text">Год выпуска: {{ car.year }}</p>
+                        <p class="info-text">Дата: {{ car.created_at }}</p>
+                        <p class="info-text">Регион: {{ car.region }}</p>
+                    </div>
                 </div>
-                {% endif %}
-
-                <div class="card-body py-2">
-                    <h5 class="card-title">{{ car.mark }} {{ car.model }}</h5>
-                    <p class="price-text">Цена: {{ car.price }} $</p>
-                    <p class="info-text">Год выпуска: {{ car.year }}</p>
-                    <p class="info-text">Дата: {{ car.created_at }}</p>
-                    <p class="info-text">Регион: {{ car.region }}</p>
-                </div>
-            </div>
-        </a>
-    </div>
-    {% empty %}
-    <p class="text-muted">Нет объявлений, соответствующих фильтру.</p>
-    {% endfor %}
+            </a>
+        </div>
+        {% empty %}
+        <p class="text-muted">Нет объявлений, соответствующих фильтру.</p>
+        {% endfor %}
     </div>
 
-<!-- JS: загрузка моделей -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(function() {
-        $('#mark-select').change(function() {
-            const markId = $(this).val();
-            $('#model-select').prop('disabled', true);
-
-            $.get("{% url 'get_models' %}", { mark_id: markId }, function(data) {
-                let options = '<option value="">Модель: любая</option>';
-                data.forEach(model => {
-                    options += `<option value="${model.id}">${model.model_name}</option>`;
-                });
-                $('#model-select').html(options).prop('disabled', false);
-            });
-        });
-    });
-</script>
+</div>
 {% endblock %}
 

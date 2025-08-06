@@ -1,13 +1,7 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from .models import CarAnnouncement
-from django.contrib.auth import authenticate, login, logout as django_logout
-import random
-from django.core.mail import send_mail
-from django.contrib import messages
 from django.utils import timezone
-from accounts.models import CustomUser, EmailOTP
-from accounts.forms import LoginForm, OTPForm, RegisterForm
-
+from .filters import CarAnnouncenmentFilter
 
 
 def index(request):
@@ -28,13 +22,15 @@ def car_detail(request, car_id):
             )
 
 def category_view(request, category_name):
-    cars = CarAnnouncement.objects.filter(category__name=category_name)
+    car_list = CarAnnouncement.objects.filter(category__name=category_name)
+    car_filter = CarAnnouncenmentFilter(request.GET, queryset=car_list)
     return render(
-            request, 
-            'main/category.html', 
-            {
-                'cars': cars, 
-                'category_name': category_name
-                }
-            )
+        request,
+        'main/category.html',
+        {
+            'filter': car_filter,
+            'cars': car_filter.qs,
+            'category_name': category_name
+        }
+    )
 

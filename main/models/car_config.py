@@ -136,3 +136,4 @@ class CarConfig(models.Model):
     class Meta:
         verbose_name = "Конфигурация"
         verbose_name_plural = "Конфигурации"
+

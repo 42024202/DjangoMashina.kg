@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "car_parts",
     "common", 
     "accounts",
+    "django_filters",
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,134 @@
+{% load static %}
+
+<style>
+.card {
+    max-width: 250px;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    background-color: #ffffff;
+    margin: auto;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.carousel-inner img {
+    height: 140px;
+    object-fit: cover;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.carousel-thumbnails {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 0.3rem;
+    padding: 0.4rem;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.carousel-thumbnails img {
+    width: 50px;
+    height: 35px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #ccc;
+    border-radius: 0.4rem;
+    transition: border 0.2s;
+}
+
+.carousel-thumbnails img:hover {
+    border-color: #1d4ed8;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    font-style: italic;
+    border-radius: 0.6rem;
+    padding: 0.1rem 0.3rem;
+    background-color: #f0f4ff;
+    display: inline-block;
+    transform: skew(-12deg);
+    user-select: none;
+}
+
+.card-text {
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.price-text {
+    color: #000;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.action-btn {
+    background-color: #1a5cc8;
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 2rem;
+    padding: 0.3rem 1rem;
+    font-size: 0.75rem;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.action-btn:hover {
+    background-color: #154a9c;
+    color: #cddcff;
+}
+</style>
+
+<div class="card">
+  {% if car.images.exists %}
+  <div id="carousel-{{ car.id }}" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for image in car.images.all %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ image.url }}" class="d-block w-100" alt="Фото {{ forloop.counter }}">
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ car.id }}" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Предыдущий</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ car.id }}" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Следующий</span>
+    </button>
+
+    <div class="carousel-thumbnails mt-2">
+      {% for image in car.images.all %}
+      <img src="{{ image.url }}" alt="Миниатюра {{ forloop.counter }}" data-bs-target="#carousel-{{ car.id }}" data-bs-slide-to="{{ forloop.counter0 }}">
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+    <img src="{% static 'images/no-image.png' %}" class="card-img-top" alt="Нет фото">
+  {% endif %}
+
+  <div class="p-3">
+    <h5 class="card-title">{{ car.title }}</h5>
+    <p class="price-text">{{ car.price|floatformat:0 }} сом</p>
+    <p class="card-text">
+      {{ car.description|truncatewords:20 }}
+    </p>
+
+    <div class="d-flex flex-wrap gap-2 mt-2">
+      <button type="button" class="category-btn">{{ car.category.name }}</button>
+      <button type="button" class="action-btn">{{ car.year }} г.</button>
+      <button type="button" class="action-btn">{{ car.mileage }} км</button>
+    </div>
+  </div>
+</div>
+

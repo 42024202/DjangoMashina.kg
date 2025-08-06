@@ -8,7 +8,6 @@ from datetime import timedelta
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
 
-
 class CustomUserManager(BaseUserManager):
     def create_user(
             self, 

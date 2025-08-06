@@ -10,3 +10,4 @@ urlpatterns = [
     path("delete_announcement/<int:car_id>", views.index, name="delete_announcement"),
     path('get-models/', views.index, name='get_models'),
     ]
+

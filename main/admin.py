@@ -6,10 +6,11 @@ from .models import (
     Promotion, Tariff
 )
 
+
 @admin.register(CarAnnouncement)
 class CarAnnouncementAdmin(admin.ModelAdmin):
-    list_display = ('id', 'profile', 'category', 'price', 'created_at', 'updated_at', 'urgency_of_announcencenment')
-    list_filter = ('category', 'created_at', 'urgency_of_announcencenment')
+    list_display = ('id', 'profile', 'category', 'price', 'created_at', 'updated_at', 'urgency')
+    list_filter = ('category', 'created_at', 'urgency')
     search_fields = ('profile__user__username', 'description')
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)

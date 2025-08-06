@@ -11,45 +11,6 @@
   </ul>
 {% endif %}
 
-<div class="categories-container">
-    <div class="categories-list">
-        <a href="{% url 'category' 'Легковые' %}" class="btn category-btn">Легковые</a>
-        <a href="{% url 'category' 'Коммерческие' %}" class="btn category-btn">Коммерческие</a>
-        <a href="{% url 'category' 'Спецтехника' %}" class="btn category-btn">Спецтехника</a>
-        <a href="{% url 'category' 'Мото' %}" class="btn category-btn">Мото</a>
-        <a href="{% url 'category' 'Электро' %}" class="btn category-btn">Электро</a>
-        <a href="{% url 'category' 'Запчасти' %}" class="btn category-btn">Запчасти</a>
-        <a href="{% url 'category' 'Услуги' %}" class="btn category-btn">Услуги</a>
-    </div>
-
-<div class="side-action-buttons">
-    {% if user.is_authenticated %}
-        <a href="{% url 'add_announcement' %}" class="category-btn">Добавить объявление</a>
-        <div class="profile-dropdown">
-            <a href="#" class="category-btn">Профиль</a>
-            <div class="dropdown-content">
-                <a href="{% url 'index' %}">Мои объявления</a>
-                <div>Баланс: сом</div>
-                <a href="{% url 'index' %}">Избранное</a>
-                <a href="{% url 'index' %}">Сообщения</a>
-                <a href="{% url 'index' %}">Личный кабинет</a>
-                <a href="{% url 'index' %}">Настройки</a>
-                <form method="post" action="{% url 'accounts:logout' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="dropdown-logout">Выйти</button>
-                </form>
-            </div>
-        </div>
-    {% else %}  
-        <form method="post" action="{% url 'accounts:login' %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="category-btn">Войти</button>
-        </form>
-        <a href="{% url 'accounts:register' %}" class="category-btn">Регистрация</a>
-    {% endif %}
-</div>
-</div>
-
 <div class="container py-3" style="max-width: 1140px;">
     <!-- Список машин -->
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">

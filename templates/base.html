@@ -13,6 +13,12 @@
             min-height: 100vh;
         }
 
+        /* Отступ сверху, чтобы был виден белый фон */
+        .top-header-wrapper {
+            padding-top: 10px;
+            background-color: #fff;
+        }
+
         .messages {
             position: fixed;
             top: 1rem;
@@ -116,6 +122,7 @@
             white-space: nowrap;
             transition: background-color 0.2s ease;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .category-btn:hover {
@@ -155,16 +162,16 @@
         /* Шапка */
         .top-header {
             background: linear-gradient(180deg, #2587f4 0%, #4ba1ff 100%);
-            border-bottom-left-radius: 1rem;
-            border-bottom-right-radius: 1rem;
+            border-radius: 0; margin-top: 30px;
             box-shadow: 0 3px 8px rgba(37, 135, 244, 0.7);
             padding: 0.75rem 1.5rem;
             position: sticky;
             top: 0;
             z-index: 1030;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
         }
 
         .header-title {
@@ -172,19 +179,18 @@
             font-weight: 700;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 1.9rem;
-            margin: 0 auto;
+            margin: 0;
             user-select: none;
+            flex-shrink: 0;
         }
 
-        /* Контейнер категорий и кнопок под шапкой */
-        .categories-container {
-            max-width: 1140px;
-            margin: 1rem auto 1.5rem;
-            padding: 0 1rem;
+        /* Контейнер кнопок справа */
+        .header-buttons {
             display: flex;
-            justify-content: flex-start;
+            gap: 1rem;
+            flex-wrap: nowrap;
             align-items: center;
-            gap: 2rem;
+            overflow-x: auto;
         }
 
         /* Кнопки категорий */
@@ -192,154 +198,223 @@
             display: flex;
             gap: 0.5rem;
             flex-wrap: nowrap;
-            flex-grow: 1;
         }
 
-        /* Контейнер кнопок */
-        .side-action-buttons {
+        /* Профиль и дропдаун */
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-dropdown .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            z-index: 1000;
+            border-radius: 6px;
+        }
+
+        /* Показ при наведении на весь блок, кнопку и само меню */
+        .profile-dropdown:hover .dropdown-content,
+        .profile-dropdown .dropdown-content:hover,
+        .profile-dropdown .btn.category-btn:hover + .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a,
+        .dropdown-content div,
+        .dropdown-content form {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        /* Для кнопки выхода в профиле */
+        .dropdown-logout {
+            background: none;
+            border: none;
+            color: #333;
+            padding: 0;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        /* Стили для всплывающих toast сообщений */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1055;
             display: flex;
-            gap: 0.5rem;
-            flex-shrink: 0;
-            width: 300px;
-            margin-left: auto;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 300px;
         }
-
-        /* Кнопки действий */
-        .side-action-buttons a.category-btn {
-            padding: 0.3rem 1rem;
-            font-size: 0.8rem;
-            font-weight: 600;
+        .toast {
+            padding: 10px 15px;
+            border-radius: 6px;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            opacity: 1;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            transform: translateX(0);
         }
-
-        .side-action-buttons a.category-btn:hover {
-            background-color: #1a5cc8;
-            color: #d0e4ff;
+        .toast.hide {
+            opacity: 0;
+            transform: translateX(100%);
+            pointer-events: none;
         }
-        .main-photo {
-    max-height: 400px;
-    object-fit: cover;
-    width: 100%;
-    border-radius: 8px;
-}
-
-.thumbnail-img {
-    height: 100px;
-    width: auto;
-    cursor: pointer;
-    border: 2px solid transparent;
-    border-radius: 6px;
-    transition: border-color 0.3s ease;
-}
-
-.thumbnail-img:hover {
-    border-color: #007bff;
-}
-
-    .profile-dropdown {
-        position: relative;
-        display: inline-block;
-    }
-
-    .profile-dropdown .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: white;
-        min-width: 200px;
-        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-        padding: 10px 14px;
-        z-index: 100;
-        border-radius: 8px;
-        font-size: 14px;
-    }
-
-    .profile-dropdown:hover .dropdown-content {
-        display: block;
-    }
-
-    .profile-dropdown .dropdown-content a,
-    .profile-dropdown .dropdown-content div {
-        display: block;
-        padding: 6px 10px;
-        color: #333;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-
-    .profile-dropdown .dropdown-content a:hover {
-        background-color: #f0f0f0;
-        border-radius: 4px;
-    }
-
-    .dropdown-logout {
-        background: none;
-        border: none;
-        color: red;
-        cursor: pointer;
-        padding: 6px 10px;
-        text-align: left;
+        .alert-success {
+            background-color: #28a745;
+        }
+        .alert-error {
+            background-color: #dc3545;
+        }
+        .alert-info {
+            background-color: #0dcaf0;
+        }
+        .alert-warning {
+            background-color: #ffc107;
+            color: black;
+        }
+        .top-panel {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 1rem;
+        padding: 10px 3%;
+        background-color: #ffffff;
+        margin: 20px auto 10px auto;
         width: 100%;
-    }
-
-    .dropdown-logout:hover {
-        background-color: #fceaea;
-        border-radius: 4px;
-    }
+        }
     </style>
 </head>
-<header class="top-header">
-    <h1 class="header-title">
-        <a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">mashina.kg</a>
-    </h1>
-</header>
-
 <body>
-<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 1055;"></div>
 
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-    </ul>
+<!-- Верхняя панель -->
+<div class="top-panel">
+    <a href="#" class="category-btn" style="background-color: #ff4d4d;">Срочно</a>
+    {% if user.is_authenticated %}
+        <a href="#" class="category-btn">Сообщения</a>
+        <a href="#" class="category-btn">Избранное</a>
     {% endif %}
+    <a href="#" class="category-btn" title="Сменить язык 🌐">🌐</a>
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="category-btn">Выйти</button>
+        </form>
+    {% else %}
+        <form method="post" action="{% url 'accounts:login' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="category-btn">Войти</button>
+        </form>
+        <a href="{% url 'accounts:register' %}" class="category-btn">Регистрация</a>
+    {% endif %}
+</div>
 
-    {% block content %}
-    {% endblock %}
+<div class="top-header-wrapper">
+    <header class="top-header">
+        <h1 class="header-title">
+            <a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">mashina.kg</a>
+        </h1>
+        <div class="header-buttons">
+            <div class="categories-list">
+                <a href="{% url 'category' 'Легковые' %}" class="btn category-btn">Легковые</a>
+                <a href="{% url 'category' 'Коммерческие' %}" class="btn category-btn">Коммерческие</a>
+                <a href="{% url 'category' 'Спецтехника' %}" class="btn category-btn">Спецтехника</a>
+                <a href="{% url 'category' 'Мото' %}" class="btn category-btn">Мото</a>
+                <a href="{% url 'category' 'Электро' %}" class="btn category-btn">Электро</a>
+                <a href="{% url 'category' 'Запчасти' %}" class="btn category-btn">Запчасти</a>
+                <a href="{% url 'category' 'Услуги' %}" class="btn category-btn">Услуги</a>
+            </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-          document.querySelectorAll('.messages li').forEach(function(el) {
-            el.style.opacity = '0';
-            setTimeout(function() { el.remove(); }, 500);
-          });
-        }, 10000);
+            <div class="side-action-buttons">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'add_announcement' %}" class="category-btn">Добавить объявление</a>
+
+                    <div class="profile-dropdown">
+                        <div class="btn category-btn">Профиль</div>
+                        <div class="dropdown-content">
+                            <a href="{% url 'index' %}">Мои объявления</a>
+                            <div>Баланс: сом</div>
+                            <a href="{% url 'index' %}">Избранное</a>
+                            <a href="{% url 'index' %}">Сообщения</a>
+                            <a href="{% url 'index' %}">Личный кабинет</a>
+                            <a href="{% url 'index' %}">Настройки</a>
+                            <form method="post" action="{% url 'accounts:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-logout">Выйти</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+</div>
+
+<div id="toast-container"></div>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% block content %}
+{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Старые сообщения с классами в списке будут скрываться через 10 секунд
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      document.querySelectorAll('.messages li').forEach(function(el) {
+        el.style.opacity = '0';
+        setTimeout(function() { el.remove(); }, 500);
       });
-    </script>
-    <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const container = document.getElementById('toast-container');
-
-    {% if messages %}
-      {% for message in messages %}
-        const toast = document.createElement('div');
-        toast.className = 'toast alert alert-{{ message.tags }} fade show';
-        toast.role = 'alert';
-        toast.innerHTML = `{{ message|escapejs }}`;
-        toast.style.marginBottom = '10px';
-        container.appendChild(toast);
-
-        setTimeout(() => {
-          toast.classList.remove('show');
-          toast.classList.add('hide');
-          setTimeout(() => toast.remove(), 500);
-        }, 5000);
-      {% endfor %}
-    {% endif %}
+    }, 10000);
   });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const container = document.getElementById('toast-container');
+
+  {% if messages %}
+    {% for message in messages %}
+      const toast = document.createElement('div');
+      toast.className = 'toast alert alert-{{ message.tags }} fade show';
+      toast.role = 'alert';
+      // Вставляем текст сообщения, экранируем JS
+      toast.innerHTML = `{{ message|escapejs }}`;
+      toast.style.marginBottom = '10px';
+      container.appendChild(toast);
+
+      // Через 5 секунд плавно скрываем и удаляем
+      setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hide');
+        setTimeout(() => toast.remove(), 500);
+      }, 5000);
+    {% endfor %}
+  {% endif %}
+});
 </script>
 
 </body>
 </html>
+
+
 

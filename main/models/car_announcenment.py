@@ -10,9 +10,7 @@ from datetime import timedelta
 import uuid
 
 
-
 class CarAnnouncement(models.Model):
-
     profile = models.ForeignKey(
             "accounts.CustomUser", 
             on_delete=models.PROTECT, 
@@ -51,7 +49,7 @@ class CarAnnouncement(models.Model):
             verbose_name="Мощность двигателя"
             )
 
-    car_meleage = models.PositiveBigIntegerField(
+    car_mileage = models.PositiveBigIntegerField(
             verbose_name="Пробег"
             )
 
@@ -93,7 +91,7 @@ class CarAnnouncement(models.Model):
             verbose_name="Дата обновления"
             )
 
-    urgency_of_announcencenment = models.CharField(
+    urgency = models.CharField(
             max_length=30,
             verbose_name="Срочность объявления"
             )
@@ -220,7 +218,6 @@ class Promotion(models.Model):
             verbose_name='Конец действия'
             )
 
-
     def save(self, *args, **kwargs):
         if not self.end_date:
             self.end_date = self.start_date + timedelta(days=self.tariff.duration_days)
@@ -235,3 +232,4 @@ class Promotion(models.Model):
     class Meta:
         verbose_name = "Продвижение"
         verbose_name_plural = "Продвижения"
+

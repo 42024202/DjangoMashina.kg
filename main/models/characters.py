@@ -109,3 +109,4 @@ class CustomClearence(models.Model):
     class Meta:
         verbose_name = "Растаможка"
         verbose_name_plural = "Растаможка"
+
