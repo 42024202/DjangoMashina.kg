@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import (
     CustomUser, Balance, Transaction,
-    Favorite, Message, EmailOTP
+    Message, EmailOTP
 )
 
 # -----------------------
@@ -66,11 +66,6 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ('sender', 'recipient', 'timestamp', 'is_read')
     search_fields = ('sender__email', 'recipient__email')
     list_filter = ('is_read', 'timestamp')
-
-@admin.register(Favorite)
-class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ('user', 'content_object', 'added_at')
-    list_filter = ('added_at',)
 
 @admin.register(EmailOTP)
 class EmailOTPAdmin(admin.ModelAdmin):

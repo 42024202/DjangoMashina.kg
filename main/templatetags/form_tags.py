@@ -1,10 +1,9 @@
-from django import forms
 from django import template
 
 register = template.Library()
 
-@register.filter(name='add_class')
-def add_class(field, css):
-    if hasattr(field, 'as_widget'):
-        return field.as_widget(attrs={"class": css})
-    return field 
+@register.filter
+def add_placeholder(field, placeholder_text=None):
+    placeholder = placeholder_text or field.label
+    return field.as_widget(attrs={"placeholder": placeholder, "class": "form-control"})
+

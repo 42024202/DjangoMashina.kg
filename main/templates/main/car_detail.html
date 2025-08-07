@@ -6,8 +6,21 @@
     <!-- Левая колонка: Характеристики -->
     <div class="p-4" style="width: 40%; background-color: #f9f9f9;">
         <h2 class="mb-3">{{ car.mark }} {{ car.model }}</h2>
+
+        <!-- Кнопка "Добавить/Удалить из избранного" -->
+        <button
+            id="favorite-button"
+            data-id="{{ car.id }}"
+            class="btn btn-primary w-100 mb-3">
+            {% if is_favorite %}
+                Удалить из избранного
+            {% else %}
+                Добавить в избранное
+            {% endif %}
+        </button>
+
         <p><strong>Цена:</strong> {{ car.price }} $</p>
-        <p><strong>Владелец:</strong> {{ car.profile.user.username }}</p>
+        <p><strong>Владелец:</strong> {{ car.profile.user.email }}</p>
         <p><strong>Цвет:</strong> {{ car.color }}</p>
         <p><strong>Тип двигателя:</strong> {{ car.engine }}</p>
         <p><strong>Объем:</strong> {{ car.engine_capacity }} л.</p>
@@ -26,10 +39,12 @@
         <p><strong>Доступность:</strong> {{ car.is_available }}</p>
         <p><strong>Обмен:</strong> {{ car.exchange }}</p>
 
+        {% if request.user == car.profile.user %}
         <form method="POST" action="{% url 'delete_announcement' car.id %}" onsubmit="return confirm('Вы уверены, что хотите удалить объявление?');" class="mt-4">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger w-100">Удалить объявление</button>
         </form>
+        {% endif %}
     </div>
 
     <!-- Правая колонка: Фото и описание -->
@@ -69,9 +84,61 @@
 </div>
 
 <script>
-    function setMainImage(thumbnail) {
-        document.getElementById('main-image').src = thumbnail.src;
+function setMainImage(thumbnail) {
+    document.getElementById('main-image').src = thumbnail.src;
+}
+
+// CSRF токен
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
+    return cookieValue;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const favoriteButton = document.getElementById('favorite-button');
+    favoriteButton.addEventListener('click', function() {
+        const carId = this.dataset.id;
+        console.log('Нажатие кнопки: начинаем запрос');
+        fetch(`/favorites/toggle/${carId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            console.log('Ответ сервера:', response);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('JSON:', data);
+            if (data.status === 'added') {
+                favoriteButton.textContent = 'Удалить из избранного';
+            } else if (data.status === 'removed') {
+                favoriteButton.textContent = 'Добавить в избранное';
+            } else {
+                console.error('Неожиданный статус:', data.status);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка запроса:', error);
+        });
+    });
+});
 </script>
+
 {% endblock %}
 

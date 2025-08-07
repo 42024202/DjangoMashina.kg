@@ -91,9 +91,9 @@ class CarAnnouncement(models.Model):
             verbose_name="Дата обновления"
             )
 
-    urgency = models.CharField(
-            max_length=30,
-            verbose_name="Срочность объявления"
+    urgency = models.BooleanField(
+            default=False, 
+            verbose_name="Срочно"
             )
 
     year = models.ForeignKey(

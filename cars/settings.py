@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "main",
-    "car_parts",
     "common", 
     "accounts",
     "django_filters",
+    "favorites",
 ]
 
 MIDDLEWARE = [
@@ -136,6 +136,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 LOGOUT_REDIRECT_URL = 'index'
+LOGIN_URL = '/accounts/login/'
 
 DEFAULT_FROM_EMAIL = 'esen.belov@mail.ru'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

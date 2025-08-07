@@ -7,6 +7,10 @@ from django.utils import timezone
 from accounts.models import CustomUser, EmailOTP
 from accounts.forms import RegisterForm, LoginForm
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import login_required
+from main.models import CarAnnouncement
+from django.contrib.contenttypes.models import ContentType
+from django.http import JsonResponse
 
 
 def register_view(request):
@@ -126,6 +130,7 @@ def login_view(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 
+@login_required
 def logout_view(request):
     django_logout(request)
     return redirect('index')

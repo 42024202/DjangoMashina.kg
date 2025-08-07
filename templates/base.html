@@ -6,6 +6,7 @@
     <title>{% block title %}Mashina.kg{% endblock %}</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
         body {
@@ -215,7 +216,7 @@
             min-width: 180px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             padding: 10px;
-            z-index: 1000;
+            z-index: 9999;
             border-radius: 6px;
         }
 
@@ -300,17 +301,36 @@
 
 <!-- Верхняя панель -->
 <div class="top-panel">
-    <a href="#" class="category-btn" style="background-color: #ff4d4d;">Срочно</a>
+    {% if request.GET.urgent %}
+        <a href="?" class="category-btn" style="background-color: #ff4d4d;">Сбросить "Срочно"</a>
+    {% else %}
+        <a href="?urgent=1" class="category-btn" style="background-color: #ff4d4d;">Срочно</a>
+    {% endif %}
+
     {% if user.is_authenticated %}
         <a href="#" class="category-btn">Сообщения</a>
-        <a href="#" class="category-btn">Избранное</a>
+        <a href="{% url 'favorites:favorites' %}" class="category-btn">Избранное</a>
     {% endif %}
+
     <a href="#" class="category-btn" title="Сменить язык 🌐">🌐</a>
+
     {% if user.is_authenticated %}
-        <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
+      <div class="profile-dropdown">
+    <div class="btn category-btn">Профиль</div>
+    <div class="dropdown-content">
+        <a href="{% url 'index' %}">Мои объявления</a>
+        <div>Баланс: сом</div>
+        <a href="{% url 'favorites:favorites' %}">Избранное</a>
+        <a href="{% url 'index' %}">Сообщения</a>
+        <a href="{% url 'index' %}">Личный кабинет</a>
+        <a href="{% url 'index' %}">Настройки</a>
+        <form method="post" action="{% url 'accounts:logout' %}">
             {% csrf_token %}
-            <button type="submit" class="category-btn">Выйти</button>
+            <button type="submit" class="dropdown-logout">Выйти</button>
         </form>
+    </div>
+</div>
+
     {% else %}
         <form method="post" action="{% url 'accounts:login' %}" style="display:inline;">
             {% csrf_token %}
@@ -319,7 +339,6 @@
         <a href="{% url 'accounts:register' %}" class="category-btn">Регистрация</a>
     {% endif %}
 </div>
-
 <div class="top-header-wrapper">
     <header class="top-header">
         <h1 class="header-title">
@@ -339,25 +358,8 @@
             <div class="side-action-buttons">
                 {% if user.is_authenticated %}
                     <a href="{% url 'add_announcement' %}" class="category-btn">Добавить объявление</a>
-
-                    <div class="profile-dropdown">
-                        <div class="btn category-btn">Профиль</div>
-                        <div class="dropdown-content">
-                            <a href="{% url 'index' %}">Мои объявления</a>
-                            <div>Баланс: сом</div>
-                            <a href="{% url 'index' %}">Избранное</a>
-                            <a href="{% url 'index' %}">Сообщения</a>
-                            <a href="{% url 'index' %}">Личный кабинет</a>
-                            <a href="{% url 'index' %}">Настройки</a>
-                            <form method="post" action="{% url 'accounts:logout' %}">
-                                {% csrf_token %}
-                                <button type="submit" class="dropdown-logout">Выйти</button>
-                            </form>
-                        </div>
-                    </div>
-                {% endif %}
+                    {% endif %}
             </div>
-        </div>
     </header>
 </div>
 
