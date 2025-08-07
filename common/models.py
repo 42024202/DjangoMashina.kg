@@ -49,7 +49,7 @@ class Condition(models.Model):
         verbose_name_plural = 'Состояние'
 
 
-class Avalability(models.Model):
+class Availability(models.Model):
     name = models.CharField(
             max_length=30, 
             verbose_name='Доступность'

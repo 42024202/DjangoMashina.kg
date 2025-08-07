@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Region, City, Condition, Avalability, Mark, Model, Generation
+from .models import Region, City, Condition, Availability, Mark, Model, Generation
 
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
@@ -14,8 +14,8 @@ class CityAdmin(admin.ModelAdmin):
 class ConditionAdmin(admin.ModelAdmin):
     list_display = ("name",)
 
-@admin.register(Avalability)
-class AvalabilityAdmin(admin.ModelAdmin):
+@admin.register(Availability)
+class AvailabilityAdmin(admin.ModelAdmin):
     list_display = ("name",)
 
 @admin.register(Mark)
@@ -31,3 +31,4 @@ class ModelAdmin(admin.ModelAdmin):
 class GenerationAdmin(admin.ModelAdmin):
     list_display = ("name", "model")
     list_filter = ("model",)
+

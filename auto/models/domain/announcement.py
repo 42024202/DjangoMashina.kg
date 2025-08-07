@@ -119,7 +119,7 @@ class CarAnnouncement(models.Model):
             )
 
     availability = models.ForeignKey(
-            "common.Avalability",
+            "common.Availability",
             on_delete=models.PROTECT,
             verbose_name="Доступность"
             )
