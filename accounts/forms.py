@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser, Transaction, Message
+from .models import CustomUser
 from django.contrib.auth.forms import PasswordResetForm as DjangoPasswordResetForm
 from django.contrib.auth import get_user_model
 
@@ -30,17 +30,6 @@ class DepositForm(forms.Form):
 class WithdrawForm(forms.Form):
     amount = forms.DecimalField(max_digits=10, decimal_places=2, min_value=1, label="Сумма вывода")
 
-
-class TransactionForm(forms.ModelForm):
-    class Meta:
-        model = Transaction
-        fields = ('name', 'amount', 'description')
-
-
-class MessageForm(forms.ModelForm):
-    class Meta:
-        model = Message
-        fields = ('recipient', 'content')
 
 
 class OTPForm(forms.Form):

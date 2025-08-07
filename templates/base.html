@@ -318,12 +318,12 @@
       <div class="profile-dropdown">
     <div class="btn category-btn">Профиль</div>
     <div class="dropdown-content">
-        <a href="{% url 'index' %}">Мои объявления</a>
+        <a href="{% url 'auto:index' %}">Мои объявления</a>
         <div>Баланс: сом</div>
         <a href="{% url 'favorites:favorites' %}">Избранное</a>
-        <a href="{% url 'index' %}">Сообщения</a>
-        <a href="{% url 'index' %}">Личный кабинет</a>
-        <a href="{% url 'index' %}">Настройки</a>
+        <a href="{% url 'auto:index' %}">Сообщения</a>
+        <a href="{% url 'auto:index' %}">Личный кабинет</a>
+        <a href="{% url 'auto:index' %}">Настройки</a>
         <form method="post" action="{% url 'accounts:logout' %}">
             {% csrf_token %}
             <button type="submit" class="dropdown-logout">Выйти</button>
@@ -342,22 +342,22 @@
 <div class="top-header-wrapper">
     <header class="top-header">
         <h1 class="header-title">
-            <a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">mashina.kg</a>
+            <a href="{% url 'auto:index' %}" style="text-decoration: none; color: inherit;">mashina.kg</a>
         </h1>
         <div class="header-buttons">
             <div class="categories-list">
-                <a href="{% url 'category' 'Легковые' %}" class="btn category-btn">Легковые</a>
-                <a href="{% url 'category' 'Коммерческие' %}" class="btn category-btn">Коммерческие</a>
-                <a href="{% url 'category' 'Спецтехника' %}" class="btn category-btn">Спецтехника</a>
-                <a href="{% url 'category' 'Мото' %}" class="btn category-btn">Мото</a>
-                <a href="{% url 'category' 'Электро' %}" class="btn category-btn">Электро</a>
-                <a href="{% url 'category' 'Запчасти' %}" class="btn category-btn">Запчасти</a>
-                <a href="{% url 'category' 'Услуги' %}" class="btn category-btn">Услуги</a>
+                <a href="{% url 'auto:category' 'Легковые' %}" class="btn category-btn">Легковые</a>
+                <a href="{% url 'auto:category' 'Коммерческие' %}" class="btn category-btn">Коммерческие</a>
+                <a href="{% url 'auto:category' 'Спецтехника' %}" class="btn category-btn">Спецтехника</a>
+                <a href="{% url 'auto:category' 'Мото' %}" class="btn category-btn">Мото</a>
+                <a href="{% url 'auto:category' 'Электро' %}" class="btn category-btn">Электро</a>
+                <a href="{% url 'auto:category' 'Запчасти' %}" class="btn category-btn">Запчасти</a>
+                <a href="{% url 'auto:category' 'Услуги' %}" class="btn category-btn">Услуги</a>
             </div>
 
             <div class="side-action-buttons">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'add_announcement' %}" class="category-btn">Добавить объявление</a>
+                    <a href="{% url 'auto:add_announcement' %}" class="category-btn">Добавить объявление</a>
                     {% endif %}
             </div>
     </header>

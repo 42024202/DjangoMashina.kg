@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Favorite
 from django.http import JsonResponse
-from main.models import CarAnnouncement
+from auto.models import CarAnnouncement
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 
