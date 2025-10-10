@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect,  get_object_or_404
-from django.contrib.auth import login, logout as django_logout
+from django.contrib.auth import login, logout as django_logout, authenticate
 import random
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -80,7 +80,7 @@ def verify_otp_view(request, username):
 
         login(request, user)
         messages.success(request, 'Аккаунт подтверждён и вы вошли в систему')
-        return redirect('index')
+        return redirect('index:index')
 
     return render(request, 'accounts/verify_otp.html')
 
@@ -122,7 +122,7 @@ def login_view(request):
 
             if user:
                 login(request, user)
-                return redirect('index')
+                return redirect('auto:index')
         messages.error(request, 'Неверный email или пароль')
     else:
         form = LoginForm()
@@ -133,5 +133,5 @@ def login_view(request):
 @login_required
 def logout_view(request):
     django_logout(request)
-    return redirect('index')
+    return redirect('auto:index')
 

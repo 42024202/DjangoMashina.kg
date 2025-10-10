@@ -23,7 +23,6 @@ class PromotionInline(admin.TabularInline):
     readonly_fields = ('start_date', 'end_date')
     verbose_name_plural = 'Продвижения'
 
-# Inline для CarImage под CarAnnouncement
 class CarImageInline(admin.TabularInline):
     model = CarImage
     extra = 1

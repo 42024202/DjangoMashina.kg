@@ -9,7 +9,6 @@ from favorites.models import Favorite
 def index(request):
     """Главная страница."""
     cars = CarAnnouncement.objects.all()
-    car_ct = ContentType.objects.get_for_model(CarAnnouncement)
     if request.GET.get('urgent') == '1':
         cars = CarAnnouncement.objects.filter(urgency=True)
     return render(
@@ -48,5 +47,4 @@ def category_view(request, category_name):
             'category_name': category_name,
         }
     )
-
 
