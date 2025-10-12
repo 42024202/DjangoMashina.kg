@@ -10,5 +10,6 @@ urlpatterns = [
     path("add_announcement", views.index, name="add_announcement"),
     path("delete_announcement/<int:car_id>", views.index, name="delete_announcement"),
     path('get-models/', views.index, name='get_models'),
+    path('get_my_announcements/', views.get_my_announcements, name='get_my_announcements'),
     ]
 

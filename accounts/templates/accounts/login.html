@@ -6,22 +6,28 @@
 <div class="container mt-5" style="max-width: 500px;">
     <h2 class="text-center mb-4" style="font-weight: 600; color: #2587f4;">Вход в аккаунт</h2>
 
-    <form method="post" action="{% url 'accounts:login' %}" class="p-4 shadow rounded" style="background-color: #ffffff;">
+    <form method="post" novalidate class="p-4 shadow rounded" style="background-color: #ffffff;">
         {% csrf_token %}
 
-        <div class="mb-3">
-            <label class="form-label" style="font-weight: 500;">Почтовый ящик</label>
-            <input type="text" name="email" class="form-control" placeholder="Почтовый ящик">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label" style="font-weight: 500;">Пароль</label>
-            <input type="password" name="password" class="form-control" placeholder="Пароль">
-        </div>
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" style="font-weight: 500;">{{ field.label }}</label>
+                {{ field|add_class:"form-control" }}
+                {% if field.errors %}
+                    <div class="text-danger small mt-1">
+                        {{ field.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
 
         <div class="d-grid">
-            <button type="submit" class="btn action-btn">Войти</button>
+            <button type="submit" class="btn btn-primary">Войти</button>
         </div>
+
+        <p class="mt-3 text-center">
+            Нет аккаунта? <a href="{% url 'accounts:register' %}" style="color: #2587f4; text-decoration: none;">Зарегистрироваться</a>
+        </p>
     </form>
 </div>
 {% endblock %}

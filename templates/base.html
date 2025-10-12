@@ -493,8 +493,9 @@
                         <span>Профиль</span>
                     </button>
                     <div class="dropdown-content">
-                        <a href="{% url 'auto:index' %}">Мои объявления</a>
-                        <div>Баланс: сом</div>
+                        <div>{{ user.email }}</div>
+                        <a href="{% url 'auto:get_my_announcements' %}">Мои объявления</a>
+                        <div>Баланс: 0 сом</div>
                         <a href="{% url 'favorites:favorites' %}">Избранное</a>
                         <a href="{% url 'auto:index' %}">Сообщения</a>
                         <a href="{% url 'auto:index' %}">Личный кабинет</a>
@@ -508,14 +509,14 @@
                 
                 <a href="{% url 'auto:add_announcement' %}" class="submit-btn">Подать объявление</a>
             {% else %}
-                <form method="post" action="{% url 'accounts:login' %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="profile-btn">
-                        <i class="far fa-user"></i>
-                        <span>Войти</span>
-                    </button>
-                </form>
-                <a href="{% url 'accounts:register' %}" class="submit-btn">Регистрация</a>
+                <a href="{% url 'accounts:login' %}" class="profile-btn">
+                    <i class="far fa-user"></i>
+                    <span>Войти</span>
+                </a>
+                <a href="{% url 'accounts:register' %}" class="profile-btn">
+                    <i class="far fa-user"></i>
+                    <span>Регистрация</span>
+                </a>
             {% endif %}
         </div>
     </div>

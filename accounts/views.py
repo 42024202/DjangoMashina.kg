@@ -80,7 +80,7 @@ def verify_otp_view(request, username):
 
         login(request, user)
         messages.success(request, 'Аккаунт подтверждён и вы вошли в систему')
-        return redirect('index:index')
+        return redirect('auto:index')
 
     return render(request, 'accounts/verify_otp.html')
 
@@ -114,19 +114,21 @@ def resend_otp_view(request):
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
+        print("FORM DATA:", request.POST)
+        print("FORM IS VALID:", form.is_valid())
+        print("FORM ERRORS:", form.errors)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-
             user = authenticate(request, email=email, password=password)
-
+            print("AUTH RESULT:", user)
             if user:
+                print('LOGIN SUCCESSFUL')
                 login(request, user)
                 return redirect('auto:index')
         messages.error(request, 'Неверный email или пароль')
     else:
         form = LoginForm()
-
     return render(request, 'accounts/login.html', {'form': form})
 
 
