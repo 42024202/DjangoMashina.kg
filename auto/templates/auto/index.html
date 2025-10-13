@@ -15,7 +15,7 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
         {% for car in cars %}
         <div class="col">
-            <a href="{% url 'auto:car_detail' car.id %}" class="text-decoration-none">
+            <a href="{{ car.get_absolute_url }}" class="text-decoration-none">
                 <div class="card h-100 position-relative">
                     <!-- Added urgent badge if car is urgent -->
                     {% if car.is_urgent %}

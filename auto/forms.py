@@ -141,11 +141,12 @@ class CarConfigForm(forms.ModelForm):
 class CarAnnouncementForm(forms.ModelForm):
     class Meta:
         model = CarAnnouncement
+        exclude = ['profile', 'created_at', 'updated_at', 'car_config',]
         fields = [
             'profile', 'category', 'car_config', 'color', 'price',
-            'engine_power', 'car_meleage', 'wheel_type', 'exchange',
+            'engine_power', 'car_mileage', 'wheel_type', 'exchange',
             'registration', 'custom_clearence', 'description',
-            'urgency_of_announcencenment', 'year', 'region',
+            'urgency', 'year', 'region',
             'city', 'car_condition', 'availability'
         ]
 
@@ -170,14 +171,15 @@ class CarAnnouncementForm(forms.ModelForm):
             'availability': forms.Select(attrs={'class': 'form-control'}),
         }
 
+class MultiFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
 
 class CarImageForm(forms.ModelForm):
     class Meta:
         model = CarImage
-        fields = ['announcement', 'image']
+        fields = ['image']
         widgets = {
-            'announcement': forms.HiddenInput(),
-            'image': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
+            'image': MultiFileInput(attrs={'multiple': True, 'class': 'form-control'}),
         }
 
 

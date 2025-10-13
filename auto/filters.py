@@ -1,10 +1,11 @@
 import django_filters
 from auto.models import CarAnnouncement, Body, EngineType, EngineCapacity, Transmission, Drive
-from common.models import Mark, Model, Generation
+from common.models import Mark, Model, Generation, Region, City, Condition, Availability
+from django.forms import Select
+from auto.models.shared.characters import Color, CustomClearence, Exchange, WheelType, Registration
 
 
 class CarAnnouncementFilter(django_filters.FilterSet):
-    # --- Цена ---
     price__gte = django_filters.NumberFilter(
         field_name='price',
         lookup_expr='gte',
@@ -17,7 +18,6 @@ class CarAnnouncementFilter(django_filters.FilterSet):
         label='Цена до'
         )
 
-    # --- Год выпуска ---
     year__gte = django_filters.NumberFilter(
         field_name='year',
         lookup_expr='gte',
@@ -30,7 +30,6 @@ class CarAnnouncementFilter(django_filters.FilterSet):
         label='Год выпуска до'
         )
 
-    # --- Пробег ---
     car_mileage__gte = django_filters.NumberFilter(
         field_name='car_mileage',
         lookup_expr='gte',
@@ -41,9 +40,13 @@ class CarAnnouncementFilter(django_filters.FilterSet):
         field_name='car_mileage',
         lookup_expr='lte',
         label='Пробег до'
-    )
+        )
 
-    # --- Марка / Модель / Поколение ---
+    urgency = django_filters.BooleanFilter(
+        field_name='urgency',
+        label='Срочно'
+        )
+
     mark = django_filters.ModelChoiceFilter(
         field_name='car_config__mark',
         queryset=Mark.objects.all(),
@@ -65,7 +68,6 @@ class CarAnnouncementFilter(django_filters.FilterSet):
         empty_label='Все поколения'
         )
 
-    # --- Кузов ---
     body = django_filters.ModelChoiceFilter(
         field_name='car_config__body',
         queryset=Body.objects.all(),
@@ -73,7 +75,6 @@ class CarAnnouncementFilter(django_filters.FilterSet):
         empty_label='Все типы кузова'
         )
 
-    # --- Двигатель ---
     engine_type = django_filters.ModelChoiceFilter(
         field_name='car_config__engine_type',
         queryset=EngineType.objects.all(),
@@ -100,7 +101,6 @@ class CarAnnouncementFilter(django_filters.FilterSet):
         label='Мощность двигателя до'
         )
 
-    # --- Трансмиссия и привод ---
     transmission = django_filters.ModelChoiceFilter(
         field_name='car_config__transmission',
         queryset=Transmission.objects.all(),
@@ -112,34 +112,72 @@ class CarAnnouncementFilter(django_filters.FilterSet):
         field_name='car_config__drive',
         queryset=Drive.objects.all(),
         label='Тип привода',
-        empty_label='Любой привод'
+        empty_label='Любой привод',
+        widget=Select()
         )
-
-    color = django_filters.CharFilter(
+    
+    color = django_filters.ModelChoiceFilter(
         field_name='color',
-        lookup_expr='icontains',
-        label='Цвет'
-        )
-
-    color = django_filters.ChoiceFilter(
-        field_name='color',
-        choices=lambda: CarAnnouncement.objects
-            .values_list('color', 'color')
-            .distinct(),
+        queryset=Color.objects.all(),
         label='Цвет',
         empty_label='Все цвета'
         )
 
-    wheel_type = django_filters.ChoiceFilter(
-        field_name='wheel_type',
-        choices=lambda: CarAnnouncement.objects
-            .values_list('wheel_type', 'wheel_type')
-            .distinct(),
-        label='Тип руля',
-        empty_label='Тип руля'
+    custom_clearence = django_filters.ModelChoiceFilter(
+        field_name='custom_clearence',
+        queryset=CustomClearence.objects.all(),
+        label='Растаможка',
+        empty_label='Растаможка'
         )
-  
+    
+    exchange = django_filters.ModelChoiceFilter(
+        field_name='exchange',
+        queryset=Exchange.objects.all(),
+        label='Обмен',
+        empty_label='Вариант обмена'
+        )
 
+    registration = django_filters.ModelChoiceFilter(
+        field_name='registration',
+        queryset=Registration.objects.all(),
+        label='Регистрация',
+        empty_label='Регистрация'
+        )
+
+    wheel_type = django_filters.ModelChoiceFilter(
+        field_name='wheel_type',
+        queryset=WheelType.objects.all(),
+        label='Тип руля',
+        empty_label='Все типы руля'
+        )
+    
+    region = django_filters.ModelChoiceFilter(
+        field_name='region',
+        queryset=Region.objects.all(),
+        label='Регион',
+        empty_label='Все регионы'
+        )
+
+    city = django_filters.ModelChoiceFilter(
+        field_name='city',
+        queryset=City.objects.all(),
+        label='Город',
+        empty_label='Все города'
+        )
+
+    car_condition = django_filters.ModelChoiceFilter(
+        field_name='car_condition',
+        queryset=Condition.objects.all(),
+        label='Состояние',
+        empty_label='Сосстояние'
+        )
+
+    availability = django_filters.ModelChoiceFilter(
+        field_name='availability',
+        queryset=Availability.objects.all(),
+        label='Доступность',
+        empty_label='Доступность',
+        )
 
     class Meta:
         model = CarAnnouncement
@@ -148,8 +186,8 @@ class CarAnnouncementFilter(django_filters.FilterSet):
             'body', 'engine_type', 'engine_capacity',
             'transmission', 'drive', 'color',
             'engine_power_gte', 'engine_power_lte',
-            'wheel_type', 'exchange', 'registration',
-            'custom_clearence', 'urgency', 'region',
+            'wheel_type', 'exchange', 'registration', 'urgency',
+            'custom_clearence', 'region',
             'city', 'car_condition', 'availability',
         ]
 

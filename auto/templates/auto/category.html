@@ -24,7 +24,7 @@
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
         {% for car in cars %}
         <div class="col">
-            <a href="{% url 'auto:car_detail' car.id %}" class="text-decoration-none text-dark">
+            <a href="{{ car.get_absolute_url }}" class="text-decoration-none text-dark">
                 <div class="card h-100">
                     <div id="carousel{{ car.id }}" class="carousel slide">
                         <div class="carousel-inner">

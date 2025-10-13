@@ -6,6 +6,7 @@ from ..shared.characters import (
             )
 from ..car_configs.car_config import CarConfig
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 class CarAnnouncement(models.Model):
@@ -14,6 +15,11 @@ class CarAnnouncement(models.Model):
             on_delete=models.PROTECT, 
             verbose_name="Профиль", 
             related_name="announcements"
+            )
+    
+    slug = models.SlugField(
+            max_length=50,
+            blank=True,
             )
 
     category = models.ForeignKey(
@@ -123,6 +129,18 @@ class CarAnnouncement(models.Model):
             on_delete=models.PROTECT,
             verbose_name="Доступность"
             )
+
+    def save(self, *args, **kwargs):
+        creating = self.pk is None
+        super().save(*args, **kwargs)
+        if creating and not self.slug:
+            base_slug = slugify(f"{self.car_config.mark}-{self.car_config.model}")
+            self.slug = f"{base_slug}-{self.pk}"
+            super().save(update_fields=["slug"])
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse("auto:car_detail", kwargs={"car_id": self.id, "car_slug": self.slug})
 
     def get_active_promotion(self):
         """Find active promotion for car_announcement to now"""

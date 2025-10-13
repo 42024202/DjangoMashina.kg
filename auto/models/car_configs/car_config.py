@@ -25,6 +25,12 @@ class CarConfig(models.Model):
             verbose_name="Поколение"
             )
 
+    slug = models.SlugField(
+            max_length=50,
+            unique=True,
+            blank=True,
+            )
+
     body = models.ForeignKey(
             Body, 
             on_delete=models.PROTECT, 
