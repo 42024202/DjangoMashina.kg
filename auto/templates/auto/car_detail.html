@@ -55,8 +55,8 @@
                         <div class="spec-item">
                             <i class="fas fa-gas-pump text-muted"></i>
                             <div>
-                                <small class="text-muted d-block">Двигатель</small>
-                                <span>{{ car.engine }}</span>
+                                <small class="text-muted d-block">Тип двигателя</small>
+                                <span>{{ car.car_config.engine_type }}</span>
                             </div>
                         </div>
 
@@ -64,7 +64,7 @@
                             <i class="fas fa-tachometer-alt text-muted"></i>
                             <div>
                                 <small class="text-muted d-block">Объем</small>
-                                <span>{{ car.engine_capacity }} л.</span>
+                                <span>{{ car.car_config.engine_capacity }} л.</span>
                             </div>
                         </div>
 
@@ -80,7 +80,7 @@
                             <i class="fas fa-road text-muted"></i>
                             <div>
                                 <small class="text-muted d-block">Пробег</small>
-                                <span>{{ car.car_meleage }} км</span>
+                                <span>{{ car.car_mileage }} км</span>
                             </div>
                         </div>
 
@@ -88,7 +88,7 @@
                             <i class="fas fa-cog text-muted"></i>
                             <div>
                                 <small class="text-muted d-block">Коробка</small>
-                                <span>{{ car.transmission }}</span>
+                                <span>{{ car.car_config.transmission }}</span>
                             </div>
                         </div>
 
@@ -96,7 +96,7 @@
                             <i class="fas fa-car text-muted"></i>
                             <div>
                                 <small class="text-muted d-block">Привод</small>
-                                <span>{{ car.drive }}</span>
+                                <span>{{ car.car_config.engine_type }}</span>
                             </div>
                         </div>
 
@@ -136,7 +136,7 @@
                             <i class="fas fa-car-side text-muted"></i>
                             <div>
                                 <small class="text-muted d-block">Кузов</small>
-                                <span>{{ car.body }}</span>
+                                <span>{{ car.car_config.body }}</span>
                             </div>
                         </div>
 
@@ -152,7 +152,7 @@
                             <i class="fas fa-check-circle text-muted"></i>
                             <div>
                                 <small class="text-muted d-block">Доступность</small>
-                                <span>{{ car.is_available }}</span>
+                                <span>{{ car.availability }}</span>
                             </div>
                         </div>
 

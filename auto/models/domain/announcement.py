@@ -48,8 +48,8 @@ class CarAnnouncement(models.Model):
             )
 
     engine_power = models.DecimalField(
-            decimal_places=2,
-            max_digits=4,
+            decimal_places=1,
+            max_digits=9,
             verbose_name="Мощность двигателя"
             )
 
@@ -78,7 +78,7 @@ class CarAnnouncement(models.Model):
     custom_clearence = models.ForeignKey(
             CustomClearence, 
             on_delete=models.PROTECT, 
-            verbose_name="Состояние"
+            verbose_name="Растаможка"
             )
 
     description = models.TextField(

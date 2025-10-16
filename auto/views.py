@@ -84,7 +84,7 @@ class CreateAnnouncementView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         config_form = CarConfigForm(request.POST)
         announcement_form = CarAnnouncementForm(request.POST)
-        image_form = CarImageForm()
+        image_form = CarImageForm(request.POST, request.FILES)
 
         if config_form.is_valid() and announcement_form.is_valid():
             car_config = config_form.save()
