@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions, status
 from django.contrib.auth import get_user_model
-from ..serializers.user_serializer import UserSerializer
+from messages_app.serializers.user_serializer import UserSerializer
 
 
 User = get_user_model()

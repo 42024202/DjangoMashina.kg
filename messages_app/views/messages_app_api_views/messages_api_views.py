@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions, status
 from rest_framework.exceptions import PermissionDenied
-from ..models import Message, Chat
-from ..serializers.message_serializer import MessageSerializer
+from messages_app.models import Message, Chat
+from messages_app.serializers.message_serializer import MessageSerializer
 
 
 class MessageListView(generics.ListCreateAPIView):

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Пользователи</h2>
+
+<ul id="user-list">
+    {% for user in users %}
+    <li>
+        <button class="start-chat" data-user-id="{{ user.id }}">
+            {{ user.username }}
+        </button>
+    </li>
+    {% empty %}
+    <li>Нет других пользователей</li>
+    {% endfor %}
+</ul>
+
+<script>
+document.querySelectorAll('.start-chat').forEach(button => {
+    button.addEventListener('click', async () => {
+        const userId = button.dataset.userId;
+
+        const resp = await fetch('/api/messages_app/chats/create/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ user2_id: userId })
+        });
+
+        const data = await resp.json();
+        if (resp.ok) {
+            window.location.href = `/messages_app/chats/${data.id}/`;
+        } else {
+            alert(data.error || 'Ошибка при создании чата');
+        }
+    });
+});
+</script>
+{% endblock %}
+

@@ -2,8 +2,8 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from django.db.models import Q
 from django.contrib.auth import get_user_model
-from ..models import Chat
-from ..serializers.chat_serializer import ChatSerializer
+from messages_app.models import Chat
+from messages_app.serializers.chat_serializer import ChatSerializer
 
 
 User = get_user_model()

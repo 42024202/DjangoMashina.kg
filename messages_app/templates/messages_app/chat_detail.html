@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h2>Чат с {{ chat.get_other_user(request.user).username }}</h2>
+
+<div id="messages" style="border:1px solid #ccc; padding:10px; max-height:400px; overflow-y:scroll;">
+    <!-- Сообщения будут загружаться сюда через JS -->
+</div>
+
+<form id="message-form">
+    <input type="text" id="message-text" placeholder="Введите сообщение..." style="width:80%;" required>
+    <button type="submit">Отправить</button>
+</form>
+
+<script>
+const chatId = "{{ chat.id }}";
+
+async function loadMessages() {
+    const response = await fetch(`/api/messaging/chats/${chatId}/messages/`);
+    const data = await response.json();
+    const container = document.getElementById("messages");
+    container.innerHTML = data.map(msg => 
+        `<p><b>${msg.sender.username}</b>: ${msg.text}</p>`).join('');
+    container.scrollTop = container.scrollHeight;
+}
+
+// Отправка нового сообщения
+document.getElementById("message-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const text = document.getElementById("message-text").value;
+    if (!text.trim()) return;
+
+    await fetch(`/api/messaging/chats/${chatId}/messages/send/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+        body: JSON.stringify({ text })
+    });
+
+    document.getElementById("message-text").value = "";
+    loadMessages();
+});
+
+// Автоподгрузка каждые 3 секунды
+loadMessages();
+setInterval(loadMessages, 3000);
+</script>
+{% endblock %}
+
