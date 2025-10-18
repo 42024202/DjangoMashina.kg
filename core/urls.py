@@ -25,5 +25,13 @@ urlpatterns = [
     path("", include("auto.urls")),
     path("accounts/", include("accounts.urls", namespace='accounts')),
     path("favorites/", include("favorites.urls", namespace='favorites')),
-   ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("api/messages_app/", include("messages_app.urls"))
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]
 
