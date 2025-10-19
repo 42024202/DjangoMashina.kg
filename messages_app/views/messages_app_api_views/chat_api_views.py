@@ -32,6 +32,12 @@ class ChatCreateView(generics.CreateAPIView):
                 )
         user = request.user
 
+        if str(user.id) == str(other_user_id):
+            return Response(
+                    {'error': 'You cannot chat with yourself'},
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
+
         try:
             other_user = User.objects.get(id=other_user_id)
         except User.DoesNotExist:
@@ -40,5 +46,5 @@ class ChatCreateView(generics.CreateAPIView):
         user1, user2 = sorted([user, other_user], key=lambda u: u.id)
         chat, created = Chat.objects.get_or_create(user1=user1, user2=user2)
         
-        return Response(ChatSerializer(chat).data, status=status.HTTP_201_CREATED)
+        return Response({'id': chat.id}, status=status.HTTP_201_CREATED)
 

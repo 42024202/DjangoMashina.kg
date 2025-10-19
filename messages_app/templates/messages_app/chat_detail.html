@@ -3,6 +3,9 @@
 {% block content %}
 <h2>Чат с {{ chat.get_other_user(request.user).username }}</h2>
 
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+
 <div id="messages" style="border:1px solid #ccc; padding:10px; max-height:400px; overflow-y:scroll;">
     <!-- Сообщения будут загружаться сюда через JS -->
 </div>
@@ -14,9 +17,19 @@
 
 <script>
 const chatId = "{{ chat.id }}";
+const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+const resp = await fetch('/api/messages_app/chats/create/', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+    },
+    body: JSON.stringify({ user2_id: userId }),
+});
+
 
 async function loadMessages() {
-    const response = await fetch(`/api/messaging/chats/${chatId}/messages/`);
+    const response = await fetch(`/api/messages_app/chats/${chatId}/messages/`);
     const data = await response.json();
     const container = document.getElementById("messages");
     container.innerHTML = data.map(msg => 
