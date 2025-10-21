@@ -160,3 +160,5 @@ class CarAnnouncement(models.Model):
         verbose_name = "Объявление"
         verbose_name_plural = "Объявления"
 
+        ordering = ["-created_at"]
+

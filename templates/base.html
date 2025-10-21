@@ -477,14 +477,15 @@
         
         <div class="header-actions">
             {% if user.is_authenticated %}
-                <button class="icon-btn" title="Сообщения">
+                
+                <a href="{% url 'chat-list' %}" class="icon-btn" title="Сообзения">
                     <i class="far fa-comment"></i>
-                    <span class="notification-badge">3</span>
-                </button>
+                    <span class="notification-badge">1</span>
+                </a>
                 
                 <a href="{% url 'favorites:favorites' %}" class="icon-btn" title="Избранное">
                     <i class="far fa-heart"></i>
-                    <span class="notification-badge">7</span>
+                    <span class="notification-badge">3</span>
                 </a>
                 
                 <div class="profile-dropdown">
@@ -497,7 +498,7 @@
                         <a href="{% url 'auto:get_my_announcements' %}">Мои объявления</a>
                         <div>Баланс: 0 сом</div>
                         <a href="{% url 'favorites:favorites' %}">Избранное</a>
-                        <a href="{% url 'auto:index' %}">Сообщения</a>
+                        <a href="{% url 'chat-list' %}">Сообщения</a>
                         <a href="{% url 'auto:index' %}">Личный кабинет</a>
                         <a href="{% url 'auto:index' %}">Настройки</a>
                         <form method="post" action="{% url 'accounts:logout' %}">

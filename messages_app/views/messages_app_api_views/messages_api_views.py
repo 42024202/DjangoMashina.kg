@@ -4,7 +4,7 @@ from messages_app.models import Message, Chat
 from messages_app.serializers.message_serializer import MessageSerializer
 
 
-class MessageListView(generics.ListCreateAPIView):
+class MessageApiListView(generics.ListCreateAPIView):
     "List of messages in chat"
     serializer_class = MessageSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -20,7 +20,7 @@ class MessageListView(generics.ListCreateAPIView):
         return Message.objects.filter(chat=chat)
 
 
-class MessageCreateView(generics.CreateAPIView):
+class MessageApiCreateView(generics.CreateAPIView):
     "Create message in chat"
     serializer_class = MessageSerializer
     permission_classes = [permissions.IsAuthenticated]

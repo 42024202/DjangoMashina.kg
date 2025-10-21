@@ -25,10 +25,8 @@ urlpatterns = [
     path("", include("auto.urls")),
     path("accounts/", include("accounts.urls", namespace='accounts')),
     path("favorites/", include("favorites.urls", namespace='favorites')),
-    path("messages/", include("messages_app.urls")),
+    path("api/messages_app/", include("messages_app.urls")),
 
-    #APIES
-    path("api/messages_app/", include("messages_app.urls"))
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

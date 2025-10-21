@@ -8,7 +8,7 @@ from messages_app.serializers.chat_serializer import ChatSerializer
 
 User = get_user_model()
 
-class ChatListView(generics.ListAPIView):
+class ChatApiListView(generics.ListAPIView):
     "List of all chats for current user"
     serializer_class = ChatSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -18,7 +18,7 @@ class ChatListView(generics.ListAPIView):
         return Chat.objects.filter(Q(user1=user) | Q(user2=user))
 
 
-class ChatCreateView(generics.CreateAPIView):
+class ChatApiCreateView(generics.CreateAPIView):
     "Create new chat with current user and another user"
     serializer_class = ChatSerializer
     permission_classes = [permissions.IsAuthenticated]

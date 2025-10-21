@@ -6,7 +6,7 @@ from messages_app.serializers.user_serializer import UserSerializer
 User = get_user_model()
 
 
-class UserListView(generics.ListAPIView):
+class UserApiListView(generics.ListAPIView):
     "List of all users except current user"
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]

@@ -10,4 +10,5 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['chat', 'sender', 'recipient', 'text', 'created_at', 'is_read']
+        read_only_fields = ['chat', 'sender', 'recipient', 'created_at', 'is_read']
 

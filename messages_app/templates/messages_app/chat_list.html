@@ -19,7 +19,7 @@ document.querySelectorAll('.start-chat').forEach(button => {
     button.addEventListener('click', async () => {
         const userId = button.dataset.userId;
 
-        const resp = await fetch('/api/messages_app/chats/create/', {
+        const resp = await fetch('/api/messages_app/chats-api/create/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ document.querySelectorAll('.start-chat').forEach(button => {
 
         const data = await resp.json();
         if (resp.ok) {
-            window.location.href = `/messages_app/chats/${data.id}/`;
+            window.location.href = `/api/messages_app/chats/${data.id}/`;
         } else {
             alert(data.error || 'Ошибка при создании чата');
         }

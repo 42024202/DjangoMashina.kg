@@ -10,12 +10,13 @@ class ChatDetailView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        chat_id = self.kwargs.get['chat_id']
+        chat_id = self.kwargs.get('chat_id')
         chat = get_object_or_404(Chat, pk=chat_id)
 
         if self.request.user not in [chat.user1, chat.user2]:
             return HttpResponseForbidden("Вы не участник данного чата")
 
         context['chat'] = chat
+        context['other_user'] = chat.get_other_user(self.request.user)
         return context
 
