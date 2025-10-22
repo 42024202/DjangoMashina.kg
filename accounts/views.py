@@ -3,14 +3,11 @@ from django.contrib.auth import login, logout as django_logout, authenticate
 import random
 from django.core.mail import send_mail
 from django.contrib import messages
-from django.utils import timezone
 from accounts.models import CustomUser, EmailOTP
 from accounts.forms import RegisterForm, LoginForm
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
-from auto.models import CarAnnouncement
 from django.contrib.contenttypes.models import ContentType
-from django.http import JsonResponse
 
 
 def register_view(request):

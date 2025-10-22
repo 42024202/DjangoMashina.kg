@@ -3,11 +3,6 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import (
     CustomUser, EmailOTP
 )
-from payments.admin import BalanceInline, TransactionInline
-
-# -----------------------
-# Admin кастомного юзера
-# -----------------------
 
 @admin.register(CustomUser)
 class CustomUserAdmin(BaseUserAdmin):
@@ -31,11 +26,6 @@ class CustomUserAdmin(BaseUserAdmin):
         }),
     )
 
-    #inlines = [BalanceInline, TransactionInline]
-
-# -----------------------
-# Остальные модели
-# -----------------------
 
 @admin.register(EmailOTP)
 class EmailOTPAdmin(admin.ModelAdmin):
