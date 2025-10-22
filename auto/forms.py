@@ -181,6 +181,7 @@ class CarImageForm(forms.ModelForm):
         widgets = {
             'image': MultiFileInput(attrs={'multiple': True, 'class': 'form-control'}),
         }
+        image = forms.ImageField(required=False)
 
 
 class TariffForm(forms.ModelForm):

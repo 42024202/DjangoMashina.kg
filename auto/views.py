@@ -1,13 +1,14 @@
-from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
+from django.db import transaction 
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, CreateView, TemplateView
+from django.views.generic import ListView, DetailView
 from django.urls import reverse_lazy
 from .models import CarAnnouncement, CarImage
 from .models.car_configs.car_config import CarConfig
 from .filters import CarAnnouncementFilter
 from favorites.models import Favorite
-from django.contrib.auth.decorators import login_required
 from .forms import CarAnnouncementForm, CarConfigForm, CarImageForm
+from .services.multi_form_mixin import MultiFormCreateView
 
 
 class IndexView(ListView):
@@ -71,44 +72,49 @@ class MyAnnouncementsView(LoginRequiredMixin, ListView):
         return CarAnnouncement.objects.filter(profile=self.request.user)
 
 
-class CreateAnnouncementView(LoginRequiredMixin, CreateView):
+class CreateAnnouncementView(LoginRequiredMixin, MultiFormCreateView):
+    model = CarAnnouncement
     template_name = 'auto/create_announcement.html'
     success_url = reverse_lazy('auto:get_my_announcements')
     form_class = CarAnnouncementForm
+    form_classes = {
+            'announcement': CarAnnouncementForm,
+            'config': CarConfigForm,
+            'images': CarImageForm
+            }
 
     def get_context_data(self, **kwargs):
+        if not hasattr(self, 'object'):
+            self.object = None
+
         context = super().get_context_data(**kwargs)
-        context['config_form'] = context.get('config_form', CarConfigForm())
-        context['image_form'] = context.get('image_form', CarImageForm())
         return context
 
-    def form_valid(self, form):
-        config_form = CarConfigForm(self.request.POST)
-        image_form = CarImageForm(self.request.POST, self.request.FILES)
-        
-        if config_form.is_valid() and image_form.is_valid():
-            config_data = config_form.cleaned_data
-            car_config, created = CarConfig.objects.get_or_create(
-                mark = config_data['mark'],
-                model = config_data['model'],
-                generation = config_data['generation'],
-                body = config_data['body'],
-                engine_type = config_data['engine_type'],
-                engine_capacity = config_data['engine_capacity'],
-                transmission = config_data['transmission'],
-                drive = config_data['drive'],
-                defaults = config_data
-                )   
-                
-            car_announcement = form.save(commit=False)
+    def forms_valid(self, forms):
+        announcement_form = forms['announcement']
+        config_form = forms['config']
+        config_data = config_form.cleaned_data
+        car_config, created = CarConfig.objects.get_or_create(
+            mark = config_data['mark'],
+            model = config_data['model'],
+            generation = config_data['generation'],
+            body = config_data['body'],
+            engine_type = config_data['engine_type'],
+            engine_capacity = config_data['engine_capacity'],
+            transmission = config_data['transmission'],
+            drive = config_data['drive'],
+            defaults = config_data
+            )   
+        with transaction.atomic():
+            car_announcement = announcement_form.save(commit=False)
             car_announcement.car_config = car_config
             car_announcement.profile = self.request.user
             car_announcement.save()
 
-            for img in self.request.FILES.getlist('image'):
+            self.object = car_announcement
+
+            for img in self.request.FILES.getlist('images'):
                 CarImage.objects.create(announcement=car_announcement, image=img)
+        return redirect(self.success_url)
 
-            return redirect(self.success_url)
-
-        return self.render_to_response(self.get_context_data(form=form, config_form=config_form, image_form=image_form))
 

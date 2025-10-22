@@ -15,17 +15,17 @@
             </div>
         {% endif %}
 
-        {% if config_form.errors %}
+        {% if forms.config.errors %}
             <div class="alert alert-danger mt-3">
                 <h6>Ошибки в конфигурации:</h6>
-                {{ config_form.errors }}
+                {{ forms.config.errors }}
             </div>
         {% endif %}
 
-        {% if announcement_form.errors %}
+        {% if forms.announcement.errors %}
             <div class="alert alert-danger mt-3">
                 <h6>Ошибки в объявлении:</h6>
-                {{ announcement_form.errors }}
+                {{ forms.announcement.errors }}
             </div>
         {% endif %}
 
@@ -36,7 +36,7 @@
                 <h5 class="mb-0">Конфигурация автомобиля</h5>
             </div>
             <div class="card-body">
-                {% for field in config_form %}
+                {% for field in forms.config %}
                     <div class="mb-3">
                         {{ field.label_tag }}
                         {{ field }}
@@ -70,23 +70,21 @@
             </div>
         </div>
 
-        <!-- Фотографии -->
-        <div class="card mb-4">
+     <div class="card mb-4">
             <div class="card-header bg-light">
                 <h5 class="mb-0">Фотографии автомобиля</h5>
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    {{ image_form.image.label_tag }}
-                    {{ image_form.image }}
-                    {% if image_form.image.errors %}
+                    <input type="file" name="images" id="id_images" multiple>
+                    {{ forms.images.image.label_tag }}
+                    {% if forms.images.image.errors %}
                         <div class="text-danger small">
-                            {{ image_form.image.errors }}
+                            {{ forms.images.image.errors }}
                         </div>
                     {% endif %}
                 </div>
 
-                <!-- Предпросмотр изображений -->
                 <div id="preview-container" class="row"></div>
             </div>
         </div>
@@ -99,7 +97,7 @@
 <!-- JS для предпросмотра -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const input = document.querySelector('input[name="image"]');
+    const input = document.querySelector('input[name="images"]');
     const previewContainer = document.getElementById('preview-container');
 
     if (input) {

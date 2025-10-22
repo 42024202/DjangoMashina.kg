@@ -61,9 +61,3 @@ class CarConfig(models.Model):
         verbose_name = "Конфигурация"
         verbose_name_plural = "Конфигурации"
 
-        unique_together = (
-                'mark', 'model', 'generation',
-                'body', 'engine_type', 'engine_capacity',
-                'transmission', 'drive'
-                )
-
