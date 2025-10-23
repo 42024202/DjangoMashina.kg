@@ -3,7 +3,11 @@
 
 {% block content %}
 <div class="container mt-5">
+    {% if updating %}
+    <h2 class="mb-4">Редактирование объявления</h2>
+    {% else %}
     <h2 class="mb-4">Создание нового объявления</h2>
+    {% endif %}
 
     <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
         {% csrf_token %}
@@ -90,7 +94,11 @@
         </div>
 
         <!-- Кнопка отправки -->
+        {% if updating %}
+        <button type="submit" class="btn btn-primary w-100">Редактировать объявление</button>
+        {% else %}
         <button type="submit" class="btn btn-primary w-100">Создать объявление</button>
+        {% endif %}
     </form>
 </div>
 

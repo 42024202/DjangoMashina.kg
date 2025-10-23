@@ -1,7 +1,7 @@
 from django.db import transaction 
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, DeleteView
+from django.views.generic import ListView, DetailView
 from django.urls import reverse_lazy
 from .models import CarAnnouncement, CarImage
 from .models.car_configs.car_config import CarConfig
@@ -41,10 +41,10 @@ class CarDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         car = self.get_object()
-        user = self.request.user
-
-        context['is_favorite'] = (self.request.user.is_authenticated and Favorite.is_favorite(self.request.user, car))
-        context['is_owner'] = user.is_authenticated and user == car.profile
+        context['is_favorite'] = (
+            self.request.user.is_authenticated
+            and Favorite.is_favorite(self.request.user, car)
+        )
         return context
 
 
@@ -131,29 +131,14 @@ class UpdateAnnouncementView(LoginRequiredMixin, MulriFormUpdateView):
             }
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
-        if obj.profile != self.request.user:
+        if obj.profile.user != self.request.user:
             raise PermissionDenied("Вы не можете редактировать это объявление.")
         return obj
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['updating'] = True
+        car = self.get_object()
+        user = self.request.user
+        context['is_owner'] = user.is_authenticated and car.profile.user == user
         return context
-
-
-class DeleteAnnouncementView(LoginRequiredMixin, DeleteView):
-    model = CarAnnouncement
-    template_name = 'auto/delete_confirmation.html'
-    success_url = reverse_lazy('auto:get_my_announcements')
-    pk_url_kwarg = 'car_id'
-
-    def get(self, request, *args, **kwargs):
-        print("DEBUG: DeleteAnnouncementView GET вызван")
-        return super().get(request, *args, **kwargs)
-
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset)
-        if obj.profile != self.request.user:
-            raise PermissionDenied("Вы не можете удалить это объявление.")
-        return obj
 

@@ -171,17 +171,19 @@ class CarAnnouncementForm(forms.ModelForm):
             'availability': forms.Select(attrs={'class': 'form-control'}),
         }
 
+
 class MultiFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
+
 class CarImageForm(forms.ModelForm):
+    image = forms.ImageField(required=False)
     class Meta:
         model = CarImage
         fields = ['image']
         widgets = {
             'image': MultiFileInput(attrs={'multiple': True, 'class': 'form-control'}),
         }
-        image = forms.ImageField(required=False)
 
 
 class TariffForm(forms.ModelForm):

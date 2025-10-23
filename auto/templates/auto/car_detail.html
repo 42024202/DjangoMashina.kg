@@ -4,14 +4,12 @@
 {% block content %}
 <div class="container py-5">
     <div class="row g-4">
-        <!-- Left column: Modern specifications card with icons -->
         <div class="col-lg-5">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
                     <h2 class="h3 fw-bold mb-1">{{ car.mark }} {{ car.model }}</h2>
                     <p class="text-muted mb-3">{{ car.year }} год</p>
                     
-                    <!-- Price prominently displayed -->
                     <div class="bg-primary bg-opacity-10 rounded-3 p-3 mb-4">
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="text-muted">Цена</span>
@@ -19,7 +17,6 @@
                         </div>
                     </div>
 
-                    <!-- Favorite button with modern styling -->
                     <button
                         id="favorite-button"
                         data-id="{{ car.id }}"
@@ -32,6 +29,19 @@
                         {% endif %}
                     </button>
 
+                  {% if is_owner %}
+                    <a href="{% url 'auto:update_announcement' car.id %}"
+                       class="btn btn-outline-primary w-100 mb-4 rounded-pill">
+                        <i class="fas fa-edit me-2"></i>
+                        Редактировать объявление
+                    </a>
+                    <a href="{% url 'auto:delete_announcement' car.id %}"
+                       class="btn btn-danger w-100 mb-4 rounded-pill">
+                        <i class="fas fa-edit me-2"></i>
+                        Удалить объявление
+                    </a>
+
+                  {% endif %}
                     <!-- Specifications with icons and better layout -->
                     <h5 class="fw-semibold mb-3">Характеристики</h5>
                     
@@ -172,16 +182,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Delete button for owner -->
-                    {% if request.user == car.profile.user %}
-                    <form method="POST" action="{% url 'delete_announcement' car.id %}" onsubmit="return confirm('Вы уверены, что хотите удалить объявление?');" class="mt-4">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger w-100 rounded-pill">
-                            <i class="fas fa-trash me-2"></i>Удалить объявление
-                        </button>
-                    </form>
-                    {% endif %}
                 </div>
             </div>
         </div>

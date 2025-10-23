@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-sm p-4">
+    <h4 class="mb-3">Вы уверены, что хотите удалить это объявление?</h4>
+    <p><strong>{{ object }}</strong></p>
+
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">
+        <i class="fas fa-trash me-2"></i>Да, удалить
+      </button>
+      <a href="{% url 'auto:car_detail' object.id object.slug %}" class="btn btn-secondary">
+        Отмена
+      </a>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
