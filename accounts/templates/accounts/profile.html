@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Профиль пользователя{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card shadow-sm p-4">
+        <h3 class="text-center mb-4">Личный кабинет</h3>
+
+        <!-- Аватар -->
+        <div class="text-center mb-4">
+            {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="Аватар" class="rounded-circle shadow-sm" width="120" height="120">
+            {% else %}
+                <img src="{% static 'default-avatar1.png' %}" alt="Аватар" class="rounded-circle shadow-sm" width="120" height="120">
+            {% endif %}
+        </div>
+
+        <!-- Форма -->
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            </div>
+        </form>
+
+        <!-- Разделитель -->
+        <hr class="my-4">
+
+        <div class="text-center">
+            <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger btn-sm">Выйти из аккаунта</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

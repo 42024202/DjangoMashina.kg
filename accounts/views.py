@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect,  get_object_or_404
+from django.urls import reverse_lazy
 from django.contrib.auth import login, logout as django_logout, authenticate
 import random
 from django.core.mail import send_mail
 from django.contrib import messages
 from accounts.models import CustomUser, EmailOTP
-from accounts.forms import RegisterForm, LoginForm
+from accounts.forms import RegisterForm, LoginForm, UserUpdateForm
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
+from django.views.generic import UpdateView
+from django.core.exceptions import PermissionDenied
 
 
 def register_view(request):
@@ -133,4 +136,22 @@ def login_view(request):
 def logout_view(request):
     django_logout(request)
     return redirect('auto:index')
+
+
+class UserUpdateView(UpdateView):
+    model = CustomUser
+    template_name = 'accounts/profile.html'
+    form_class = UserUpdateForm
+    success_url = reverse_lazy('accounts:profile', kwargs={'user_id': 1})
+    pk_url_kwarg = 'user_id'
+
+    def get_seccess_url(self):
+        """After update redirect to user's profile page"""
+        return reverse_lazy('accounts:profile', kwargs={'user_id': self.object.id})
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj != self.request.user:
+            raise PermissionDenied("Вы не можете редактировать этого пользователя.")
+        return obj
 

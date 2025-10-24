@@ -190,7 +190,7 @@
             z-index: 9999;
             border-radius: 0.75rem;
             border: 1px solid var(--border);
-            margin-top: 0.5rem;
+            margin-top: 0.05rem;
         }
 
         .profile-dropdown:hover .dropdown-content,
@@ -499,8 +499,7 @@
                         <div>Баланс: 0 сом</div>
                         <a href="{% url 'favorites:favorites' %}">Избранное</a>
                         <a href="{% url 'chat-list' %}">Сообщения</a>
-                        <a href="{% url 'auto:index' %}">Личный кабинет</a>
-                        <a href="{% url 'auto:index' %}">Настройки</a>
+                        <a href="{% url 'accounts:profile' user.id %}">Личный кабинет</a>
                         <form method="post" action="{% url 'accounts:logout' %}">
                             {% csrf_token %}
                             <button type="submit" class="dropdown-logout">Выйти</button>
