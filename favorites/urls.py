@@ -5,6 +5,6 @@ app_name = 'favorites'
 
 urlpatterns = [
     path('', views.favorites_announcenments_view, name='favorites'),
-    path('toggle/<int:car_id>/', views.toggle_favorite, name='toggle'),
+    path('toggle/<str:model_name>/<int:object_id>/', views.toggle_favorite, name='toggle_favorite'),
     ]
 

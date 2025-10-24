@@ -153,6 +153,11 @@
             border-top: 1px solid var(--border);
         }
 
+        .category-item {
+            position: relative;
+            display: inline-block;
+        }
+
         .category-link {
             display: flex;
             align-items: center;
@@ -172,7 +177,41 @@
         .category-link i {
             font-size: 1.25rem;
         }
+        .subcategory-menu {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background: white;
+          border: 2px solid #2563eb;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+          padding: 8px 0;
+          min-width: 180px;
+          z-index: 100;
+          opacity: 0;
+          transform: translateY(10px);
+          transition: all 0.25s ease;
+        }
 
+        /* элементы меню */
+        .subcategory-menu a {
+          display: block;
+          padding: 8px 15px;
+          color: black;
+          text-decoration: none;
+        }
+
+        .subcategory-menu :hover {
+          background: #f2f2f2;
+        }
+
+        /* при наведении — показать подменю */
+        .category-item:hover .subcategory-menu {
+          display: block;
+          opacity: 1;
+          transform: translateY(0);
+        }
         .profile-dropdown {
             position: relative;
             display: inline-block;
@@ -428,8 +467,7 @@
             padding: 2rem;
             max-width: 1400px;
             margin: 0 auto;
-        }
-
+        }          
         @media (min-width: 1200px) {
             .cards-grid {
                 grid-template-columns: repeat(4, 1fr);
@@ -474,7 +512,6 @@
 <header class="main-header">
     <div class="header-top">
         <a href="{% url 'auto:index' %}" class="logo">mashina.kg</a>
-        
         <div class="header-actions">
             {% if user.is_authenticated %}
                 
@@ -522,29 +559,83 @@
     </div>
     
     <nav class="category-nav">
+        <div class="category-item">
         <a href="{% url 'auto:category' 'Легковые' %}" class="category-link">
             <i class="fas fa-car"></i>
             <span>Легковые</span>
         </a>
+        <div class="subcategory-menu">
+            <a href="{% url 'auto:category' 'Седаны' %}">Седаны</a>
+            <a href="{% url 'auto:category' 'Хэтчбеки' %}">Хэтчбеки</a>
+            <a href="{% url 'auto:category' 'Внедорожники' %}">Внедорожники</a>
+        </div>
+    </div>
+    <div class="category-item">
         <a href="{% url 'auto:category' 'Коммерческие' %}" class="category-link">
             <i class="fas fa-truck"></i>
             <span>Коммерческие</span>
         </a>
+            <div class="subcategory-menu">
+                <a href="{% url 'auto:category' 'Седаны' %}">Легкие коммерческие</a>
+                <a href="{% url 'auto:category' 'Хэтчбеки' %}">Автобусы</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Грузовики</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Тягачи</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Грузовики</a>
+            </div>
+        </div>
+
+        <div class="category-item">
         <a href="{% url 'auto:category' 'Спецтехника' %}" class="category-link">
             <i class="fas fa-wrench"></i>
             <span>Спецтехника</span>
         </a>
+            <div class="subcategory-menu">
+                <a href="{% url 'auto:category' 'Седаны' %}">Автокраны</a>
+                <a href="{% url 'auto:category' 'Хэтчбеки' %}">Бульдозеры</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Автопогрузчики</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Экскаваторы</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Сельхоз-техника</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Коммунальная техника</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Самопогрузчики</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Строительная техника</a>
+
+            </div>
+        </div>
+        <div class="category-item">
         <a href="{% url 'auto:category' 'Мото' %}" class="category-link">
             <i class="fas fa-motorcycle"></i>
             <span>Мото</span>
         </a>
+        <div class="subcategory-menu">
+                <a href="{% url 'auto:category' 'Седаны' %}">Мотоциклы</a>
+                <a href="{% url 'auto:category' 'Хэтчбеки' %}">Багги</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Квадроциклы</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Мопеды и скутеры</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Картинг</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Снегоходы</a>
+            </div>
+        </div>
+        <div class="category-item">
         <a href="{% url 'auto:category' 'Электро' %}" class="category-link">
             <i class="fas fa-bolt"></i>
             <span>Электро</span>
         </a>
+        </div>
+        <div class="category-item">
         <a href="{% url 'auto:category' 'Запчасти' %}" class="category-link">
             <i class="fas fa-cog"></i>
             <span>Запчасти</span>
+            <div class="subcategory-menu">
+                <a href="{% url 'auto:category' 'Седаны' %}">Запчасти и расходники</a>
+                <a href="{% url 'auto:category' 'Хэтчбеки' %}">Шины</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Диски</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Аксессуары и расходники</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Масла и автохимия</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Авто на запчасти</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Запчасти на коммерческие</a>
+                <a href="{% url 'auto:category' 'Внедорожники' %}">Госномера</a>
+
+            </div>
         </a>
     </nav>
 </header>
@@ -597,7 +688,6 @@ document.addEventListener('DOMContentLoaded', function () {
   {% endif %}
 });
 </script>
-
 </body>
 </html>
 

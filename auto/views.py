@@ -3,7 +3,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, DeleteView
 from django.urls import reverse_lazy
-from .models import CarAnnouncement, CarImage
+from .models import CarAnnouncement, CarImage, Category
 from .models.car_configs.car_config import CarConfig
 from .filters import CarAnnouncementFilter
 from favorites.models import Favorite
@@ -41,10 +41,14 @@ class CarDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         car = self.get_object()
+        is_favorite = False
+        if self.request.user.is_authenticated:
+            is_favorite = Favorite.is_favorite(self.request.user, car)
         user = self.request.user
 
         context['is_favorite'] = (self.request.user.is_authenticated and Favorite.is_favorite(self.request.user, car))
         context['is_owner'] = user.is_authenticated and user == car.profile
+        context['is_favorite'] = is_favorite
         return context
 
 
@@ -62,6 +66,7 @@ class CategoryView(ListView):
         context = super().get_context_data(**kwargs)
         context['filter'] = self.car_filter
         context['category_name'] = self.kwargs['category_name']
+        #context['categories'] = Category.objects.all(parent__isnull=True)
         return context
 
 
@@ -122,6 +127,7 @@ class CreateAnnouncementView(LoginRequiredMixin, MultiFormCreateView):
 class UpdateAnnouncementView(LoginRequiredMixin, MulriFormUpdateView):
     model = CarAnnouncement
     template_name = 'auto/create_announcement.html'
+    pk_url_kwarg = 'car_id'
     success_url = reverse_lazy('auto:get_my_announcements')
     form_class = CarAnnouncementForm
     form_classes = {
