@@ -76,6 +76,7 @@ class CarOil(models.Model):
     class Meta:
         verbose_name = "Масло и химия"
         verbose_name_plural = "Масла и химия"
+        ordering = ["-id"]
 
 
 

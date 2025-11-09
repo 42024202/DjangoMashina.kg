@@ -2,68 +2,150 @@
 {% load static %}
 
 {% block content %}
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
 
-    <div class="container py-3" style="max-width: 1140px;">
-        <!-- Заголовок -->
-        <div class="mb-4">
-            <h2 class="fw-bold text-start">Избранное</h2>
-        </div>
-
-        {% if cars %}
-            <!-- Список машин -->
-            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
-                {% for car in cars %}
-                <div class="col">
-                    <a href="{% url 'auto:car_detail' car.id %}" class="text-decoration-none text-dark">
-                        <div class="card h-100">
-                            <div id="carousel{{ car.id }}" class="carousel slide">
-                                <div class="carousel-inner">
-                                    {% for image in car.images.all %}
-                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                        <img src="{{ image.image.url }}" class="d-block w-100" alt="Car Image">
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ car.id }}" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon"></span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ car.id }}" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon"></span>
-                                </button>
-                            </div>
-
-                            {% if car.images.all %}
-                            <div class="carousel-thumbnails">
-                                {% for image in car.images.all|slice:":4" %}
-                                <img src="{{ image.image.url }}" data-bs-target="#carousel{{ car.id }}" data-bs-slide-to="{{ forloop.counter0 }}">
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-
-                            <div class="card-body py-2">
-                                <h5 class="card-title">{{ car.mark }} {{ car.model }}</h5>
-                                <p class="price-text">Цена: {{ car.price }} $</p>
-                                <p class="info-text">Год выпуска: {{ car.year }}</p>
-                                <p class="info-text">Дата: {{ car.created_at }}</p>
-                                <p class="info-text">Регион: {{ car.region }}</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="d-flex justify-content-center align-items-center" style="height: 300px;">
-                <h3>Избранных объявлений еще нет.</h3>
-            </div>
-        {% endif %}
+<div class="container py-4" style="max-width: 1400px;">
+    <!-- Заголовок -->
+    <div class="mb-4">
+        <h2 class="fw-bold text-start">Избранное</h2>
     </div>
+
+    {% if cars %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+        {% for car in cars %}
+        {% with car.content_object as obj %}
+        <div class="col">
+            <a href="{{ obj.get_absolute_url }}" class="text-decoration-none">
+                <div class="card h-100 position-relative">
+                    {% if obj.is_urgent %}
+                    <span class="urgent-badge">Срочно</span>
+                    {% endif %}
+                    
+                    <div id="carousel{{ obj.id }}" class="carousel slide" data-bs-ride="false">
+                        {% if obj.images.all.count > 1 %}
+                        <div class="carousel-indicators" style="margin-bottom: 0.5rem;">
+                            {% for image in obj.images.all %}
+                            <button type="button" 
+                                    data-bs-target="#carousel{{ obj.id }}" 
+                                    data-bs-slide-to="{{ forloop.counter0 }}" 
+                                    {% if forloop.first %}class="active"{% endif %}
+                                    aria-label="Slide {{ forloop.counter }}">
+                            </button>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="carousel-inner">
+                            {% for image in obj.images.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ obj.mark }} {{ obj.model }}">
+                            </div>
+                            {% empty %}
+                            <div class="carousel-item active">
+                                <img src="{% static 'images/no-image.jpg' %}" class="d-block w-100" alt="No image">
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if obj.images.all.count > 1 %}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ obj.id }}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ obj.id }}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    {% if obj.images.all.count > 1 %}
+                    <div class="carousel-thumbnails">
+                        {% for image in obj.images.all|slice:":4" %}
+                        <img src="{{ image.image.url }}" 
+                             class="{% if forloop.first %}active{% endif %}"
+                             data-bs-target="#carousel{{ obj.id }}" 
+                             data-bs-slide-to="{{ forloop.counter0 }}"
+                             alt="Thumbnail {{ forloop.counter }}">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body py-3 px-3">
+                        <h5 class="card-title mb-2">{{ obj.mark }} {{ obj.model }}</h5>
+                        <p class="price-text mb-3">{{ obj.price|floatformat:0 }} $</p>
+
+                        <div class="d-flex flex-column gap-1">
+                            <p class="info-text mb-1">
+                                <i class="fas fa-calendar-alt" style="width: 16px; color: var(--text-secondary);"></i>
+                                {{ obj.year }} год
+                            </p>
+                            {% if obj.mileage %}
+                            <p class="info-text mb-1">
+                                <i class="fas fa-tachometer-alt" style="width: 16px; color: var(--text-secondary);"></i>
+                                {{ obj.mileage|floatformat:0 }} км
+                            </p>
+                            {% endif %}
+                            <p class="info-text mb-1">
+                                <i class="fas fa-map-marker-alt" style="width: 16px; color: var(--text-secondary);"></i>
+                                {{ obj.region }}
+                            </p>
+                            <p class="info-text mb-0" style="font-size: 0.75rem;">
+                                <i class="far fa-clock" style="width: 16px; color: var(--text-secondary);"></i>
+                                {{ obj.created_at|date:"d.m.Y" }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endwith %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="col-12 text-center py-5">
+        <p class="text-muted">Избранных объявлений еще нет.</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Логика для миниатюр -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.carousel-thumbnails img').forEach(function(thumbnail) {
+        thumbnail.addEventListener('click', function() {
+            const carouselId = this.getAttribute('data-bs-target');
+            const slideIndex = this.getAttribute('data-bs-slide-to');
+            const thumbnailContainer = this.parentElement;
+            thumbnailContainer.querySelectorAll('img').forEach(img => img.classList.remove('active'));
+            this.classList.add('active');
+            const carousel = document.querySelector(carouselId);
+            const bsCarousel = bootstrap.Carousel.getInstance(carousel) || new bootstrap.Carousel(carousel);
+            bsCarousel.to(parseInt(slideIndex));
+        });
+    });
+
+    document.querySelectorAll('.carousel').forEach(function(carousel) {
+        carousel.addEventListener('slid.bs.carousel', function(e) {
+            const carouselId = '#' + this.id;
+            const activeIndex = e.to;
+            const thumbnails = document.querySelectorAll('.carousel-thumbnails img[data-bs-target="' + carouselId + '"]');
+            thumbnails.forEach(function(thumb, index) {
+                if (index === activeIndex) {
+                    thumb.classList.add('active');
+                } else {
+                    thumb.classList.remove('active');
+                }
+            });
+        });
+    });
+});
+</script>
 {% endblock %}
 

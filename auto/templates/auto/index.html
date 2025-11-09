@@ -11,20 +11,16 @@
 {% endif %}
 
 <div class="container py-4" style="max-width: 1400px;">
-    <!-- Updated grid to use 4 columns on large screens with better spacing -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
         {% for car in cars %}
         <div class="col">
             <a href="{{ car.get_absolute_url }}" class="text-decoration-none">
                 <div class="card h-100 position-relative">
-                    <!-- Added urgent badge if car is urgent -->
                     {% if car.is_urgent %}
                     <span class="urgent-badge">Срочно</span>
                     {% endif %}
                     
-                    <!-- Improved carousel with indicators -->
                     <div id="carousel{{ car.id }}" class="carousel slide" data-bs-ride="false">
-                        <!-- Carousel indicators -->
                         {% if car.images.all.count > 1 %}
                         <div class="carousel-indicators" style="margin-bottom: 0.5rem;">
                             {% for image in car.images.all %}
@@ -50,7 +46,6 @@
                             {% endfor %}
                         </div>
                         
-                        <!-- Carousel controls only show on hover -->
                         {% if car.images.all.count > 1 %}
                         <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ car.id }}" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -76,14 +71,11 @@
                     </div>
                     {% endif %}
 
-                    <!-- Improved card body with better typography and icons -->
                     <div class="card-body py-3 px-3">
                         <h5 class="card-title mb-2">{{ car.mark }} {{ car.model }}</h5>
                         
-                        <!-- Prominent price styling -->
                         <p class="price-text mb-3">{{ car.price|floatformat:0 }} $</p>
                         
-                        <!-- Info with icons for better visual hierarchy -->
                         <div class="d-flex flex-column gap-1">
                             <p class="info-text mb-1">
                                 <i class="fas fa-calendar-alt" style="width: 16px; color: var(--text-secondary);"></i>

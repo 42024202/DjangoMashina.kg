@@ -17,18 +17,19 @@
                         </div>
                     </div>
 
-                    <button
-                        id="favorite-button"
-                        data-id="{{ car.id }}"
-                        class="btn btn-outline-primary w-100 mb-4 rounded-pill">
-                        <i class="fas fa-heart me-2"></i>
-                        {% if is_favorite %}
-                            Удалить из избранного
-                        {% else %}
-                            Добавить в избранное
-                        {% endif %}
-                    </button>
-
+                   <form action="{% url 'favorites:toggle_favorite' app_label model_name car.id %}" method="post" class="w-100 mb-4">
+                      {% csrf_token %}
+                      <button
+                          type="submit"
+                          class="btn {% if is_favorite %}btn-warning{% else %}btn-outline-primary{% endif %} w-100 rounded-pill">
+                          <i class="fas fa-heart me-2"></i>
+                          {% if is_favorite %}
+                              Удалить из избранного
+                          {% else %}
+                              Добавить в избранное
+                          {% endif %}
+                      </button>
+                    </form>
                   {% if is_owner %}
                     <a href="{% url 'auto:update_announcement' car.id %}"
                        class="btn btn-outline-primary w-100 mb-4 rounded-pill">

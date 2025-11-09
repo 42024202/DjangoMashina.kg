@@ -41,6 +41,7 @@ class StateNumber(models.Model):
     class Meta:
         verbose_name = 'Госномер'
         verbose_name_plural = 'Госномера'
+        ordering = ['-id']
 
 
 class StateNumberImage(models.Model):

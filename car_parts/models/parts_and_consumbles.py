@@ -6,7 +6,7 @@ from common.models import (
         )
 
 
-class PartsAndConsumbles(models.Model):
+class PartsAndConsumble(models.Model):
     profile = models.ForeignKey(
             CustomUser,
             models.CASCADE,
@@ -73,11 +73,12 @@ class PartsAndConsumbles(models.Model):
     class Meta:
         verbose_name = 'Запчасти и расходники'
         verbose_name_plural = 'Запчасти и расходники'
+        ordering = ['-id']
 
 
-class PartsAndConsumblesImages(models.Model):
+class PartsAndConsumblesImage(models.Model):
     parts_and_consumbles = models.ForeignKey(
-            PartsAndConsumbles,
+            PartsAndConsumble,
             on_delete=models.CASCADE,
             related_name='images',
             verbose_name='Запчасти и расходники'

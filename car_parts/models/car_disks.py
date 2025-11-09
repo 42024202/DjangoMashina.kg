@@ -19,49 +19,6 @@ class DiskType(models.Model):
         verbose_name_plural = "Типы дисков"
 
 
-class DiskWidth(models.Model):
-    width = models.PositiveSmallIntegerField(
-            verbose_name="Ширина дисков"
-            )
-
-    def __str__(self):
-        return f"{self.width} мм"
-
-    class Meta:
-        verbose_name = "Ширина диска"
-        verbose_name_plural = "Ширины дисков"
-
-
-class DiskHeight(models.Model):
-    height = models.DecimalField(
-            max_digits=4,
-            decimal_places=1,
-            verbose_name="Высота дисков"
-            )
-
-    def __str__(self):
-        return f"{self.height} мм"
-
-    class Meta:
-        verbose_name = "Высота диска"
-        verbose_name_plural = "Высота дисков"
-
-
-class DiskDiameter(models.Model):
-    diameter = models.DecimalField(
-            max_digits=4,
-            decimal_places=1,
-            verbose_name="Диаметр дисков"
-            )
-    
-    def __str__(self):
-        return f"{self.diameter} мм"
-
-    class Meta:
-        verbose_name = "Диаметр диска"
-        verbose_name_plural = "Диаметры дисков"
-
-
 class CarDisk(models.Model):
     profile = models.ForeignKey(
             CustomUser,
@@ -74,23 +31,16 @@ class CarDisk(models.Model):
             on_delete=models.PROTECT,
             verbose_name="Тип диска"
             )
-
-    disk_width = models.ForeignKey(
-            DiskWidth,
-            on_delete=models.PROTECT,
-            verbose_name="Ширина диска"
+    
+    fastener_driling = models.CharField(
+            max_length=30,
+            verbose_name="Крепеж/Сверловка"
             )
 
-    disk_height = models.ForeignKey(
-            DiskHeight,
-            on_delete=models.PROTECT,
-            verbose_name="Высота диска"
-            )
-
-    disk_diameter = models.ForeignKey(
-            DiskDiameter,
-            on_delete=models.PROTECT,
-            verbose_name="Диаметр диска"
+    disk_diameter = models.DecimalField(
+            max_digits=4,
+            decimal_places=1,
+            verbose_name="Диаметр дисков"
             )
 
     mark = models.ForeignKey(
@@ -155,6 +105,7 @@ class CarDisk(models.Model):
     class Meta:
         verbose_name = "Диск"
         verbose_name_plural = "Диски"
+        ordering = ['-id']
 
 
 class WheelImage(models.Model):
@@ -165,6 +116,7 @@ class WheelImage(models.Model):
             )
 
     image = models.ImageField(
-            upload_to='wheels/',
+            upload_to='car_disk/',
             verbose_name="Изображение"
+            )
 

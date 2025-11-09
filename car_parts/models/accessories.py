@@ -6,7 +6,7 @@ from common.models import (
             )
 
 
-class CarAccessories(models.Model):
+class CarAccessorie(models.Model):
     name = models.CharField(
             max_length=30,
             verbose_name='Название'
@@ -69,6 +69,8 @@ class CarAccessories(models.Model):
     class Meta:
         verbose_name = 'Аксессуар и мультимедиа'
         verbose_name_plural = 'Аксессуары и мультимедиа'
+        ordering = ['-id']
+        
 
 class CarAccessoriesImage(models.Model):
     image = models.ImageField(
@@ -77,7 +79,7 @@ class CarAccessoriesImage(models.Model):
             )
 
     accessories = models.ForeignKey(
-            CarAccessories, 
+            CarAccessorie, 
             on_delete=models.CASCADE, 
             related_name='images',
             )

@@ -6,7 +6,7 @@ from common.models import (
         )
 
 
-class CarForPart:
+class CarForPart(models.Model):
     profile = models.ForeignKey(
             CustomUser,
             on_delete=models.CASCADE,
@@ -76,12 +76,13 @@ class CarForPart:
     class Meta:
         verbose_name = "Машина на запчасти"
         verbose_name_plural = "Машины на запчасти"
+        ordering =['-id']
 
 
 class CarForPartImage(models.Model):
     car_for_parts = models.ForeignKey(
-            CarForPart,
-            models.CASCADE,
+            'car_parts.CarForPart',
+            on_delete=models.CASCADE,
             verbose_name='Машина на запчасти'
             )
     image = models.ImageField(

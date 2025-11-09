@@ -1,3 +1,4 @@
+from django.contrib.auth.models import ContentType
 from django.db import transaction 
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -41,14 +42,17 @@ class CarDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         car = self.get_object()
-        is_favorite = False
-        if self.request.user.is_authenticated:
-            is_favorite = Favorite.is_favorite(self.request.user, car)
         user = self.request.user
-
-        context['is_favorite'] = (self.request.user.is_authenticated and Favorite.is_favorite(self.request.user, car))
+        context['is_favorite'] = (
+                self.request.user.is_authenticated and
+                Favorite.objects.filter(
+                    user=user,
+                    content_type=ContentType.objects.get_for_model(car),
+                    object_id=car.id).exists()
+                )
+        context['app_label'] = car._meta.app_label
+        context['model_name'] = car._meta.model_name
         context['is_owner'] = user.is_authenticated and user == car.profile
-        context['is_favorite'] = is_favorite
         return context
 
 

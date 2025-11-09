@@ -2,7 +2,10 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from accounts.models import CustomUser
+from django.contrib.auth import get_user_model
 
+
+user = get_user_model()
 
 class Favorite(models.Model):
     """Users favorites announcements"""
@@ -27,14 +30,6 @@ class Favorite(models.Model):
             auto_now_add=True
             )
     
-    def is_favorite(user, obj):
-        """Check is favorite or not"""
-        ct = ContentType.objects.get_for_model(obj)
-        return Favorite.objects.filter(
-            user=user, 
-            content_type=ct, 
-            object_id=obj.pk).exists()
-        
     def __str__(self):
         return f"{self.user} → {self.content_object}"
 
@@ -47,5 +42,4 @@ class Favorite(models.Model):
 
         verbose_name = "Избранное"
         verbose_name_plural = "Избранное"
-
 
