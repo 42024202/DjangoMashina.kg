@@ -1,6 +1,7 @@
 from .domain.announcement import CarAnnouncement
 from .domain.car_images import CarImage
 from .domain.promotion import Tariff, Promotion
+from .domain.moto_announcement import MotoAnnouncement, TypeOfMotorcycle, MotoAnnouncementImage
 
 from .car_configs.car_config import CarConfig
 from .car_configs.body import Body

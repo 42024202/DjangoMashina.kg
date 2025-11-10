@@ -10,7 +10,7 @@ class CarImage(models.Model):
             )
 
     image = models.ImageField(
-            upload_to="car_images",
+            upload_to="car_images/",
             verbose_name="Фото"
             )
 

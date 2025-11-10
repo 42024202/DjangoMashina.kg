@@ -1,6 +1,6 @@
 from django.contrib.auth.models import ContentType
 from django.db import transaction 
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, DeleteView
 from django.urls import reverse_lazy
@@ -80,6 +80,12 @@ class MyAnnouncementsView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return CarAnnouncement.objects.filter(profile=self.request.user)
+
+
+def get_announcement_create(request):
+    """Show which form to use for creating an announcement."""
+    context = {}
+    return render(request, 'auto/choise_template_for_create.html', context)
 
 
 class CreateAnnouncementView(LoginRequiredMixin, MultiFormCreateView):

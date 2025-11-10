@@ -3,7 +3,7 @@ from .models import (
     CarAnnouncement, CarImage, Category, WheelType, Exchange,
     YearOfProduction, Color, Registration, CustomClearence, Body,
     EngineType, EngineCapacity, Transmission, Drive, CarConfig,
-    Promotion, Tariff
+    Promotion, Tariff, TypeOfMotorcycle, MotoAnnouncement, MotoAnnouncementImage,
 )
 
 
@@ -30,6 +30,22 @@ class CarImageInline(admin.TabularInline):
     extra = 1
 
 CarAnnouncementAdmin.inlines = [CarImageInline]
+
+@admin.register(TypeOfMotorcycle)
+class TypeOfMotorcycleAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+@admin.register(MotoAnnouncement)
+class MotoAnnouncementAdmin(admin.ModelAdmin):
+    list_display = ('profile', 'type_of_moto', 'mark', 'model', 'generation', 'price', 'created_at')
+    search_fields = ('mark__name', 'model__name')
+
+class MotoAnnouncementImageInline(admin.TabularInline):
+    model = MotoAnnouncementImage
+    extra = 1
+
+MotoAnnouncementAdmin.inlines = [MotoAnnouncementImageInline]
 
 
 @admin.register(Tariff)

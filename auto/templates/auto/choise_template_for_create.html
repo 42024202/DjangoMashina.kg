@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h2 class="mb-4">Выберите категорию объявления для публикации</h2>
+
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+
+        <a href="{% url 'auto:create_announcement' %}" class="btn btn-outline-primary btn-lg px-4 py-3">
+            🚗 Легковые
+        </a>
+
+        <a href="{% url 'auto:create_announcement' %}" class="btn btn-outline-primary btn-lg px-4 py-3">
+            🚚 Коммерческие
+        </a>
+
+        <a href="{% url 'auto:create_announcement' %}" class="btn btn-outline-primary btn-lg px-4 py-3">
+            ⚙️ Спецтехника
+        </a>
+
+        <a href="{% url 'auto:index' %}" class="btn btn-outline-primary btn-lg px-4 py-3">
+            🏍️ Мото
+        </a>
+
+        <a href="{% url 'auto:index' %}" class="btn btn-outline-primary btn-lg px-4 py-3">
+            🛠️ Услуги
+        </a>
+
+    </div>
+</div>
+{% endblock %}
+
