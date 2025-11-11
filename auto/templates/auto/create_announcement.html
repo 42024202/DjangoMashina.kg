@@ -33,7 +33,7 @@
             </div>
         {% endif %}
 
-
+        {% if forms.config %}
         <!-- Форма конфигурации автомобиля -->
         <div class="card mb-4">
             <div class="card-header bg-light">
@@ -53,6 +53,7 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
 
         <!-- Основная информация об объявлении -->
         <div class="card mb-4">

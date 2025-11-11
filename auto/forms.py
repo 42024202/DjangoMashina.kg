@@ -1,7 +1,7 @@
 from .models import (Category, WheelType, Exchange,
 YearOfProduction, Color, Registration, CustomClearence,
 Body, EngineCapacity, EngineType, Transmission, Drive, CarConfig,
-CarAnnouncement, CarImage, Promotion, Tariff
+CarAnnouncement, CarImage, MotoAnnouncement, MotoAnnouncementImage, Promotion, Tariff
         )
 from django import forms
 
@@ -184,6 +184,24 @@ class CarImageForm(forms.ModelForm):
         widgets = {
             'image': MultiFileInput(attrs={'multiple': True, 'class': 'form-control'}),
         }
+
+"""Motocyrcle forms"""
+class MotoAnnouncementForm(forms.ModelForm):
+    class Meta:
+        model = MotoAnnouncement
+        exlclude = ['profile', 'created_at']
+        fields = ['type_of_moto', 'mark', 'model', 'generation', 'price', 'region', 'city']
+
+
+class MotoImageForm(forms.ModelForm):
+    image = forms.ImageField(required=False)
+    class Meta:
+        model = MotoAnnouncementImage
+        fields = ['image']
+        widhets = {
+                'image': MultiFileInput(attrs={'multiple': True, 'class': 'form-control'})
+        }
+
 
 
 class TariffForm(forms.ModelForm):

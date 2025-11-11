@@ -2,13 +2,13 @@ from django.contrib.auth.models import ContentType
 from django.db import transaction 
 from django.shortcuts import redirect, get_object_or_404, render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, DeleteView
+from django.views.generic import ListView, DetailView, DeleteView, CreateView
 from django.urls import reverse_lazy
-from .models import CarAnnouncement, CarImage, Category
+from .models import CarAnnouncement, CarImage, Category, MotoAnnouncement, MotoAnnouncementImage
 from .models.car_configs.car_config import CarConfig
 from .filters import CarAnnouncementFilter
 from favorites.models import Favorite
-from .forms import CarAnnouncementForm, CarConfigForm, CarImageForm
+from .forms import CarAnnouncementForm, CarConfigForm, CarImageForm, MotoAnnouncementForm, MotoImageForm
 from .services.multi_form_mixin import MultiFormCreateView, MulriFormUpdateView
 from django.core.exceptions import PermissionDenied
 
@@ -132,6 +132,13 @@ class CreateAnnouncementView(LoginRequiredMixin, MultiFormCreateView):
             for img in self.request.FILES.getlist('images'):
                 CarImage.objects.create(announcement=car_announcement, image=img)
         return redirect(self.success_url)
+
+
+class CreateMotoAnnouncementView(LoginRequiredMixin, CreateView):
+    model = MotoAnnouncement
+    form_class = MotoAnnouncementForm
+    template_name = 'auto/create_announcement.html'
+    success_url = reverse_lazy('auto:index')
 
 
 class UpdateAnnouncementView(LoginRequiredMixin, MulriFormUpdateView):
