@@ -117,3 +117,17 @@ class Generation(models.Model):
         verbose_name = 'Поколение'
         verbose_name_plural = 'Поколение'
 
+
+class MotoSeries(models.Model):
+    series = models.CharField(
+            max_length=30, 
+            verbose_name='Серия'
+            )
+
+    def __str__(self):
+        return f"{self.series}"
+
+    class Meta:
+        verbose_name = 'Серия мото'
+        verbose_name_plural = 'Серии мото'
+

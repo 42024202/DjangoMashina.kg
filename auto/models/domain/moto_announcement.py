@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from common.models import Mark, Model, Region, City, Condition, Availability, Generation
-
+from common.models import Mark, Model, Region, City, Condition, Availability, MotoSeries
+from ..shared.characters import Color, Exchange, YearOfProduction, Registration, CustomClearence
 
 User = get_user_model()
 
@@ -45,16 +45,44 @@ class MotoAnnouncement(models.Model):
             verbose_name="Модель"
             )
 
-    generation = models.ForeignKey(
-            Generation,
+    series = models.ForeignKey(
+            MotoSeries,
             on_delete=models.PROTECT,
             verbose_name="Серия"
+            )
+
+    year_of_production = models.ForeignKey(
+            YearOfProduction,
+            on_delete=models.PROTECT,
+            verbose_name="Год выпуска"
+            )
+
+    car_mileage = models.PositiveIntegerField(
+            verbose_name="Пробег (км)"
+            )
+
+    color = models.ForeignKey(
+            Color,
+            on_delete=models.PROTECT,
+            verbose_name="Цвет",
             )
 
     price = models.DecimalField(
             max_digits=9,
             decimal_places=2,
-            verbose_name="Цена (сом)"
+            verbose_name="Цена ($)"
+            )
+
+    condition = models.ForeignKey(
+            Condition,
+            on_delete=models.PROTECT,
+            verbose_name="Состояние"
+            )
+
+    availability = models.ForeignKey(
+            Availability,
+            on_delete=models.PROTECT,
+            verbose_name="Доступность"
             )
 
     region = models.ForeignKey(
@@ -69,10 +97,39 @@ class MotoAnnouncement(models.Model):
             verbose_name="Город"
             )
 
+    exchange = models.ForeignKey(
+            Exchange,
+            on_delete=models.PROTECT,
+            verbose_name="Обмен"
+            )
+
+    registration = models.ForeignKey(
+            Registration,
+            on_delete=models.PROTECT,
+            verbose_name="Регистрация"
+            )
+
+    custom_clearence = models.ForeignKey(
+            CustomClearence,
+            on_delete=models.PROTECT,
+            verbose_name="Растаможка"
+            )
+
+    urgency = models.BooleanField(
+            default=False,
+            verbose_name="Срочно"
+            )
+
+    description = models.TextField(
+            verbose_name="Описание",
+            blank=True,
+            null=True
+            )
+
     created_at = models.TimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.mark} {self.model} {self.generation}"
+        return f"{self.mark} {self.model} {self.series}"
 
 
     class Meta:

@@ -38,7 +38,7 @@ class TypeOfMotorcycleAdmin(admin.ModelAdmin):
 
 @admin.register(MotoAnnouncement)
 class MotoAnnouncementAdmin(admin.ModelAdmin):
-    list_display = ('profile', 'type_of_moto', 'mark', 'model', 'generation', 'price', 'created_at')
+    list_display = ('profile', 'type_of_moto', 'mark', 'model', 'price', 'created_at')
     search_fields = ('mark__name', 'model__name')
 
 class MotoAnnouncementImageInline(admin.TabularInline):
@@ -89,7 +89,7 @@ class YearOfProductionAdmin(admin.ModelAdmin):
 
 @admin.register(Color)
 class ColorAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('id', 'name')
 
 
 @admin.register(Registration)
@@ -99,17 +99,17 @@ class RegistrationAdmin(admin.ModelAdmin):
 
 @admin.register(CustomClearence)
 class CustomClearenceAdmin(admin.ModelAdmin):
-    list_display = ('custom_clearence',)
+    list_display = ('id', 'custom_clearence')
 
 
 @admin.register(Body)
 class BodyAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('id', 'name')
 
 
 @admin.register(EngineType)
 class EngineTypeAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('id', 'name')
 
 
 @admin.register(EngineCapacity)

@@ -140,6 +140,10 @@ class CreateMotoAnnouncementView(LoginRequiredMixin, CreateView):
     template_name = 'auto/create_announcement.html'
     success_url = reverse_lazy('auto:index')
 
+    def form_valid(self, form):
+        form.instance.profile = self.request.user
+        return super().form_valid(form)
+
 
 class UpdateAnnouncementView(LoginRequiredMixin, MulriFormUpdateView):
     model = CarAnnouncement
