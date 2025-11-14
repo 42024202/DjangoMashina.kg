@@ -126,7 +126,7 @@ class MotoAnnouncement(models.Model):
             null=True
             )
 
-    created_at = models.TimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.mark} {self.model} {self.series}"
@@ -144,11 +144,12 @@ class MotoAnnouncementImage(models.Model):
         moto_announcement = models.ForeignKey(
                 MotoAnnouncement,
                 on_delete=models.CASCADE,
+                related_name="images",
                 verbose_name="Объявление о мототранспорте"
                 )
         
         image = models.ImageField(
                 upload_to="moto_announcements/",
-                verbose_name="Изображение"
+                verbose_name="Изображение",
                 )
 

@@ -11,18 +11,26 @@ from favorites.models import Favorite
 from .forms import CarAnnouncementForm, CarConfigForm, CarImageForm, MotoAnnouncementForm, MotoImageForm
 from .services.multi_form_mixin import MultiFormCreateView, MulriFormUpdateView
 from django.core.exceptions import PermissionDenied
+from itertools import chain
+from operator import attrgetter
 
 
 class IndexView(ListView):
     model = CarAnnouncement
     template_name = 'auto/index.html'
     context_object_name = 'cars'
+    paginate_by = 20
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        if self.request.GET.get('urgent') == '1':
-            queryset = queryset.filter(urgency=True)
-        return queryset
+        car_announcements = CarAnnouncement.objects.all()
+        moto_announcement = MotoAnnouncement.objects.all()
+        combined = sorted(
+                chain(car_announcements, moto_announcement), 
+                key=attrgetter('created_at'),
+                reverse=True
+            )
+        return combined
+     
 
 
 class CarDetailView(DetailView):

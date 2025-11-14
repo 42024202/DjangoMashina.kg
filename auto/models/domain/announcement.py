@@ -82,7 +82,9 @@ class CarAnnouncement(models.Model):
             )
 
     description = models.TextField(
-            verbose_name="Описание"
+            verbose_name="Описание",
+            blank=True,
+            null=True
             )
 
     created_at = models.DateTimeField(
