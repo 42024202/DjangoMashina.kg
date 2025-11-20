@@ -15,7 +15,6 @@ from .views.crud_views.delete_announcements_view import DeleteAnnouncementView
 
 
 app_name = 'auto'
-
 urlpatterns = [
     #Index and Category urls
     path("", IndexView.as_view(), name="index"),
