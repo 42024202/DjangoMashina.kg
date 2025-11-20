@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.text import slugify
 from common.models import Mark, Model, Region, City, Condition, Availability, MotoSeries
 from ..shared.characters import Color, Exchange, YearOfProduction, Registration, CustomClearence
+from django.utils.text import slugify
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -25,6 +28,11 @@ class MotoAnnouncement(models.Model):
             User,
             on_delete=models.CASCADE,
             verbose_name="Профиль"
+            )
+
+    slug = models.SlugField(
+            max_length=50,
+            blank=True,
             )
 
     type_of_moto = models.ForeignKey(
@@ -128,8 +136,19 @@ class MotoAnnouncement(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        creating = self.pk is None
+        super().save(*args, **kwargs)
+        if creating and not self.slug:
+            base_slug = slugify(f"{self.mark}-{self.model}-{self.series}")
+            self.slug = base_slug
+            super().save(update_fields=["slug"])
+       
     def __str__(self):
         return f"{self.mark} {self.model} {self.series}"
+
+    def get_absolute_url(self):
+        return reverse("auto:moto_detail", kwargs={"moto_id": self.id, "moto_slug": self.slug})
 
 
     class Meta:

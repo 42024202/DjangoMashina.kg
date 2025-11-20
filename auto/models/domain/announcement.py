@@ -7,6 +7,7 @@ from ..shared.characters import (
 from ..car_configs.car_config import CarConfig
 from django.utils import timezone
 from django.utils.text import slugify
+from django.urls import reverse
 
 
 class CarAnnouncement(models.Model):

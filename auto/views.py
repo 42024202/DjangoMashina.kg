@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.contrib.auth.models import ContentType
 from django.db import transaction 
 from django.shortcuts import redirect, get_object_or_404, render
@@ -60,6 +61,38 @@ class CarDetailView(DetailView):
                 )
         context['app_label'] = car._meta.app_label
         context['model_name'] = car._meta.model_name
+        context['is_owner'] = user.is_authenticated and user == car.profile
+        return context
+
+
+class MotoDetailView(DetailView):
+    """Detail view for moto_announcements"""
+    model = MotoAnnouncement
+    template_name = 'auto/moto_detail.html'
+    context_object_name = 'car'
+    pk_url_kwarg = 'moto_id'
+    slug_url_kwarg = 'moto_slug'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(
+            MotoAnnouncement,
+            id=self.kwargs['moto_id'],
+            slug=self.kwargs['moto_slug']
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        car = self.get_object()
+        user = self.request.user
+        context['is_favorite'] = (
+                self.request.user.is_authenticated and
+                Favorite.objects.filter(
+                    user=user,
+                    content_type=ContentType.objects.get_for_model(car),
+                    object_id=car.id).exists()
+                )
+        context['app_label'] = car._meta.app_label
+        context['model_name'] = car._meta.object_name
         context['is_owner'] = user.is_authenticated and user == car.profile
         return context
 
@@ -177,18 +210,19 @@ class UpdateAnnouncementView(LoginRequiredMixin, MulriFormUpdateView):
 
 
 class DeleteAnnouncementView(LoginRequiredMixin, DeleteView):
-    model = CarAnnouncement
+    """Universal view for deleting announcement."""
     template_name = 'auto/delete_confirmation.html'
     success_url = reverse_lazy('auto:get_my_announcements')
-    pk_url_kwarg = 'car_id'
 
-    def get(self, request, *args, **kwargs):
-        print("DEBUG: DeleteAnnouncementView GET вызван")
-        return super().get(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+            model_name = kwargs["model_name"].lower()
+            pk = kwargs["pk"]
 
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset)
-        if obj.profile != self.request.user:
-            raise PermissionDenied("Вы не можете удалить это объявление.")
-        return obj
+            self.model = apps.get_model("auto", model_name)
+            self.object = get_object_or_404(self.model, pk=pk)
+
+            return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+            return reverse_lazy("auto:index")
 
