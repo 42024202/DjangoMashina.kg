@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models.functions.math import Log
 from django.views.generic import View, ListView
+from auto.models import CarAnnouncement
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, redirect
 from .models import Favorite 
@@ -33,3 +33,18 @@ class FavoriteListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Favorite.objects.filter(user=self.request.user).select_related('content_type')
     
+
+class MyAnnouncementsView(LoginRequiredMixin, ListView):
+    template_name = 'favorites/my_announcements.html'
+    context_object_name = 'my_cars'
+
+    def get_queryset(self):
+        return CarAnnouncement.objects.filter(profile=self.request.user)
+
+
+def get_announcement_create(request):
+    """Show which form to use for creating an announcement."""
+    context = {}
+    return render(request, 'auto/choise_template_for_create.html', context)
+
+

@@ -6,5 +6,8 @@ app_name = 'favorites'
 urlpatterns = [
     path('', views.FavoriteListView.as_view(), name='favorites'),
     path('toggle/<str:app_label>/<str:model_name>/<int:object_id>/', views.ToggleFavoriteView.as_view(), name='toggle_favorite'),
+    path('get_my_announcements/', views.MyAnnouncementsView.as_view(), name='get_my_announcements'),
+
+
     ]
 
