@@ -10,7 +10,7 @@ class UpdateCarAnnouncementView(LoginRequiredMixin, MulriFormUpdateView):
     model = CarAnnouncement
     template_name = 'auto/create_announcement.html'
     pk_url_kwarg = 'car_id'
-    success_url = reverse_lazy('auto:get_my_announcements')
+    success_url = reverse_lazy('favorites:get_my_announcements')
     form_class = CarAnnouncementForm
     form_classes = {
             'announcement': CarAnnouncementForm,

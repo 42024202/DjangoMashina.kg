@@ -10,6 +10,7 @@ from .views.crud_views.car_detail_view import CarDetailView
 from .views.crud_views.moto_detail_view import MotoDetailView
 
 from .views.crud_views.update_car_view import UpdateCarAnnouncementView
+from .views.crud_views.update_moto_view import UpdateMotoAnnouncementView
 
 from .views.crud_views.delete_announcements_view import DeleteAnnouncementView
 
@@ -32,6 +33,7 @@ urlpatterns = [
 
     #update urls
     path('update_car_announcement/<int:car_id>/', UpdateCarAnnouncementView.as_view(), name='update_car_announcement'),
+    path('update_moto_announcement/<int:moto_id>/', UpdateMotoAnnouncementView.as_view(), name='update_moto_announcement'),
 
     #delete ursl
     path('delete_announcement/<str:model_name>/<int:pk>/', DeleteAnnouncementView.as_view(), name='delete_announcement'),

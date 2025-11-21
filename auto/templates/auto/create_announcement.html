@@ -4,58 +4,41 @@
 {% block content %}
 <div class="container mt-5">
     {% if updating %}
-    <h2 class="mb-4">Редактирование объявления</h2>
+        <h2 class="mb-4">Редактирование объявления</h2>
     {% else %}
-    <h2 class="mb-4">Создание нового объявления</h2>
+        <h2 class="mb-4">Создание нового объявления</h2>
     {% endif %}
 
+    <!-- Единственная корректная форма -->
     <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
         {% csrf_token %}
 
         <!-- Ошибки формы -->
         {% if form.non_field_errors %}
-            <div class="alert alert-danger">
-                {{ form.non_field_errors }}
-            </div>
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
         {% endif %}
-
-        {% if forms.config.errors %}
-            <div class="alert alert-danger mt-3">
-                <h6>Ошибки в конфигурации:</h6>
-                {{ forms.config.errors }}
-            </div>
-        {% endif %}
-
-        {% if forms.announcement.errors %}
-            <div class="alert alert-danger mt-3">
-                <h6>Ошибки в объявлении:</h6>
-                {{ forms.announcement.errors }}
-            </div>
-        {% endif %}
-
         {% if forms.config %}
-        <!-- Форма конфигурации автомобиля -->
-        <div class="card mb-4">
-            <div class="card-header bg-light">
-                <h5 class="mb-0">Конфигурация автомобиля</h5>
-            </div>
-            <div class="card-body">
-                {% for field in forms.config %}
-                    <div class="mb-3">
-                        {{ field.label_tag }}
-                        {{ field }}
-                        {% if field.errors %}
-                            <div class="text-danger small">
-                                {{ field.errors }}
-                            </div>
-                        {% endif %}
+                <!-- Форма конфигурации автомобиля -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Конфигурация автомобиля</h5>
                     </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- Основная информация об объявлении -->
+                    <div class="card-body">
+                        {% for field in forms.config %}
+                            <div class="mb-3">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="text-danger small">
+                                        {{ field.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+        <!-- Основные поля объявления -->
         <div class="card mb-4">
             <div class="card-header bg-light">
                 <h5 class="mb-0">Информация об объявлении</h5>
@@ -66,44 +49,51 @@
                         {{ field.label_tag }}
                         {{ field }}
                         {% if field.errors %}
-                            <div class="text-danger small">
-                                {{ field.errors }}
-                            </div>
+                            <div class="text-danger small">{{ field.errors }}</div>
                         {% endif %}
                     </div>
                 {% endfor %}
             </div>
         </div>
 
-     <div class="card mb-4">
+        <!-- Фото -->
+        <div class="card mb-4">
             <div class="card-header bg-light">
-                <h5 class="mb-0">Фотографии автомобиля</h5>
+                <h5 class="mb-0">Фотографии</h5>
             </div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <input type="file" name="images" id="id_images" multiple>
-                    {{ forms.images.image.label_tag }}
-                    {% if forms.images.image.errors %}
-                        <div class="text-danger small">
-                            {{ forms.images.image.errors }}
-                        </div>
-                    {% endif %}
-                </div>
 
-                <div id="preview-container" class="row"></div>
+            <div class="card-body">
+
+                {% if updating %}
+                    <h6>Текущие фото</h6>
+                    {% for img in images %}
+                        <div class="mb-3">
+                            <img src="{{ img.image.url }}" width="150">
+                            <label>
+                                <input type="checkbox" name="delete_images" value="{{ img.id }}">
+                                удалить
+                            </label>
+                        </div>
+                    {% endfor %}
+                    <hr>
+                {% endif %}
+
+                <h6>Добавить новые:</h6>
+                <input type="file" name="images" multiple class="form-control">
+
+                <div id="preview-container" class="row mt-3"></div>
             </div>
         </div>
 
-        <!-- Кнопка отправки -->
+        <!-- кнопка -->
         {% if updating %}
-        <button type="submit" class="btn btn-primary w-100">Редактировать объявление</button>
+            <button type="submit" class="btn btn-primary w-100">Сохранить изменения</button>
         {% else %}
-        <button type="submit" class="btn btn-primary w-100">Создать объявление</button>
+            <button type="submit" class="btn btn-primary w-100">Создать объявление</button>
         {% endif %}
     </form>
 </div>
 
-<!-- JS для предпросмотра -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const input = document.querySelector('input[name="images"]');
@@ -111,13 +101,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (input) {
         input.addEventListener('change', function() {
-            previewContainer.innerHTML = ''; // очистить старые превью
+            previewContainer.innerHTML = '';
             Array.from(this.files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const col = document.createElement('div');
                     col.classList.add('col-md-3', 'mb-3');
-                    col.innerHTML = `<img src="${e.target.result}" class="img-thumbnail shadow-sm" alt="preview">`;
+                    col.innerHTML = `<img src="${e.target.result}" class="img-thumbnail shadow-sm">`;
                     previewContainer.appendChild(col);
                 };
                 reader.readAsDataURL(file);
@@ -126,5 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
 {% endblock %}
 
