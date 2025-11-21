@@ -8,8 +8,6 @@
     {% else %}
         <h2 class="mb-4">Создание нового объявления</h2>
     {% endif %}
-
-    <!-- Единственная корректная форма -->
     <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
         {% csrf_token %}
 

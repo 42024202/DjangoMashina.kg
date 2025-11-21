@@ -1,6 +1,8 @@
 from django.views.generic.edit import CreateView, UpdateView
 from ..models import CarImage
 from django.shortcuts import render, redirect
+from typing import Dict, Type
+from django.forms import ModelForm
 
 
 class MultiFormCreateView(CreateView):
@@ -8,7 +10,7 @@ class MultiFormCreateView(CreateView):
     Extended CreateView supporting multiple forms,
     expect atribute form_classes
     """
-    form_classes = {}
+    form_classes:Dict[str, Type[ModelForm]] = {}
     prefixes = {}
     success_url = None
 
@@ -45,10 +47,15 @@ class MultiFormCreateView(CreateView):
 
 
  
-class MulriFormUpdateView(MultiFormCreateView ,UpdateView):
-    """Extended UpdateView supporting multiple forms"""
+class MulriFormUpdateView(UpdateView):
+    """
+    UpdateView supporting multiple forms,
+    but does NOT handle images — this is for ImageFormMixin.
+    """
+    form_classes = {}
+    prefixes = {}
+
     def get_forms(self):
-        """initializate all forms"""
         forms = {}
         for key, form_class in self.form_classes.items():
             prefix = self.prefixes.get(key)
@@ -69,28 +76,36 @@ class MulriFormUpdateView(MultiFormCreateView ,UpdateView):
                 )
             else:
                 forms[key] = form_class(instance=instance, prefix=prefix)
+
         return forms
 
     def post(self, request, *args, **kwargs):
-        """Обработка POST-запроса"""
         self.object = self.get_object()
         self.forms = self.get_forms()
+
         if all(form.is_valid() for form in self.forms.values()):
             return self.forms_valid(self.forms)
+
         return self.forms_invalid(self.forms)
 
     def forms_valid(self, forms):
-        """Что делать, если все формы валидны"""
+        """
+        Save announcement + config only.
+        DO NOT save images here.
+        """
         announcement_form = forms['announcement']
         config_form = forms['config']
 
         car_config = config_form.save()
+
         car_announcement = announcement_form.save(commit=False)
         car_announcement.car_config = car_config
         car_announcement.save()
 
-        for img in self.request.FILES.getlist('images'):
-            CarImage.objects.create(announcement=car_announcement, image=img)
+        self.object = car_announcement
 
-        return redirect(self.success_url)
+        return super().form_valid(announcement_form)
+
+    def forms_invalid(self, forms):
+        return self.render_to_response(self.get_context_data(forms=forms))
 
