@@ -5,7 +5,7 @@ from django import forms
 class MotoAnnouncementForm(forms.ModelForm):
     class Meta:
         model = MotoAnnouncement
-        exlclude = ['profile', 'created_at']
+        exclude = ['profile', 'created_at']
         fields = ['type_of_moto', 'mark', 'model', 'series',
                   'year_of_production', 'car_mileage', 'color',
                   'price', 'condition', 'availability',
@@ -43,7 +43,7 @@ class MotoImageForm(forms.ModelForm):
     class Meta:
         model = MotoAnnouncementImage
         fields = ['image']
-        widhets = {
+        widgets = {
                 'image': MultiFileInput(attrs={'multiple': True, 'class': 'form-control'})
         }
 

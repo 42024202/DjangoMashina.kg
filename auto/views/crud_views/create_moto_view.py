@@ -14,5 +14,14 @@ class CreateMotoAnnouncementView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.profile = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+
+        images = self.request.FILES.getlist('images')
+        for image in images:
+            MotoAnnouncementImage.objects.create(
+                    moto_announcement=self.object,
+                    image=image
+                    )
+
+        return response
 
