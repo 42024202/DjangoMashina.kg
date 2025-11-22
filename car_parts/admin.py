@@ -1,11 +1,11 @@
 from django.contrib import admin
 from .models.parts_and_consumbles import PartsAndConsumble, PartsAndConsumblesImage
-from .models.car_disks import DiskType, CarDisk, WheelImage
+from .models.car_disks import DiskType, CarDisk, CarDiskImage
 from .models.accessories import CarAccessorie, CarAccessoriesImage
 from .models.oils import CarOil, CarOilsImage
 from .models.car_for_parts import CarForPart, CarForPartImage
 from .models.state_numbers import StateNumber, StateNumberImage
-from .models.car_tires import TireType, CarTire
+from .models.car_tires import TireType, CarTire, CarTireImage
 
 
 """Parts and Consumbles"""
@@ -18,16 +18,16 @@ class PartsAndConsumblesImageInline(admin.TabularInline):
 
 @admin.register(PartsAndConsumble)
 class PartsAndConsumbleAdmin(admin.ModelAdmin):
-    list_display = ['profile', 'mark', 'model', 'price']
+    list_display = ['profile', 'mark', 'model', 'price', 'created_at']
     list_filter = ['mark', 'model', 'profile']
     search_fields = ['mark', 'model']
-    ordering = ['-id']
+    ordering = ['-id', 'created_at']
     inlines = [PartsAndConsumblesImageInline]
 
 
 """Car disks"""
-class WheelImageInline(admin.TabularInline):
-    model = WheelImage 
+class CarDiskImageInline(admin.TabularInline):
+    model = CarDiskImage
     extra = 1
     min_num = 0
     max_num = 10
@@ -41,10 +41,10 @@ class DiskTypeAdmin(admin.ModelAdmin):
 
 @admin.register(CarDisk)
 class CarDiskAdmin(admin.ModelAdmin):
-    list_display = ['id', 'profile', 'mark', 'model', 'fastener_driling', 'price']
+    list_display = ['id', 'profile', 'mark', 'model', 'fastener_driling', 'price', 'created_at']
     search_fields = ['id', 'mark', 'model']
-    ordering = ['-id']
-    inlines = [WheelImageInline]
+    ordering = ['-id', 'created_at']
+    inlines = [CarDiskImageInline]
 
 
 """Car accessories"""
@@ -56,9 +56,9 @@ class CarAccessoriesImageInline(admin.TabularInline):
 
 @admin.register(CarAccessorie)
 class CarAccessorieAdmin(admin.ModelAdmin):
-    list_display = ['id', 'profile', 'mark', 'model', 'price']
+    list_display = ['id', 'profile', 'mark', 'model', 'price', 'created_at']
     search_fields = ['id', 'mark', 'model']
-    ordering = ['-id']
+    ordering = ['-id', 'created_at']
     inlines = [CarAccessoriesImageInline]
 
 
@@ -72,9 +72,9 @@ class CarOilsImageInline(admin.TabularInline):
 
 @admin.register(CarOil)
 class CarOilAdmin(admin.ModelAdmin):
-    list_display = ['id', 'profile', 'mark', 'model', 'price']
+    list_display = ['id', 'profile', 'mark', 'model', 'price', 'created_at']
     search_fields = ['id', 'mark', 'model']
-    ordering = ['-id']
+    ordering = ['-id', 'created_at']
     inlines = [CarOilsImageInline]
 
 
@@ -88,9 +88,9 @@ class CarForPartImageInline(admin.TabularInline):
 
 @admin.register(CarForPart)
 class CarForPartAdmin(admin.ModelAdmin):
-    list_display = ['profile', 'mark', 'model', 'price', 'city']
+    list_display = ['profile', 'mark', 'model', 'price', 'city', 'created_at']
     search_fields = ['mark', 'model', 'city']
-    ordering = ['-id']
+    ordering = ['-id', 'created_at']
 
 
 """State numbers"""
@@ -103,15 +103,15 @@ class StateNumberImageInline(admin.TabularInline):
 
 @admin.register(StateNumber)
 class StateNumberAdmin(admin.ModelAdmin):
-    list_display = ['id', 'profile', 'number', 'price']
+    list_display = ['id', 'profile', 'number', 'price', 'created_at']
     search_fields = ['id', 'number']
-    ordering = ['-id']
+    ordering = ['-id', 'created_at']
     inlines = [StateNumberImageInline]
 
 
 """Car tires"""
 class CarTireImageInline(admin.TabularInline):
-    model = CarTire
+    model = CarTireImage
     extra = 1
     min_num = 0
     max_num = 10
@@ -119,9 +119,9 @@ class CarTireImageInline(admin.TabularInline):
 
 @admin.register(CarTire)
 class CarTireAdmin(admin.ModelAdmin):
-    list_display = ['id', 'profile', 'car_tire_type', 'tire_size', 'price']
+    list_display = ['id', 'profile', 'car_tire_type', 'tire_size', 'price', 'created_at']
     search_fields = ['id', 'car_tire_type', 'tire_size']
-    ordering = ['-id']
+    ordering = ['-id', 'created_at']
     inlines = [CarTireImageInline]
 
 

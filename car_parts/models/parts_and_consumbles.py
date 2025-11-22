@@ -67,6 +67,17 @@ class PartsAndConsumble(models.Model):
             null=True,
             verbose_name='Описание'
             )
+
+    created_at = models.DateTimeField(
+            auto_now_add=True,
+            verbose_name='Дата создания'
+            )
+
+    updated_at = models.DateTimeField(
+            auto_now=True,
+            verbose_name='Дата изменения'
+            )
+
     def __str__(self):
         return f"Запчасти на {self.mark} {self.model} {self.generation}"
     
@@ -84,7 +95,7 @@ class PartsAndConsumblesImage(models.Model):
             verbose_name='Запчасти и расходники'
             )
     images = models.ImageField(
-                upload_to="parts_and_consumbles_images/",
+                upload_to="parts_consumbles_images/",
                 verbose_name="Фото запчастей и расходников"
                 )
     def __str__(self):

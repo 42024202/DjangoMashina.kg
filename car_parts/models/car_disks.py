@@ -98,6 +98,16 @@ class CarDisk(models.Model):
     description = models.TextField(
             verbose_name="Описание"
             )
+
+    created_at = models.DateTimeField(
+            auto_now_add=True,
+            verbose_name="Дата создания"
+            )
+
+    updated_at = models.DateTimeField(
+            auto_now=True,
+            verbose_name="Дата изменения"
+            )
     
     def __str__(self):
         return f"Диски {self.mark} {self.model} {self.generation}"
@@ -108,7 +118,7 @@ class CarDisk(models.Model):
         ordering = ['-id']
 
 
-class WheelImage(models.Model):
+class CarDiskImage(models.Model):
     disk = models.ForeignKey(
             CarDisk,
             on_delete=models.CASCADE,

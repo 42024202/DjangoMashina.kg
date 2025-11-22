@@ -63,6 +63,16 @@ class CarAccessorie(models.Model):
             verbose_name='Описание'
             )
 
+    created_at = models.DateTimeField(
+            auto_now_add=True,
+            verbose_name='Дата создания'
+            )
+
+    updated_at = models.DateTimeField(
+            auto_now=True,
+            verbose_name='Дата обновления'
+            )
+
     def __str__(self):
         return f"{self.name} {self.mark} {self.model} {self.generation}"
 

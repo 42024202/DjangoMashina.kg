@@ -2,7 +2,6 @@ from django.db import models
 from accounts.models import CustomUser
 from common.models import (
         Mark, Model, Generation,
-        Region, City, Condition, Availability
         )
 
 
@@ -11,6 +10,10 @@ class TireType(models.Model):
             max_length=30,
             verbose_name='Тип шин'
             )
+
+    class Meta: 
+        verbose_name = 'Тип шин'
+        verbose_name_plural = 'Типы шин'
 
 
 class CarTire(models.Model):
@@ -64,6 +67,20 @@ class CarTire(models.Model):
             on_delete=models.PROTECT,
             verbose_name='Поколение'
             )
+
+    description = models.TextField(
+            verbose_name='Описание'
+            )
+
+    created_at = models.DateTimeField(
+            auto_now_add=True,
+            verbose_name='Дата создания'
+            )
+
+    updated_at = models.DateTimeField(
+            auto_now=True,
+            verbose_name='Дата изменения'
+            )
     
     def str(self):
         return f"{self.car_tire_type}  {self.tire_size}"
@@ -83,7 +100,7 @@ class CarTireImage(models.Model):
             )
 
     image = models.FileField(
-            upload_to='media/',
+            upload_to='car_tire_images/',
             verbose_name='Фото'
             )
 

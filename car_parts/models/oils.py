@@ -69,6 +69,16 @@ class CarOil(models.Model):
     description = models.TextField(
             verbose_name="Описание"
             )
+
+    created_at = models.DateTimeField(
+            auto_now_add=True,
+            verbose_name="Дата создания"
+            )
+
+    updated_at = models.DateTimeField(
+            auto_now=True,
+            verbose_name="Дата изменения"
+            )
     
     def __str__(self):
         return f"{self.name} {self.mark} {self.model}"
@@ -88,7 +98,8 @@ class CarOilsImage(models.Model):
             )
 
     image = models.ImageField(
-            verbose_name="Фото"
+            verbose_name="Фото",
+            upload_to="car_oils/"
             )
 
     def __str__(self):
