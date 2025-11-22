@@ -69,7 +69,7 @@ class CarTire(models.Model):
         return f"{self.car_tire_type}  {self.tire_size}"
 
     class Meta:
-        verbose_name = 'Шины'
+        verbose_name = 'Шина'
         verbose_name_plural = 'Шины'
         
         ordering = ['-id']
