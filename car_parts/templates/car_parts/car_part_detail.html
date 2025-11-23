@@ -1,0 +1,341 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h2 class="h3 fw-bold mb-1">{{ car.mark }} {{ car.model }}</h2>
+                    <p class="text-muted mb-3">{{ car.year }} год</p>
+                    
+                    <div class="bg-primary bg-opacity-10 rounded-3 p-3 mb-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="text-muted">Цена</span>
+                            <span class="h4 fw-bold text-primary mb-0">{{ car.price }} $</span>
+                        </div>
+                    </div>
+
+                   <form action="{% url 'favorites:toggle_favorite' app_label model_name car.id %}" method="post" class="w-100 mb-4">
+                      {% csrf_token %}
+                      <button
+                          type="submit"
+                          class="btn {% if is_favorite %}btn-warning{% else %}btn-outline-primary{% endif %} w-100 rounded-pill">
+                          <i class="fas fa-heart me-2"></i>
+                          {% if is_favorite %}
+                              Удалить из избранного
+                          {% else %}
+                              Добавить в избранное
+                          {% endif %}
+                      </button>
+                    </form>
+                  {% if is_owner %}
+                    <a href="{% url 'auto:update_moto_announcement' car.id %}"
+                       class="btn btn-outline-primary w-100 mb-4 rounded-pill">
+                        <i class="fas fa-edit me-2"></i>
+                        Редактировать объявление
+                    </a>
+                    <a href="{% url 'auto:delete_announcement' model_name car.id %}"
+                       class="btn btn-danger w-100 mb-4 rounded-pill">
+                        <i class="fas fa-edit me-2"></i>
+                        Удалить объявление
+                    </a>
+
+                  {% endif %}
+                    <!-- Specifications with icons and better layout -->
+                    <h5 class="fw-semibold mb-3">Характеристики</h5>
+                    
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <i class="fas fa-user text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Владелец</small>
+                                <span>{{ car.profile.email }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-palette text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Цвет</small>
+                                <span>{{ car.color }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-gas-pump text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Тип двигателя</small>
+                                <span>{{ car.car_config.engine_type }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-tachometer-alt text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Объем</small>
+                                <span>{{ car.car_config.engine_capacity }} л.</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-bolt text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Мощность</small>
+                                <span>{{ car.engine_power }} л.с.</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-road text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Пробег</small>
+                                <span>{{ car.car_mileage }} км</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-cog text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Коробка</small>
+                                <span>{{ car.car_config.transmission }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-car text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Привод</small>
+                                <span>{{ car.car_config.engine_type }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-steering-wheel text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Руль</small>
+                                <span>{{ car.wheel_type }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-star text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Состояние</small>
+                                <span>{{ car.car_condition }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-map-marker-alt text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Регион</small>
+                                <span>{{ car.region }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-clipboard-check text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Учёт</small>
+                                <span>{{ car.registration }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-car-side text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Кузов</small>
+                                <span>{{ car.car_config.body }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-file-invoice text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Растаможка</small>
+                                <span>{{ car.custom_clearence }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-check-circle text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Доступность</small>
+                                <span>{{ car.availability }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-exchange-alt text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Обмен</small>
+                                <span>{{ car.exchange }}</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-calendar text-muted"></i>
+                            <div>
+                                <small class="text-muted d-block">Публикация</small>
+                                <span>{{ car.created_at|date:"d.m.Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right column: Smaller main image with modern gallery -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <!-- Main image with max height constraint -->
+                    <div class="mb-3 text-center">
+                        <img id="main-image"
+                             src="{% if car.images.all|length > 0 %}{{ car.images.all.0.image.url }}{% else %}{% static 'no-image.png' %}{% endif %}"
+                             class="img-fluid rounded-3 main-car-image"
+                             alt="Car Image" />
+                    </div>
+
+                    <!-- Modern thumbnail gallery -->
+                    <div class="d-flex flex-wrap gap-2 mb-4 justify-content-center">
+                        {% for img in car.images.all %}
+                            <img src="{{ img.image.url }}"
+                                 class="thumbnail-img {% if forloop.first %}active{% endif %}"
+                                 alt="Thumbnail {{ forloop.counter }}"
+                                 onclick="setMainImage(this)" />
+                        {% empty %}
+                            <p class="text-muted">Фотографий нет</p>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Description section with better styling -->
+                    <div class="description-section">
+                        <h5 class="fw-semibold mb-3">
+                            <i class="fas fa-align-left text-primary me-2"></i>Описание
+                        </h5>
+                        <p class="text-muted lh-lg">{{ car.description }}</p>
+                    </div>
+
+                    <!-- Back button with modern styling -->
+                    <div class="text-center mt-4">
+                        <a href="{% url 'auto:index' %}" class="btn btn-outline-secondary rounded-pill px-4">
+                            <i class="fas fa-arrow-left me-2"></i>На главную
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Modern specifications grid layout */
+.specs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.spec-item {
+    display: flex;
+    align-items: start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.spec-item:hover {
+    background: #e9ecef;
+    transform: translateX(4px);
+}
+
+.spec-item i {
+    font-size: 1.1rem;
+    margin-top: 0.25rem;
+    min-width: 20px;
+}
+
+.spec-item small {
+    font-size: 0.75rem;
+}
+
+/* Main image with constrained size */
+.main-car-image {
+    max-height: 400px;
+    width: auto;
+    object-fit: contain;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Modern thumbnail styling */
+.thumbnail-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    border: 2px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.thumbnail-img:hover {
+    border-color: var(--bs-primary);
+    transform: scale(1.05);
+}
+
+.thumbnail-img.active {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+/* Description section styling */
+.description-section {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border-left: 4px solid var(--bs-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .specs-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .specs-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-car-image {
+        max-height: 300px;
+    }
+}
+</style>
+
+<script>
+
+function setMainImage(thumbnail) {
+    // Remove active class from all thumbnails
+    document.querySelectorAll('.thumbnail-img').forEach(img => {
+        img.classList.remove('active');
+    });
+    
+    // Add active class to clicked thumbnail
+    thumbnail.classList.add('active');
+    
+    // Update main image
+    document.getElementById('main-image').src = thumbnail.src;
+}
+
+</script>
+
+{% endblock %}
+
+
