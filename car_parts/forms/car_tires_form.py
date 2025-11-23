@@ -1,17 +1,30 @@
 from django import forms
-from car_parts.models import PartsAndConsumble, PartsAndConsumblesImage
+from ..models import CarTire, TireType, CarTireImage
 from common.forms.multi_file_inp import MultiFileInput
 
 
-class PartsAndConsumblesForm(forms.ModelForm):
+class TireTypeForm(forms.ModelForm):
     class Meta:
-        model = PartsAndConsumble
+        model = TireType
+        fields = ['tire_type']
+        widgets = {
+                'tire_type': forms.Select(attrs={'class': 'form-control'}),
+                }
+
+class CarTiresForm(forms.ModelForm):
+    class Meta:
+        model = CarTire
         exclude = ['profile', 'created_at', 'updated_at']
-        fields = ['mark', 'model', 'generation',
+        fields = ['car_tire_type', 'tire_width', 'tire_height', 'tire_size',
+                  'mark', 'model', 'generation',
                  'price', 'region', 'city',
                   'condition', 'availability', 'description',
                   ]
         widgets = {
+                'car_tire_type': forms.Select(attrs={'class': 'form-control'}),
+                'tire_width': forms.Select(attrs={'class': 'form-control'}),
+                'tire_height': forms.Select(attrs={'class': 'form-control'}),
+                'tire_size': forms.Select(attrs={'class': 'form-control'}),
                 'mark': forms.Select(attrs={'class': 'form-control'}),
                 'model': forms.Select(attrs={'class': 'form-control'}),
                 'generation': forms.Select(attrs={'class': 'form-control'}),
@@ -27,10 +40,9 @@ class PartsAndConsumblesForm(forms.ModelForm):
 class PartsAndConsumblesImageForm(forms.ModelForm):
     image = forms.ImageField(required=False)
     class Meta:
-        model = PartsAndConsumblesImage
+        model = CarTireImage
         fields = ['image']
         widgets = {
             'image': MultiFileInput(attrs={'multiple': True, 'class': 'form-control'})
                 }
-
 

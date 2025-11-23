@@ -1,17 +1,19 @@
 from django import forms
-from car_parts.models import PartsAndConsumble, PartsAndConsumblesImage
+from ..models import CarAccessorie, CarAccessoriesImage
 from common.forms.multi_file_inp import MultiFileInput
 
 
-class PartsAndConsumblesForm(forms.ModelForm):
+class CarAccessoriesForm(forms.ModelForm):
     class Meta:
-        model = PartsAndConsumble
-        exclude = ['profile', 'created_at', 'updated_at']
-        fields = ['mark', 'model', 'generation',
-                 'price', 'region', 'city',
-                  'condition', 'availability', 'description',
-                  ]
+        model = CarAccessorie
+        exclude = ['created_at', 'updated_at', 'profile']
+        fields = ['name', 'profile', 'mark',
+                  'model', 'generation', 'price',
+                  'region', 'city', 'condition',
+                  'availability', 'dscription']
+        
         widgets = {
+                'name':forms.TextInput(attrs={'class': 'form-control'}),
                 'mark': forms.Select(attrs={'class': 'form-control'}),
                 'model': forms.Select(attrs={'class': 'form-control'}),
                 'generation': forms.Select(attrs={'class': 'form-control'}),
@@ -24,13 +26,13 @@ class PartsAndConsumblesForm(forms.ModelForm):
                 }
         
 
-class PartsAndConsumblesImageForm(forms.ModelForm):
-    image = forms.ImageField(required=False)
+class CarAccessoriesImageForm(forms.ModelForm):
+    image = forms.ImageField(widget=MultiFileInput)
+
     class Meta:
-        model = PartsAndConsumblesImage
+        model = CarAccessoriesImage
         fields = ['image']
         widgets = {
-            'image': MultiFileInput(attrs={'multiple': True, 'class': 'form-control'})
-                }
-
+            'image': MultiFileInput(attrs={'multiple': True, 'class': 'form-control'}),
+            }
 

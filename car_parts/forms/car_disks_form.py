@@ -1,5 +1,6 @@
 from django import forms 
 from car_parts.models import CarDisk, DiskType, CarDiskImage
+from common.forms.multi_file_inp import MultiFileInput
 
 
 class CarDiskForm(forms.ModelForm):
@@ -27,4 +28,20 @@ class CarDiskForm(forms.ModelForm):
                 'dscription': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
                 }
         
+
+class DiskTypeForm(forms.ModelForm):
+    class Meta:
+        model = DiskType
+        fields = ['name']
+        widgets = {
+                "name": forms.Select(attrs={'class': 'form-control'}),
+                }
+
+class CarDiskImageForm(forms.ModelForm):
+    class Meta:
+        model = CarDiskImage
+        fields = ['image']
+        widgets = {
+                "image": MultiFileInput(attrs={'class': 'form-control'}),
+                }
 

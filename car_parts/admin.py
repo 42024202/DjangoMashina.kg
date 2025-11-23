@@ -8,20 +8,29 @@ from .models.state_numbers import StateNumber, StateNumberImage
 from .models.car_tires import TireType, CarTire, CarTireImage
 
 
-"""Parts and Consumbles"""
-class PartsAndConsumblesImageInline(admin.TabularInline):
-    model = PartsAndConsumblesImage
-    extra = 1 
+"""===Base classes==="""
+class BaseImageInline(admin.TabularInline):
+    extra = 1
     min_num = 0
     max_num = 10
 
 
-@admin.register(PartsAndConsumble)
-class PartsAndConsumbleAdmin(admin.ModelAdmin):
-    list_display = ['profile', 'mark', 'model', 'price', 'created_at']
-    list_filter = ['mark', 'model', 'profile']
+class BaseItemAdmin(admin.ModelAdmin):
+    list_display = ['id', 'profile', 'mark', 'model', 'price', 'created_at']
     search_fields = ['mark', 'model']
     ordering = ['-id', 'created_at']
+    inlines = []
+
+
+"""Parts and Consumbles"""
+class PartsAndConsumblesImageInline(BaseImageInline):
+    model = PartsAndConsumblesImage
+
+
+@admin.register(PartsAndConsumble)
+class PartsAndConsumbleAdmin(BaseItemAdmin):
+    list_display = ['profile', 'mark', 'model', 'price', 'created_at']
+    list_filter = ['mark', 'model', 'profile']
     inlines = [PartsAndConsumblesImageInline]
 
 
@@ -39,66 +48,48 @@ class DiskTypeAdmin(admin.ModelAdmin):
     ordering = ['-id']
 
 
-@admin.register(CarDisk)
-class CarDiskAdmin(admin.ModelAdmin):
+class CarDiskAdmin(BaseItemAdmin):
     list_display = ['id', 'profile', 'mark', 'model', 'fastener_driling', 'price', 'created_at']
     search_fields = ['id', 'mark', 'model']
-    ordering = ['-id', 'created_at']
     inlines = [CarDiskImageInline]
 
 
 """Car accessories"""
-class CarAccessoriesImageInline(admin.TabularInline):
+class CarAccessoriesImageInline(BaseImageInline):
     model = CarAccessoriesImage
-    extra = 1
-    min_num = 0
-    max_num = 10
+
 
 @admin.register(CarAccessorie)
-class CarAccessorieAdmin(admin.ModelAdmin):
+class CarAccessorieAdmin(BaseItemAdmin):
     list_display = ['id', 'profile', 'mark', 'model', 'price', 'created_at']
-    search_fields = ['id', 'mark', 'model']
-    ordering = ['-id', 'created_at']
     inlines = [CarAccessoriesImageInline]
 
 
 """Oils"""
-class CarOilsImageInline(admin.TabularInline):
+class CarOilsImageInline(BaseImageInline):
     model = CarOilsImage
-    extra = 1
-    min_num = 0
-    max_num = 10
 
 
 @admin.register(CarOil)
-class CarOilAdmin(admin.ModelAdmin):
+class CarOilAdmin(BaseItemAdmin):
     list_display = ['id', 'profile', 'mark', 'model', 'price', 'created_at']
-    search_fields = ['id', 'mark', 'model']
-    ordering = ['-id', 'created_at']
     inlines = [CarOilsImageInline]
 
-
 """Car for parts"""
-class CarForPartImageInline(admin.TabularInline):
+class CarForPartImageInline(BaseImageInline):
     model = CarForPartImage
-    extra = 1
-    min_num = 0
-    max_num = 10
 
 
 @admin.register(CarForPart)
-class CarForPartAdmin(admin.ModelAdmin):
+class CarForPartAdmin(BaseItemAdmin):
     list_display = ['profile', 'mark', 'model', 'price', 'city', 'created_at']
     search_fields = ['mark', 'model', 'city']
-    ordering = ['-id', 'created_at']
+    inlines = [CarForPartImageInline]
 
 
 """State numbers"""
-class StateNumberImageInline(admin.TabularInline):
+class StateNumberImageInline(BaseImageInline):
     model = StateNumberImage
-    extra = 1
-    min_num = 0
-    max_num = 10
 
 
 @admin.register(StateNumber)
@@ -110,21 +101,17 @@ class StateNumberAdmin(admin.ModelAdmin):
 
 
 """Car tires"""
-class CarTireImageInline(admin.TabularInline):
+class CarTireImageInline(BaseImageInline):
     model = CarTireImage
-    extra = 1
-    min_num = 0
-    max_num = 10
 
 
 @admin.register(CarTire)
-class CarTireAdmin(admin.ModelAdmin):
+class CarTireAdmin(BaseItemAdmin):
     list_display = ['id', 'profile', 'car_tire_type', 'tire_size', 'price', 'created_at']
     search_fields = ['id', 'car_tire_type', 'tire_size']
-    ordering = ['-id', 'created_at']
     inlines = [CarTireImageInline]
-
 
 @admin.register(TireType)
 class TireTypeAdmin(admin.ModelAdmin):
     list_display = ['id', 'tire_type']
+
